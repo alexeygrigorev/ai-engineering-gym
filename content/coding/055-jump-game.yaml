@@ -8,16 +8,16 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "You do not need to track every possible jump sequence, just the farthest index reachable so far."
-  - "Walk the array left to right, updating the farthest reachable index at each step, but only while the current index is still within that reachable range."
+  - "You don't need to track every possible jump sequence, just the farthest index reachable so far."
+  - "Scan the array left to right, updating the farthest reachable index at each step. Do this only while the current index is still within that reachable range."
   - "This greedy single pass tells you in O(n) time and O(1) space whether the last index can ever be reached."
 status: draft
 answer:
   approach: >
-    Greedy single pass tracking the farthest index reachable so far. Walk left to right,
+    Greedy single pass tracking the farthest index reachable so far. Scan left to right,
     but only through positions you can actually reach (i <= max_index). At each i update
-    max_index = max(max_index, i + nums[i]). If you can reach the last index, return true;
-    if the loop stalls because i outran max_index, return false.
+    max_index = max(max_index, i + nums[i]). If you can reach the last index, return true.
+    If the loop stalls because i outran max_index, return false.
   pseudocode: |
     max_index = 0
     for i in 0..n-1:

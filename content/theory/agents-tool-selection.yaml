@@ -22,22 +22,22 @@ answer:
     Each tool is exposed to the model with a name, a natural-language description,
     and a typed parameter schema (function/tool calling). The model matches the
     current task to the best-fitting tool from those descriptions and emits a
-    structured call. In the ReAct pattern it interleaves reasoning ("thought") with
-    actions: think, pick a tool, observe the result, then re-decide — same tool with
-    new args, a different tool, or finish. With many tools, a router/dispatcher LLM
-    call first narrows to a specialized tool or sub-agent. Selection quality hinges
-    on clear, non-overlapping descriptions and a minimal tool set — bloated or
-    ambiguous tools are a top cause of wrong choices.
+    structured call. In ReAct, the model interleaves reasoning ("thought") with
+    actions. It thinks, picks a tool, observes the result, then re-decides whether to
+    reuse the same tool with new args, switch tools, or finish. With many tools, a
+    router/dispatcher LLM call first narrows to a specialized tool or sub-agent.
+    Selection quality hinges on clear, non-overlapping descriptions and a minimal tool
+    set, since bloated or ambiguous tools are a top cause of wrong choices.
   key_points:
     - "Tools are described to the model with names, descriptions, and typed parameter schemas (function/tool calling)"
-    - "ReAct: interleave reasoning and acting — thought → action → observation → re-decide"
-    - "Pure function calling emits a structured tool call directly; the reasoning is internal to the model"
-    - "Router/dispatcher pattern for large tool sets: a first call routes to a specialized tool or sub-agent"
+    - "ReAct: interleave reasoning and acting (thought → action → observation → re-decide)"
+    - "Pure function calling emits a structured tool call directly, with the reasoning internal to the model"
+    - "Router/dispatcher for large tool sets: a first call routes to a specialized tool or sub-agent"
     - "Selection quality depends on clear, non-overlapping tool descriptions and a minimal viable tool set"
 
 hints:
   - "Think about what information the model actually sees about each tool before it picks one."
-  - "Recall the ReAct loop — reasoning is interleaved with the choice of action."
+  - "Recall the ReAct loop, where reasoning is interleaved with the choice of action."
   - "Consider what goes wrong when many tools have overlapping or vague descriptions."
 
 follow_ups:

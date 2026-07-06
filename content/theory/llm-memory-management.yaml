@@ -19,38 +19,38 @@ sources:
 
 answer:
   short: >
-    LLMs are stateless — each call only knows what's in its context window — so "memory"
+    LLMs are stateless (each call only knows what's in its context window), so "memory"
     is something you engineer around the model. Split it into two layers. Short-term
     (working) memory is what you fit into the context this turn: the system prompt, recent
     conversation, and retrieved snippets. Because the window is finite and stuffing it
     degrades quality, you manage it: keep the last N turns verbatim, and compress older
     history into a running summary (summarization), or truncate/drop the least relevant
-    parts. Long-term memory is persistent state kept outside the model — a database or
-    vector store — that survives across sessions: user preferences, facts, past decisions.
-    You don't feed all of it in; you extract salient memories, store them, and at query
+    parts. Long-term memory is persistent state kept outside the model (a database or
+    vector store) that survives across sessions: user preferences, facts, past decisions.
+    You don't feed all of it in. You extract salient memories, store them, and at query
     time retrieve only the relevant ones (RAG-style) back into the context. This is often
     organized as semantic (facts/knowledge), episodic (past interactions), and procedural
     (learned how-to) memory. Context management is the discipline of deciding, each turn,
-    exactly what goes into the limited window — recent history + retrieved long-term
-    memories + tools — so the model has what it needs and nothing that pollutes it. Watch
+    exactly what goes into the limited window (recent history + retrieved long-term
+    memories + tools), so the model has what it needs and nothing that pollutes it. Watch
     for staleness and contradictory memories, and prune/update them over time.
   key_points:
-    - "LLMs are stateless; memory is engineered around them, not stored in the weights"
+    - "LLMs are stateless, so memory is engineered around them, not stored in the weights"
     - "Short-term / working memory = what fits in the context window this turn (system prompt, recent turns, retrieved snippets)"
     - "Manage short-term memory by keeping recent turns verbatim and summarizing/compressing or truncating older history"
     - "Long-term memory = persistent external store (DB / vector store) surviving across sessions: preferences, facts, past events"
-    - "Retrieve long-term memory on demand (RAG-style) — store salient items, fetch only the relevant ones back into context"
+    - "Retrieve long-term memory on demand (RAG-style): store salient items, fetch only the relevant ones back into context"
     - "Memory types: semantic (facts), episodic (past interactions), procedural (learned procedures)"
-    - "Context management = curating what enters the finite window each turn; prune stale/contradictory memories"
+    - "Context management = curating what enters the finite window each turn. Prune stale/contradictory memories"
 
 follow_ups:
-  - "How do you decide what's worth writing to long-term memory versus discarding?"
+  - "How do you decide what goes into long-term memory versus what you discard?"
   - "What breaks when the running summary loses an important detail, and how do you guard against it?"
   - "How do conflicting or stale memories cause bad behavior, and how do you handle them?"
   - "How is this different from just using a bigger context window?"
 
 hints:
-  - "Start from a key property of the model itself: does a plain LLM call remember anything from the last one?"
+  - "Start from a key property of the model: does a plain LLM call remember anything from the last one?"
   - "Two layers: one lives inside the context window right now, the other lives somewhere else and gets pulled in when needed."
   - "Short-term/working memory = curated context (recent turns + summaries), long-term memory = external store retrieved on demand (RAG). Context management is choosing what enters the finite window each turn."
 

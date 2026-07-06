@@ -14,46 +14,46 @@ sources:
     supports: "recommended answer verbatim; 'AI is not just a demo layer, but part of the product or workflow infrastructure'"
 
 probes:
-  - "Applied AI, platform, or forward-deployed — which is it for you?"
+  - "Applied AI, platform, or forward-deployed, which is it for you?"
   - "Remote, hybrid, on-site? Any location constraints?"
-  - "Senior or staff level — where do you see yourself?"
+  - "Senior or staff level, where do you see yourself?"
   - "Are you open to customer-facing / forward-deployed work with travel?"
   - "What would make you say no to a role?"
 
 rubric:
   - "Names the primary target clearly: senior/staff applied AI / AI product roles with real users and production AI"
   - "Frames the differentiator: teams where AI is part of the product or workflow infrastructure, not just a demo layer"
-  - "Can widen to the adjacent tracks when relevant — AI platform/LLMOps (sells OLX) and forward-deployed/customer-facing AI (natural bridge)"
+  - "Can widen to the adjacent tracks when relevant: AI platform/LLMOps (sells OLX) and forward-deployed/customer-facing AI (natural bridge)"
   - "Ties the want to what he offers: product discovery + engineering + deployment + evals"
-  - "Keeps optionality without sounding like 'anything' — he has a shape, not a wishlist"
+  - "Keeps optionality without sounding like 'anything', and he has a focus, not a wishlist"
   - "Mentions selectivity criteria (product impact, technical depth) rather than perks"
 
 hints:
-  - "Anchor on one primary target — senior/staff applied AI / AI product — then name platform and forward-deployed as adjacent, not a scattershot list."
+  - "Anchor on one primary target (senior/staff applied AI / AI product), then name platform and forward-deployed as adjacent, not a scattershot list."
   - "The tell that separates you: 'AI as product/workflow infrastructure, not a demo layer.'"
-  - "Match the emphasis to their role — lean platform for infra roles, lean forward-deployed for customer-facing ones."
+  - "Match the emphasis to their role: lean platform for infra roles, lean forward-deployed for customer-facing ones."
 
 example_structure: |
-  # HIS actual targets and framing — rehearse toward this.
+  # HIS actual targets and framing: rehearse toward this.
 
   ## Core answer
-  "I am exploring senior/staff applied AI roles where I can build production AI
-  systems with real users, clear product impact, and technical depth. I am
-  especially interested in teams where AI is not just a demo layer, but part of
+  "I'm exploring senior/staff applied AI roles where I can build production AI
+  systems with real users, clear product impact, and technical depth. I'm
+  especially interested in teams where AI isn't just a demo layer, but part of
   the product or workflow infrastructure."
 
   ## The three tracks he'll flex between (per the role in front of him)
-  - Primary: Senior/Staff Applied AI Engineer / AI Product Engineer — LLM/RAG/
-    agentic workflows from idea to production; users, evals, reliability, cost,
+  - Primary: Senior/Staff Applied AI Engineer / AI Product Engineer, taking LLM/RAG/
+    agentic workflows from idea to production. Users, evals, reliability, cost,
     latency, product impact.
-  - Secondary: AI Platform / LLMOps / MLOps — where the OLX ML-platform,
+  - Secondary: AI Platform / LLMOps / MLOps, where the OLX ML-platform,
     Kubernetes/Terraform/AWS, model-serving, and monitoring experience leads.
-  - High-potential: Forward-Deployed / customer-facing Applied AI Engineer —
-    discover the workflow, scope an MVP, build, deploy, evaluate, drive adoption,
+  - High-potential: Forward-Deployed / customer-facing Applied AI Engineer.
+    Discover the workflow, scope an MVP, build, deploy, evaluate, drive adoption,
     feed learnings back to product.
 
   ## One-liner to close
-  "In short — production AI where it meets real workflows: discovery, product
+  "In short, production AI where it meets real workflows: discovery, product
   engineering, deployment, evals, and adoption."
 
 # The user's own rehearsed answer is captured per-user at runtime, NOT stored here.

@@ -14,9 +14,9 @@ hints:
 status: draft
 answer:
   approach: >
-    Count primes below n with the Sieve of Eratosthenes. Mark all numbers prime
-    initially; walking the odd numbers upward, whenever one is still marked
-    prime, count it and strike out all of its multiples as composite. Striking
+    Count primes below n with the Sieve of Eratosthenes, marking all numbers
+    prime initially. Walking the odd numbers upward, count each one that's still
+    marked prime and strike out all of its multiples as composite. Striking
     multiples is far cheaper than testing each number individually for
     primality.
   pseudocode: |

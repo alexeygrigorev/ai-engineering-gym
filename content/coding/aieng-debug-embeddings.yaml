@@ -28,15 +28,11 @@ answer:
   approach: >
     The snippet has three classic embedding bugs. (1) Shape mismatch: model.embed(q)
     returns (1, 768) but the code treats q_emb as a 1-D (768,) vector. doc_embeddings
-    (N, 768) @ q_emb (1, 768) fails or, after an implicit reshape, produces the wrong
-    shape — you must squeeze q_emb to (768,) (or transpose so it's (768, 1) and then
-    flatten the result). Assert dimensions at the boundary rather than trusting them.
-    (2) It's not cosine similarity, it's a raw dot product. Cosine requires dividing by
-    the norms; a raw dot product is dominated by vector magnitude, so a long document
-    vector wins regardless of direction. Either L2-normalize both sides first, or divide
+    (N, 768) @ q_emb (1, 768) fails or, after an implicit reshape, produces the wrong shape. You must squeeze q_emb to (768,) (or transpose so it's (768, 1) and then flatten the result). Assert dimensions at the boundary rather than trusting them.
+    (2) It's not cosine similarity, it's a raw dot product. Cosine requires dividing by the norms. A raw dot product is dominated by vector magnitude, so a long document vector wins regardless of direction. Either L2-normalize both sides first, or divide
     by the norm product. (3) Recomputing/normalizing inconsistently: if the stored
     doc_embeddings were normalized at index time but the query isn't (or vice versa),
-    the scores are meaningless — both sides must live in the same space. The robust fix
+    the scores are meaningless. Both sides must live in the same space. The robust fix
     normalizes both and does one matrix multiply, and returns argmax over a proper 1-D
     score vector.
   pseudocode: |
@@ -56,8 +52,8 @@ answer:
     time: "O(len(queries) * N * d)"
     space: "O(N*d) for the (normalized) document matrix"
 hints:
-  - "Print the shapes. model.embed returns (1, 768) but the code uses it as if it were (768,). That alone makes the matmul produce the wrong thing."
-  - "A raw dot product is not cosine similarity — it's biased by vector magnitude. You need to divide by the L2 norms (or normalize both sides first)."
+  - "Print the shapes: model.embed returns (1, 768), but the code uses it as if it were (768,). That alone makes the matmul produce the wrong thing."
+  - "A raw dot product isn't cosine similarity because it's biased by vector magnitude. You need to divide by the L2 norms (or normalize both sides first)."
   - "Query and documents must be normalized the same way. Normalize the doc matrix once, reshape and normalize the query, then one matmul gives a clean 1-D score array to argmax over."
 follow_ups:
   - "How would asserting shapes at each boundary have caught the first bug immediately?"

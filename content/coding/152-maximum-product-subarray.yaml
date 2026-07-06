@@ -16,9 +16,9 @@ answer:
   approach: >
     A DP that tracks both the running maximum and running minimum product ending
     at each index. Because multiplying by a negative flips largest and smallest,
-    the current minimum can suddenly become the maximum. At each step: cur_max =
+    the current minimum can become the maximum. At each step: cur_max =
     max(A[i], min_prev*A[i], max_prev*A[i]) and cur_min = min of the same three.
-    The answer is the largest cur_max seen over all indices.
+    Return the largest cur_max seen over all indices.
   pseudocode: |
     max_prev = min_prev = answer = nums[0]
     for x in nums[1:]:
@@ -29,7 +29,7 @@ answer:
     return answer
   complexity: { time: "O(n)", space: "O(1)" }
 follow_ups:
-  - "Why must you carry the running minimum, not just the maximum?"
+  - "Why must you track the running minimum, not just the maximum?"
   - "How do zeros in the array reset the running products?"
   - "Contrast this with maximum subarray sum (LeetCode 53)."
 sources:

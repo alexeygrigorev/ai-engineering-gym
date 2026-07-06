@@ -30,20 +30,20 @@ answer:
     expected outputs (or pass/fail rubrics) that you evaluate against. Source examples
     from real production queries, logs, and traces so the distribution matches what
     users actually ask, sampling both typical and problematic (low-score) cases.
-    Deliberately cover edge cases and known failure modes via error analysis — open-code
-    real traces into a failure taxonomy — and aim for coverage/saturation rather than a
+    Deliberately cover edge cases and known failure modes via error analysis (open-code
+    real traces into a failure taxonomy) and aim for coverage/saturation rather than a
     magic number (100+ traces is a practical start). Attach expected outputs or reference
-    answers written by domain experts; where a single gold string is impossible, store a
+    answers written by domain experts. Where a single gold string is impossible, store a
     rubric. Default to one principal domain-expert labeler, and when you need several,
     write annotation guidelines and measure inter-annotator agreement (Cohen's kappa).
     Fill coverage gaps with dimension-based synthetic data, but avoid it for high-stakes
     or niche cases. Version the set, prevent train/eval leakage, and keep updating it as
     new failure modes appear in production.
   key_points:
-    - "Source examples from real production queries/logs/traces so the eval distribution matches real usage; sample typical AND problematic cases"
-    - "Cover edge cases and known failure modes via error analysis (open/axial coding into a failure taxonomy); aim for coverage/saturation (~100+ traces)"
+    - "Source examples from real production queries/logs/traces so the eval distribution matches real usage. Sample typical AND problematic cases"
+    - "Cover edge cases and known failure modes via error analysis (open/axial coding into a failure taxonomy). Aim for coverage/saturation (~100+ traces)"
     - "Attach expected outputs / reference answers or pass-fail rubrics, authored by domain experts"
-    - "Default to one domain-expert labeler; with multiple annotators, write guidelines and measure inter-annotator agreement (Cohen's kappa)"
+    - "Default to one domain-expert labeler. With multiple annotators, write guidelines and measure inter-annotator agreement (Cohen's kappa)"
     - "Use dimension-based synthetic data to fill gaps, but avoid it for high-stakes, niche, or underrepresented cases"
     - "Version the dataset, prevent train/eval leakage, and continually update it as new production failure modes surface"
 
@@ -54,8 +54,8 @@ hints:
 
 follow_ups:
   - "How large should the golden set be, and how do you know it's big enough and representative?"
-  - "How do you prevent leakage between your eval set and your prompts or fine-tuning data — and detect it if it happened?"
-  - "Two annotators disagree on many examples — how do you diagnose and fix it, and how would you quantify the problem?"
+  - "How do you prevent leakage between your eval set and your prompts or fine-tuning data, and detect it if it happened?"
+  - "Two annotators disagree on many examples. How do you diagnose and fix it, and how would you quantify the problem?"
 
 exercises:
   - kind: mcq

@@ -41,8 +41,8 @@ example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A shared architecture choice several teams depended on (e.g.
      one model gateway vs. per-team integrations, or a common vector store).
-  T (Task): What you owned — drive a decision the whole org could commit to.
-  A (Action): The concrete steps YOU took — enumerated options, wrote a design
+  T (Task): What you owned: drive a decision the whole org could commit to.
+  A (Action): The concrete steps YOU took: enumerated options, wrote a design
      doc with trade-offs, ran a review with the affected teams, resolved the
      dissent, secured a decision.
   R (Result): The architecture that shipped and its cross-team impact, quantified
@@ -50,7 +50,7 @@ example_structure: |
 
 hints:
   - "Establish scope early: name the teams and why their needs conflicted."
-  - "Show the mechanism you used to align — a design doc, a review, a clear trade-off table."
+  - "Show the mechanism you used to align: a design doc, a review, a clear trade-off table."
   - "Own the outcome honestly, including any assumption that later needed revisiting."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

@@ -9,14 +9,14 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "First find the list's total length in one pass so you know exactly which position from the front needs to be removed."
-  - "The node to delete sits at position length - n; walk to the node just before it and splice it out by pointing its next past the target."
+  - "The node to delete sits at position length - n. Walk to the node just before it and splice it out by pointing its next past the target."
   - "Two passes over the list gives O(L) time and O(1) space (a single-pass two-pointer variant spaced n apart also works)."
 status: draft
 answer:
   approach: >
     Two passes over the singly linked list. First walk to the end to learn its length
-    L. The node to delete from the front is at position L - n. If that equals the head
-    (L == n), just return head.next. Otherwise walk to the node right before the target
+    L, so the node to delete from the front sits at position L - n. If that equals the
+    head (L == n), return head.next. Otherwise walk to the node right before the target
     (L - n - 1 steps) and splice it out by pointing its next past the target. A one-pass
     variant uses two pointers spaced n apart, but the length approach is simplest.
   pseudocode: |

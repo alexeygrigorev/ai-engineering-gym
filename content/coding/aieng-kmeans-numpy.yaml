@@ -16,12 +16,7 @@ answer:
     distance. Update: move each centroid to the mean of the points assigned to it.
     Repeat until assignments stop changing (or centroids move less than a tolerance,
     or you hit max_iter). The vectorized assignment computes an (n_points, k) distance
-    matrix and takes argmin along the centroid axis — no per-point loop. Three details
-    interviewers probe: initialization (random points as centroids is fine to start;
-    mention k-means++ for better seeds and fewer bad local minima), the objective it
-    minimizes (within-cluster sum of squares / inertia, and that it only reaches a
-    local optimum, so you run several restarts and keep the best), and the empty-cluster
-    edge case (reseed a centroid to the farthest point if a cluster loses all members).
+    matrix and takes argmin along the centroid axis, with no per-point loop. Interviewers probe several details here. Initialization: random points as centroids is fine to start, though k-means++ gives better seeds and fewer bad local minima. The objective it minimizes is the within-cluster sum of squares (inertia). It only reaches a local optimum, so you run several restarts and keep the best. The empty-cluster edge case: reseed a centroid to the farthest point if a cluster loses all members.
   pseudocode: |
     def kmeans(X, k, max_iter=100, tol=1e-4):
         centroids = X[random_choice(len(X), k, replace=False)]   # k-means++ is better
@@ -40,8 +35,8 @@ answer:
     space: "O(n*k) for the distance matrix (or O(n) if you loop over clusters)"
 hints:
   - "It's two alternating steps: assign each point to its nearest centroid, then recompute each centroid as the mean of its members. Repeat until assignments stabilize."
-  - "Vectorize the assignment: build an (n_points, k) squared-distance matrix and take argmin along axis 1. Avoid a Python loop over points."
-  - "K-means only finds a local optimum, so seeding matters — mention k-means++ and multiple restarts. Handle the empty-cluster case by reseeding a centroid."
+  - "Vectorize the assignment by building an (n_points, k) squared-distance matrix and taking argmin along axis 1. Avoid a Python loop over points."
+  - "K-means only finds a local optimum, so seeding matters. Mention k-means++ and multiple restarts, and handle the empty-cluster case by reseeding a centroid."
 follow_ups:
   - "How does k-means++ initialization work and why does it help?"
   - "How would you choose k (elbow method, silhouette score)?"

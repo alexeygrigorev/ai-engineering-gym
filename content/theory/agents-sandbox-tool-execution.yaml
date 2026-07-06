@@ -20,24 +20,26 @@ sources:
 answer:
   short: >
     Never run untrusted or LLM-generated code (or high-impact tools) on the host.
-    Isolate execution in a strong sandbox — a container hardened with a userspace
-    kernel (gVisor/Kata) or, better, a microVM (Firecracker/E2B) — because standard
+    Isolate execution in a strong sandbox: a container hardened with a userspace
+    kernel (gVisor/Kata) or, better, a microVM (Firecracker/E2B). Standard
     containers share the host kernel, so one runtime bug can compromise the host.
-    Apply least privilege: default-deny network and filesystem, allowlist only the
-    egress the tool needs, and hand it scoped, short-lived, revocable credentials.
+
+
+    Apply least privilege: default-deny network and filesystem, then allowlist only
+    the egress the tool needs. Hand it scoped, short-lived, revocable credentials.
     Bound resources with CPU/memory/time quotas and kill switches. Make sandboxes
-    ephemeral — a fresh, disposable environment per run with no persistent secrets.
+    ephemeral: a fresh, disposable environment per run with no persistent secrets.
     Risk-rate tools and require human approval for high-impact actions (write, spend,
     delete), and log every action for audit.
   key_points:
     - "Isolate: run untrusted/generated code in containers hardened by userspace kernels (gVisor/Kata) or microVMs (Firecracker/E2B), not on the host"
-    - "Standard containers share the host kernel — a single runtime CVE can escape to the host, so prefer stronger isolation"
+    - "Standard containers share the host kernel. A single runtime CVE can escape to the host, so prefer stronger isolation"
     - "Least privilege: default-deny network + filesystem, allowlist egress, scoped short-lived revocable credentials"
     - "Resource limits: CPU/memory/time quotas and kill switches to bound runaway or abusive execution"
-    - "Ephemeral, disposable envs per run; risk-rate tools, require human approval for high-impact actions, and log everything"
+    - "Ephemeral, disposable envs per run. Risk-rate tools, require human approval for high-impact actions, and log everything"
 
 hints:
-  - "Ask where the code runs — is anything untrusted touching the host machine?"
+  - "Ask where the code runs: is anything untrusted touching the host machine?"
   - "Think in terms of isolation strength: plain container vs. microVM vs. userspace kernel."
   - "Beyond isolation, what privileges, resources, and lifetime should the sandbox have?"
 

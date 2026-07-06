@@ -21,24 +21,24 @@ answer:
   short: >
     Use the "digital coworker" analogy: you give the agent a goal, it figures out
     the steps on its own, uses the same apps and systems a person would (its tools),
-    and reports back — versus a chatbot, which only answers questions. Draw the
+    and reports back. A chatbot, by contrast, only answers questions. Draw the
     autonomy-vs-automation line: automation follows a fixed script, an agent chooses
     what to do within guardrails. Then reassure on control: guardrails on what it
     may touch, human-in-the-loop approval for high-stakes actions (sending money,
-    emails, deleting records), and oversight — who the agents are, what they can
-    connect to, and what they're allowed to do. Anchor it to one concrete business
+    emails, deleting records), and oversight (who the agents are, what they can
+    connect to, and what they're allowed to do). Anchor it to one concrete business
     outcome and its ROI, not jargon.
   key_points:
-    - "Analogy: an agent is like a digital coworker — give it a goal, it plans, uses tools, and reports back"
-    - "Contrast with a chatbot: chatbot answers questions; an agent takes actions in your systems to finish a task"
+    - "Analogy: an agent is like a digital coworker (give it a goal, it plans, uses tools, and reports back)"
+    - "Contrast with a chatbot: a chatbot answers questions, while an agent takes actions in your systems to finish a task"
     - "Autonomy vs. automation: automation follows a fixed script, an agent decides what to do within limits"
     - "Reassure on control: guardrails, human-in-the-loop approval for high-stakes actions, logging and oversight"
     - "Ground it in a concrete use case and business outcome/ROI, avoiding jargon"
 
 hints:
-  - "Reach for an everyday analogy rather than architecture terms."
+  - "Use an everyday analogy rather than architecture terms."
   - "Contrast 'answers questions' with 'takes actions to finish a job'."
-  - "Anticipate the control/safety question — mention guardrails and human approval."
+  - "Anticipate the control/safety question by mentioning guardrails and human approval."
 
 follow_ups:
   - "How would you explain the risk of autonomy without scaring them off?"

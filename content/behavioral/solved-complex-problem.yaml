@@ -18,7 +18,7 @@ sources:
     supports: "keep the Situation brief; make the outcome measurable"
 
 probes:
-  - "What made the problem complex — scale, ambiguity, competing constraints?"
+  - "What made the problem complex: scale, ambiguity, competing constraints?"
   - "How did you break it down and where did you start?"
   - "What was your root-cause or key insight?"
   - "What did you try that didn't work?"
@@ -41,15 +41,15 @@ example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A complex, high-stakes problem (e.g. degrading retrieval quality,
      a hard-to-reproduce failure, a cost or latency wall).
-  T (Task): What you owned — diagnose and fix it.
-  A (Action): The concrete steps YOU took — decomposed the problem, formed and
+  T (Task): What you owned: diagnose and fix it.
+  A (Action): The concrete steps YOU took: decomposed the problem, formed and
      tested hypotheses, isolated the root cause, designed and validated the fix.
   R (Result): The measurable improvement and that it stuck, plus a one-line lesson
      on your problem-solving method.
 
 hints:
-  - "Make the reasoning visible — interviewers grade the process, not just the fix."
-  - "Include a hypothesis you ruled out; it shows rigor over luck."
+  - "Make the reasoning visible: interviewers grade the process, not just the fix."
+  - "Include a hypothesis you ruled out, which shows rigor over luck."
   - "Quantify the before/after and name the method you'd reuse."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

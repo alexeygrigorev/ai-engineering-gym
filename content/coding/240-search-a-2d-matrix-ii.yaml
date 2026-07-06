@@ -16,9 +16,9 @@ answer:
   approach: >
     Each row and each column is sorted ascending. This solution skips leading
     rows whose last element is below the target and trailing rows whose first
-    element is above it, then binary-searches each remaining candidate row. The
-    elegant O(m+n) alternative starts at the top-right corner and moves left on
-    a too-big value or down on a too-small one.
+    element is above it. It then binary-searches each remaining candidate row.
+    The elegant O(m+n) alternative starts at the top-right corner and moves left
+    on a too-big value or down on a too-small one.
   pseudocode: |
     trim: advance the top row while its last value < target
           retreat the bottom row while its first value > target

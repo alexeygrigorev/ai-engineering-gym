@@ -14,11 +14,11 @@ hints:
 status: draft
 answer:
   approach: >
-    Just check the three constraints independently: no digit repeats in any row, any
-    column, or any 3x3 box. For each of the nine rows scan its cells with a seen-array
-    of size 9 and fail on a repeat; do the same for each column; then for each of the
-    nine boxes scan its 3x3 cells with a fresh seen-array. Empty cells ('.') are
-    skipped. If none of the checks finds a duplicate, the board is valid.
+    Independently check that no digit repeats within any row, any column, or any 3x3
+    box. For each of the nine rows scan its cells with a seen-array of size 9
+    and fail on a repeat. Do the same for each column, then for each of the nine boxes
+    scan its 3x3 cells with a fresh seen-array. Empty cells ('.') are skipped. If none
+    of the checks finds a duplicate, the board is valid.
   pseudocode: |
     for each row:      used = [false]*9; for each cell d: if used[d] return false; used[d]=true
     for each col:      used = [false]*9; for each cell d: if used[d] return false; used[d]=true

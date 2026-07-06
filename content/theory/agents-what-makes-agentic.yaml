@@ -32,7 +32,7 @@ answer:
     - "Goal-directed: given an objective it plans and decomposes into subtasks, not one prompt→one answer"
     - "Tool use: it acts on and senses the environment (APIs, code, databases) and reacts to results"
     - "Runs in a loop: perceive → reason/plan → act → observe, iterating until done"
-    - "It's a spectrum: workflow (predefined paths) → agent (open-ended, model-driven). Autonomy trades away predictability"
+    - "It's a spectrum: workflow (predefined paths) → agent (open-ended, model-driven), and autonomy trades away predictability"
 
 hints:
   - "Ask who's in control of the next step: hard-coded application code, or the LLM?"

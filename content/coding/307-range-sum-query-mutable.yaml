@@ -9,15 +9,15 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Both point updates and range-sum queries need to be faster than recomputing from scratch each time."
-  - "Store the array in a segment tree where each node holds the sum of its range, so updating a leaf only touches its O(log n) ancestors."
+  - "Store the array in a segment tree where each node holds the sum of its range. Updating a leaf then only touches its O(log n) ancestors."
   - "A range query then combines O(log n) tree nodes, giving O(log n) update and query after an O(n) build."
 status: draft
 answer:
   approach: >
     Support point updates and range-sum queries efficiently by backing the array
     with a segment tree, where each node stores the sum of a subrange. Building
-    is O(n); an update fixes the O(log n) nodes on the path from a leaf to the
-    root; a range query combines O(log n) node sums. A Fenwick (binary indexed)
+    is O(n), and an update fixes the O(log n) nodes on the path from a leaf to
+    the root. A range query combines O(log n) node sums. A Fenwick (binary indexed)
     tree is the compact alternative.
   pseudocode: |
     build a segment tree over nums (each node = sum of its range)

@@ -14,12 +14,12 @@ hints:
 status: draft
 answer:
   approach: >
-    Binary search for the square root. The root of x lies in [1, x]; repeatedly take the
+    Binary search for the square root. The root of x lies in [1, x]. Repeatedly take the
     midpoint g and compare g*g against x, moving the low bound up when g*g is too small and
     the high bound down when it's too big, until the guess is close enough. Since the
     problem wants the integer part, round the converged guess down (with a small epsilon to
     decide whether to round the boundary case). Bracketing on a monotonic function is the
-    key idea. (0 and 1 are returned directly.)
+    core idea. (0 and 1 are returned directly.)
   pseudocode: |
     if x <= 1: return x
     lo = 1; hi = x

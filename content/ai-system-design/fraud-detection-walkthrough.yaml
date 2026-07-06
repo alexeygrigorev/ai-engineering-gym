@@ -1,0 +1,169 @@
+id: fraud-detection-walkthrough
+category: ai-system-design
+type: walkthrough
+skill: serving
+question: "Design a fraud-detection system (real-time transaction scoring, with a role for GenAI)."
+difficulty: hard
+status: draft
+template_ref: sysdesign-rag-template
+source_refs: [reddit-swe-to-ai, igotanoffer]
+
+# My citations, researched for THIS walkthrough's reference answers.
+sources:
+  - key: stripe-radar-built
+    title: "Stripe — How we built it: Stripe Radar"
+    url: "https://stripe.dev/blog/how-we-built-it-stripe-radar"
+    supports: "assess 1000+ characteristics per transaction and return a verdict in <100ms inline at checkout; ground-truth labels from disputes/chargebacks feed continual retraining (~+0.5pp recall/month)"
+  - key: bytebytego-stripe
+    title: "ByteByteGo — How Stripe Detects Fraudulent Transactions Within 100 ms"
+    url: "https://blog.bytebytego.com/p/how-stripe-detects-fraudulent-transactions"
+    supports: "streaming network-aggregate features (cards per IP, issuing country, preceding IPs); model evolution GBDT ensemble -> DNN with learned embeddings for categorical fields; ~85% training-time cut"
+  - key: stripe-ml-primer
+    title: "Stripe — A primer on machine learning for fraud protection"
+    url: "https://stripe.com/guides/primer-on-machine-learning-for-fraud-protection"
+    supports: "~1 in 1000 payments fraudulent (class imbalance); direct false-negative vs false-positive trade-off; block-threshold is a business decision; route borderline transactions to manual review to gain precision without losing recall; ~33% of falsely-declined consumers won't return"
+  - key: evidently-drift
+    title: "Evidently AI — What is data drift in ML, and how to detect and handle it"
+    url: "https://www.evidentlyai.com/ml-in-production/data-drift"
+    supports: "fraud is a canonical concept-drift case; labels arrive delayed so monitor input drift as an early proxy and retrain; sometimes lower the threshold to send more to manual review during investigation"
+  - key: fluxforce-gnn
+    title: "FluxForce — Graph Neural Networks for Fraud Detection Explained"
+    url: "https://www.fluxforce.ai/blog/graph-neural-networks-fraud-detection"
+    supports: "GBDT fast/interpretable (SHAP) and often sufficient; GNNs catch coordinated fraud rings / synthetic identities sharing device/email/IP; GNN explanations are harder so build explainability from the start"
+  - key: taktile-llm
+    title: "Taktile — How LLMs are becoming investigative partners in fintech fraud detection"
+    url: "https://taktile.com/articles/llms-investigative-partners-fraud-detection"
+    supports: "LLMs generate plain-language explainable alerts, OCR/extraction over invoices/contracts, contextual entity matching, cross-document pattern spotting; ~60%+ manual-effort reduction, humans still verify"
+  - key: unit21-agents
+    title: "Unit21 — AI agents for fraud detection and investigation"
+    url: "https://www.unit21.ai/blog/ai-agents-for-fraud-detection-and-investigation-how-they-work-and-what-to-evaluate"
+    supports: "agent gathers history + device signals, assembles a case narrative, recommends a disposition (human decides); investigation time 30+ min -> under 5 min"
+
+scenario: |
+  Design a fraud-detection system for an online payments platform: score each transaction
+  in real time to allow, block, or route it for review. Fraud is rare (~1 in 1000), the
+  cost of a false decline (blocking a legitimate customer) is high, fraudsters adapt
+  constantly, and you must return a decision in well under a second at checkout. Then
+  discuss where GenAI/LLMs add value (explanations and investigations). Answer each step
+  OUT LOUD, then reveal the reference and self-rate.
+
+steps:
+  - phase: clarify
+    prompt: "What do you clarify first? Frame the decision, latency, error costs, and labels — and note this is mostly ML, not LLM."
+    reference: |
+      Set expectations: the CORE of fraud detection is a classic ML system (real-time scoring
+      on tabular/behavioral features), with GenAI in a supporting role — don't over-index on
+      LLMs. Clarify: (1) The DECISION and its actions: allow / block / step-up (2FA) / manual
+      review, per transaction. (2) LATENCY: inline at checkout means a hard budget — Stripe
+      Radar returns a verdict in under 100ms. (3) ERROR COSTS: fraud is ~1 in 1000 (severe
+      class imbalance), and a FALSE POSITIVE (declining a good customer) is very costly —
+      ~1/3 of falsely-declined shoppers won't come back — while a false negative is a direct
+      fraud loss. That trade-off drives thresholds. (4) LABELS: ground truth (chargebacks/
+      disputes) arrives DELAYED, weeks later. (5) Adversarial: fraudsters adapt. State
+      assumptions and confirm. [stripe-ml-primer, stripe-radar-built, evidently-drift]
+  - phase: high-level
+    prompt: "Sketch the architecture: real-time scoring path plus the offline training/feedback loop."
+    reference: |
+      Two paths. ONLINE (inline, <100ms): transaction event -> feature service assembles
+      features (transaction attributes + precomputed streaming aggregates + account history)
+      -> model scores P(fraud) -> a DECISION layer applies thresholds -> allow / step-up /
+      review-queue / block -> log. OFFLINE: a feature pipeline computes and stores streaming
+      aggregates; a training pipeline retrains on labeled history; chargeback/dispute signals
+      flow back as LABELS. Around it: a case-management / review queue for humans, monitoring
+      for drift and metrics, and (the GenAI layer) LLM-assisted investigation and explanation.
+      Real-time features must be served with the SAME logic used in training to avoid
+      training-serving skew. [stripe-radar-built, bytebytego-stripe, stripe-ml-primer]
+  - phase: deep-dive
+    prompt: "Features & models: what signals and model types do the scoring, and why?"
+    reference: |
+      Features are the moat. Beyond raw transaction attributes (amount, currency, time), the
+      predictive power is in NETWORK/streaming AGGREGATES: how many cards have been seen on
+      this IP, the card's issuing country, the IPs that preceded this one, velocity counts
+      over time windows — Stripe uses hundreds of such features, most of them cross-merchant
+      aggregates. Models: gradient-boosted trees (XGBoost/LightGBM) are a strong, fast,
+      INTERPRETABLE default (SHAP explanations) and often sufficient; Stripe moved to a DNN
+      with learned EMBEDDINGS for high-cardinality categoricals (merchant, bank, country) for
+      accuracy. Add GRAPH models (GNNs) when fraud is coordinated — rings and synthetic
+      identities sharing device/email/IP are 'obvious to graph traversal' but invisible to a
+      per-transaction model. Note GNN explanations are hard, so build explainability in from
+      the start. [bytebytego-stripe, stripe-radar-built, fluxforce-gnn]
+  - phase: deep-dive
+    prompt: "Decisioning & thresholds: how do you turn a fraud score into an action given the error costs?"
+    reference: |
+      The block THRESHOLD is a BUSINESS decision, not a model output — e.g. block when
+      P(fraud) > 0.7. Because false declines are so costly, don't collapse everything to
+      allow/block: add a MIDDLE path. Route borderline scores to STEP-UP auth (2FA) or to a
+      MANUAL REVIEW queue rather than hard-declining — this gains precision without giving up
+      recall. Tune thresholds per segment (region, merchant, amount) from the cost of a false
+      positive vs false negative. During a suspected attack you can temporarily LOWER the
+      threshold to send more transactions to review, trading throughput for safety. [stripe-ml-primer, evidently-drift]
+  - phase: deep-dive
+    prompt: "Class imbalance & feedback loop: how do you train well when fraud is rare and labels are late?"
+    reference: |
+      Handle IMBALANCE (~1 in 1000): use metrics that respect it (precision/recall, PR-AUC —
+      not raw accuracy), and techniques like class weighting / resampling. Labels are the
+      other hard part: ground truth comes from CHARGEBACKS and disputes weeks after the
+      transaction, so the feedback loop is delayed but automatic — pipe confirmed fraud/
+      legit outcomes back as labels and CONTINUALLY RETRAIN (Stripe reports ~+0.5pp recall
+      per month from this). Manual-review decisions also generate labels sooner. Design for
+      the label delay: don't assume a transaction is legit just because no chargeback has
+      arrived yet. [stripe-ml-primer, stripe-radar-built]
+  - phase: deep-dive
+    prompt: "Where does GenAI/LLM actually add value here?"
+    reference: |
+      GenAI is a force-multiplier on the HUMAN side, not the real-time scorer. (1) EXPLAINABLE
+      alerts: an LLM turns model signals into a plain-language explanation of why a
+      transaction looks fraudulent, speeding reviewer decisions. (2) DOCUMENT reasoning: OCR +
+      LLM extraction over invoices/contracts/KYC docs, contextual entity matching (e.g. 'LHR'
+      = 'London Heathrow'), and spotting cross-document patterns like the same grammatical
+      errors across supposedly unrelated invoices. (3) AGENTIC investigation: an agent gathers
+      ~90 days of history and device signals, assembles a case narrative, and recommends a
+      disposition — cutting investigation time from 30+ minutes to under 5, with a human
+      making the final call. Keep the human in the loop; LLMs assist, they don't decide.
+      [taktile-llm, unit21-agents]
+  - phase: tradeoffs
+    prompt: "Adversarial drift & monitoring: how do you keep the system effective as fraudsters adapt?"
+    reference: |
+      Fraud is the textbook CONCEPT-DRIFT problem: the feature-label relationship shifts as
+      fraudsters change tactics. Because labels arrive DELAYED, you can't wait for accuracy to
+      drop — monitor INPUT DATA DRIFT (shifts in feature distributions, new patterns) as an
+      early proxy and retrain on a fast cadence. Keep a champion/challenger setup and A/B new
+      models. During active attacks, temporarily lower thresholds (more review) while you
+      adapt. Track live precision/recall as labels mature, false-decline rate, review-queue
+      volume, and score-distribution shifts. This is a permanent arms race, so retraining
+      cadence and drift monitoring are part of the design. [evidently-drift, stripe-radar-built]
+  - phase: tradeoffs
+    prompt: "What breaks, how do you detect it, and how does the system degrade gracefully?"
+    reference: |
+      Name failure modes AND detection. (1) Model staleness / drift: monitor input drift and
+      maturing precision/recall; retrain frequently. (2) Rising false-decline rate hurting
+      good customers: monitor decline rate and downstream conversion; loosen thresholds or add
+      step-up instead of hard block. (3) Latency breach at checkout: monitor p99 of the scoring
+      path; degrade to a lighter model or cached features, or fail-open/closed by policy
+      (small amounts fail-open, large fail to review). (4) Feature-pipeline outage or training-
+      serving skew: monitor feature freshness and parity. (5) Coordinated ring the tabular
+      model misses: add graph signals and alert on shared-entity clusters. (6) Review-queue
+      overload: monitor queue depth; auto-decide high-confidence cases. Close with the biggest
+      risks (false declines, drift) and what you'd measure and improve first. [evidently-drift, stripe-ml-primer, fluxforce-gnn]
+
+diagram: |
+  graph TD
+    T[Transaction at checkout] --> FS[Feature service: attributes + streaming aggregates + history]
+    FS --> M[Model: GBDT / DNN + graph signals -> P fraud]
+    M --> DEC{Thresholds - business policy}
+    DEC -->|low risk| ALLOW[Allow]
+    DEC -->|medium| STEP[Step-up auth / review queue]
+    DEC -->|high risk| BLOCK[Block]
+    STEP --> RQ[Human review + case management]
+    subgraph GenAI [GenAI assist - human side]
+      LLM[LLM: explainable alerts + document reasoning + agentic investigation]
+    end
+    LLM -.-> RQ
+    RQ --> OUTCOME[Reviewer decision]
+    CB[Chargebacks / disputes - delayed labels] --> LABELS[(Labeled outcomes)]
+    OUTCOME --> LABELS
+    LABELS --> TRAIN[Offline training / retrain]
+    TRAIN -.-> M
+    AGG[Streaming aggregate pipeline] --> FS
+    DRIFT[Monitor: input drift, precision/recall, false-decline rate, p99 latency, queue depth] -.-> M
+    DRIFT -.-> DEC

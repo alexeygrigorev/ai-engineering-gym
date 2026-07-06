@@ -9,16 +9,17 @@ tags: [dsa]
 ai_relevant: true
 hints:
   - "Think about the best subarray sum ending exactly at each index, and how that value relates to the one ending at the previous index."
-  - "If the best sum ending at the previous index is negative, it can only drag down the current element, so it is better to restart the running sum at the current element; otherwise keep extending it."
+  - "If the best sum ending at the previous index is negative, it can only drag down the current element. So it's better to restart the running sum at the current element, otherwise keep extending it."
   - "This is Kadane's algorithm: track a running current sum and a global best in a single O(n) time, O(1) space pass."
 status: draft
 answer:
   approach: >
-    A DP problem (Kadane's algorithm). Keep sum[i], the maximum sum of a subarray ending
-    at i (not necessarily starting at 0). To extend: if sum[i] + arr[i+1] > arr[i+1] then
-    sum[i+1] = sum[i] + arr[i+1], otherwise sum[i+1] = arr[i+1]. In other words, if the
-    running sum has gone negative it can only hurt, so reset to the new element; otherwise
-    keep accumulating. The answer is the max over all sum[i].
+    Apply Kadane's algorithm: keep sum[i], the maximum sum of a subarray ending at i
+    (not necessarily starting at 0). To extend: if sum[i] +
+    arr[i+1] > arr[i+1] then sum[i+1] = sum[i] + arr[i+1], otherwise sum[i+1] = arr[i+1].
+    In other
+    words, if the running sum has gone negative it can only hurt, so reset to the new
+    element. Otherwise keep accumulating. Report the maximum over all sum[i].
   pseudocode: |
     current = nums[0]
     best = nums[0]

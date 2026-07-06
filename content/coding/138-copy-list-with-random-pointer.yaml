@@ -8,15 +8,15 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "The random pointer can point to any node in the list, so you need a fast way to look up the clone of a given original node."
+  - "The random pointer can point to any node in the list. You need a fast way to look up the clone of a given original node."
   - "Build a hash map from each original node to its newly created clone in a first pass over the list."
   - "A second pass wires each clone's next and random by looking them up in the map, giving O(n) time and space."
 status: draft
 answer:
   approach: >
-    Deep-copy a list whose nodes carry an extra random pointer. Keep a hash map
+    Deep-copy a list whose nodes have an extra random pointer. Keep a hash map
     from each original node to its clone. A first pass creates every clone and
-    records the mapping; a second pass wires each clone's next and random by
+    records the mapping. A second pass wires each clone's next and random by
     looking up the clone of the original's next and random. The map resolves
     random pointers that may point anywhere in the list.
   pseudocode: |

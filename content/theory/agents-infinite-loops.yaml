@@ -19,30 +19,32 @@ sources:
 
 answer:
   short: >
-    Don't trust the model to stop itself — wrap it in external, deterministic
-    guardrails. Put a hard cap on steps (max_iterations) and a budget on tokens,
-    cost, and wall-clock time per run. Detect repetition by hashing each
-    (tool, arguments) call and breaking when the same action recurs k times. Detect
-    stalls with no-progress checks: if the agent's state hasn't advanced in k steps,
-    fire a "stuck" handler. Make the "done" signal explicit in the prompt and ensure
-    the termination check can actually return true. When a guard trips, fail
-    gracefully — stop, return best-effort, or escalate to a human — and log it for
+    Don't trust the model to decide when to stop, so wrap it in external,
+    deterministic guardrails. Put a hard cap on steps (max_iterations) and a budget
+    on tokens, cost, and wall-clock time per run. Detect repetition by hashing each
+    (tool, arguments) call and breaking when the same action recurs k times.
+
+
+    Detect stalls with no-progress checks: if the agent's state hasn't advanced in k
+    steps, fire a "stuck" handler. Make the "done" signal explicit in the prompt and
+    ensure the termination check can actually return true. When a guard trips, fail
+    gracefully (stop, return best-effort, or escalate to a human) and log it for
     later evaluation. Runaway loops burn real money fast, so these limits aren't
     optional.
   key_points:
     - "Hard caps: max_iterations/step limit plus token, cost, and wall-clock budgets per run"
-    - "Repetition detection: hash each (tool, args) call; break if the same action repeats k times"
+    - "Repetition detection: hash each (tool, args) call and break if the same action repeats k times"
     - "No-progress detection: if state hasn't changed in k steps, trigger a 'stuck' handler"
     - "Explicit 'done' signal in the prompt and a termination check that can actually return true"
-    - "On trip: fail gracefully (stop / best-effort / escalate to human) and log for eval — loops burn cost fast"
+    - "On trip: fail gracefully (stop / best-effort / escalate to human) and log for eval. Loops burn cost fast"
 
 hints:
-  - "Should the model itself be trusted to decide when to stop? What external checks can you add?"
+  - "Should the model be trusted to decide when to stop? What external checks can you add?"
   - "Think about how you'd notice the agent repeating the exact same action or making no progress."
-  - "Consider the cost angle — why is an unbounded loop dangerous?"
+  - "Consider the cost: why is an unbounded loop dangerous?"
 
 follow_ups:
-  - "What do you do when a loop guard trips — retry, stop, or escalate?"
+  - "What do you do when a loop guard trips: retry, stop, or escalate?"
   - "How do you tell 'stuck in a loop' apart from 'legitimately doing many steps'?"
   - "How is stopping a loop different from a general termination condition?"
   - "How would you surface loop incidents in monitoring?"

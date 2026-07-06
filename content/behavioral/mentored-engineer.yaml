@@ -41,8 +41,8 @@ example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A junior or mid engineer with clear potential but a specific gap
      (e.g. system design, communicating decisions, driving projects).
-  T (Task): What you owned — help them level up toward more scope.
-  A (Action): The concrete steps YOU took — paired on hard problems, gave them a
+  T (Task): What you owned: help them level up toward more scope.
+  A (Action): The concrete steps YOU took: paired on hard problems, gave them a
      stretch project with a safety net, coached on feedback, sponsored their work
      to leadership, stepped back as they grew.
   R (Result): Their advancement (promoted, led a project, reached senior) plus a
@@ -50,7 +50,7 @@ example_structure: |
 
 hints:
   - "Center the story on the mentee's growth arc, not your own accomplishments."
-  - "Show a deliberate mechanism — stretch work, feedback loops, sponsorship — not just 'I helped'."
+  - "Show a deliberate mechanism (stretch work, feedback loops, sponsorship), not just 'I helped'."
   - "Land their concrete advancement as the Result and what mentoring taught you."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

@@ -27,7 +27,7 @@ sources:
 answer:
   short: >
     The core objective is faithfulness / groundedness of the summary to its source, which
-    is distinct from ROUGE-style overlap or general "quality" — a fluent summary can still
+    is distinct from ROUGE-style overlap or general "quality". A fluent summary can still
     invent facts. Extractive vs abstractive is a design lever: extractive or heavily
     quote-constrained summaries are far less prone to fabrication, while abstractive gains
     fluency at the cost of hallucination risk. Measure factual consistency explicitly with
@@ -36,13 +36,13 @@ answer:
     the same questions get the same answers from summary and source. An LLM-as-judge for
     faithfulness scales this, but validate it against human labels and the classic
     benchmarks. Constrain generation to the source (instruct the model to use only the
-    provided text, add citations/attribution back to source spans, lower temperature),
-    add a post-hoc verification pass that flags or removes unsupported claims, handle long
+    provided text, add citations/attribution back to source spans, lower temperature).
+    Add a post-hoc verification pass that flags or removes unsupported claims, handle long
     documents with chunking plus hierarchical/map-reduce summarization, and keep human
     review for high-stakes summaries.
   key_points:
-    - "The objective is faithfulness/groundedness of the summary to its source — distinct from ROUGE overlap or fluency"
-    - "Extractive / quote-constrained summaries fabricate far less; abstractive trades fluency for hallucination risk"
+    - "The objective is faithfulness/groundedness of the summary to its source, distinct from ROUGE overlap or fluency"
+    - "Extractive / quote-constrained summaries fabricate far less, while abstractive trades fluency for hallucination risk"
     - "Measure factual consistency explicitly: NLI-based entailment (SummaC, FactCC) and QA-based agreement (QAGS, QuestEval)"
     - "Use an LLM-as-judge for faithfulness to scale, but validate it against human labels and benchmark datasets"
     - "Constrain generation to the source: 'use only the provided text', add citations to source spans, lower temperature, add a post-hoc unsupported-claim filter"
@@ -51,12 +51,12 @@ answer:
 hints:
   - "The property you care about is faithfulness of the summary to its source, not overlap with a reference."
   - "Think about a design lever (extractive vs abstractive) plus purpose-built consistency metrics."
-  - "Prefer extractive/quote-constrained + citations; measure with NLI-based (SummaC, FactCC) and QA-based (QAGS) consistency; constrain to source, then human review."
+  - "Prefer extractive/quote-constrained + citations, and measure with NLI-based (SummaC, FactCC) and QA-based (QAGS) consistency. Constrain to source, then human review."
 
 follow_ups:
-  - "The summarizer must compress and paraphrase — how do you tell legitimate abstraction apart from a hallucinated fact when scoring faithfulness?"
+  - "The summarizer must compress and paraphrase. How do you tell legitimate abstraction apart from a hallucinated fact when scoring faithfulness?"
   - "How do you evaluate faithfulness when the source exceeds the model's (or the judge's) context window?"
-  - "What about factual errors that are in the source itself — should the summary faithfully repeat them, and how does that interact with factuality vs faithfulness?"
+  - "What about factual errors that are in the source. Should the summary faithfully repeat them, and how does that interact with factuality vs faithfulness?"
 
 exercises:
   - kind: mcq

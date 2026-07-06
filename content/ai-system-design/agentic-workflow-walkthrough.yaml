@@ -1,0 +1,160 @@
+id: agentic-workflow-walkthrough
+category: ai-system-design
+type: walkthrough
+skill: agentic
+question: "Design a multi-step agentic workflow (e.g. meeting scheduling, code review, or an email campaign)."
+difficulty: hard
+status: draft
+template_ref: sysdesign-rag-template
+source_refs: [promptlayer, techeon, doctolib, anthropic-multi-agent, igotanoffer]
+
+# My citations, researched for THIS walkthrough's reference answers.
+sources:
+  - key: anthropic-agents
+    title: "Anthropic — Building effective agents"
+    url: "https://www.anthropic.com/engineering/building-effective-agents"
+    supports: "workflows (predefined code paths) vs agents (model-directed); use agents only for open-ended problems where steps can't be predicted; orchestrator-workers pattern; keep control flow in code; start simple; tools deserve prompt-engineering care; human checkpoints"
+  - key: anthropic-multi-agent
+    title: "Anthropic — How we built our multi-agent research system"
+    url: "https://www.anthropic.com/engineering/multi-agent-research-system"
+    supports: "multi-agent uses ~15x more tokens than chat (token use explains ~80% of performance variance); orchestrator + subagents outperformed single-agent by 90.2% and parallelism cut time up to 90%; needs durable state, error recovery, full production tracing"
+  - key: promptlayer
+    title: "PromptLayer — The Agentic System Design Interview"
+    url: "https://blog.promptlayer.com/the-agentic-system-design-interview-how-to-evaluate-ai-engineers/"
+    supports: "grading rubric: clear task decomposition, logical flow between steps, error handling and edge cases, meaningful evaluation metrics; example task = agents producing a cited research report"
+  - key: doctolib
+    title: "Doctolib — Building an Agentic AI System for Healthcare Support"
+    url: "https://medium.com/doctolib/building-an-agentic-ai-system-for-healthcare-support-a-journey-into-practical-ai-implementation-0afd28d716e6"
+    supports: "network of specialized agents (LangGraph), each with role prompt + curated least-privilege tools; agents inherit the user's permissions; LLM never executes sensitive actions directly (human confirms); deterministic fact-check node; evals on achievement score, latency, and step count; ~17K messages/day"
+  - key: igotanoffer
+    title: "IGotAnOffer — Generative AI System Design Interview"
+    url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
+    supports: "planning agents vs direct tool calls; guardrails for tool execution and permissions; retries, reconciliation, failure recovery; human-in-the-loop for sensitive actions"
+
+scenario: |
+  Design a multi-step agentic workflow that completes a real task end to end — for example
+  scheduling a meeting across people's calendars, running an automated code review, or
+  executing an email campaign. The system must plan and take multiple actions using tools
+  (calendars, email, code hosts), handle failures, keep humans in control of anything
+  irreversible, and stay reliable and cost-bounded. Answer each step OUT LOUD, then reveal
+  the reference and self-rate.
+
+steps:
+  - phase: clarify
+    prompt: "First question to answer: does this even need an agent? Clarify the task, autonomy, and constraints."
+    reference: |
+      The senior signal here is NOT reaching for agents because they're exciting. Clarify
+      whether the task genuinely needs autonomy. If the steps are predictable, a fixed
+      WORKFLOW (LLM calls orchestrated through predefined code paths) is more reliable and
+      cheaper; reserve AGENTS (the model dynamically directs its own steps and tool use) for
+      OPEN-ENDED problems where you can't predict how many steps are needed. Then clarify:
+      (1) the goal and what "done" means; (2) which tools/systems it acts on (calendar,
+      email, repo) and their side effects; (3) which actions are IRREVERSIBLE and need human
+      approval; (4) permissions — whose authority does the agent act under; (5) latency and
+      cost budget, since agents are token-hungry; (6) failure tolerance. State assumptions
+      and confirm. [anthropic-agents, igotanoffer]
+  - phase: high-level
+    prompt: "Sketch the architecture. Which agent topology, and where does the control flow live?"
+    reference: |
+      Use an ORCHESTRATOR-WORKERS topology: a lead/orchestrator agent decomposes the goal,
+      delegates sub-tasks to specialized worker agents (each with a focused role prompt and
+      a curated tool set), and synthesizes their results — the subtasks are decided at
+      runtime, not hard-coded, which is the point of agents. Crucially, the CONTROL FLOW
+      (looping, sequencing, when to stop, when to escalate) lives in the ORCHESTRATOR CODE,
+      not buried inside prompts. Around the agents: a tool layer (function calling) with
+      per-tool auth, a shared memory/state store for the run, guardrails, human-in-the-loop
+      checkpoints before writes, and tracing/observability. Start as SIMPLE as possible and
+      add agents only when it demonstrably helps. [anthropic-agents, anthropic-multi-agent, igotanoffer]
+  - phase: deep-dive
+    prompt: "Planning & orchestration: how does the agent decompose the task and decide the next step?"
+    reference: |
+      The orchestrator plans: break the goal into sub-tasks (e.g. 'find common free slots' ->
+      'propose times' -> 'send invite'), then loop — observe state, pick the next action or
+      tool, act, observe the result, repeat (a plan-and-execute / ReAct-style loop) until
+      done or a stop condition. Grade decomposition quality: interviewers explicitly look
+      for clear sub-task breakdown and logical flow between steps. Bound the loop with an
+      explicit STEP LIMIT and budget so it can't spin forever. Where sub-tasks are
+      independent (e.g. checking several calendars, researching several sources), run
+      workers in PARALLEL — Anthropic's multi-agent research cut time up to 90% that way.
+      Keep run STATE durable so a long run can resume after a failure. [promptlayer, anthropic-multi-agent, anthropic-agents]
+  - phase: deep-dive
+    prompt: "Tools & permissions: how do agents act on the world safely?"
+    reference: |
+      Tools (function calling) are the agent's hands, and they need as much prompt-
+      engineering care as the main prompt — clear names, schemas, and descriptions. Apply
+      LEAST PRIVILEGE: each agent gets only the specific tools/endpoints it needs (Doctolib's
+      data-retriever agent could call only a curated allow-list). Agents INHERIT the
+      requesting user's permissions and act under the user's authority, never with broader
+      access — enforce this at the service boundary, not in the prompt. Reads can be
+      autonomous; anything that WRITES or is irreversible (send the email, book the meeting,
+      merge the PR) goes through a human-in-the-loop confirmation. In Doctolib's design the
+      LLM never directly executes the sensitive action — a deterministic node re-fetches
+      fresh data and the final change stays in the user's hands. [doctolib, anthropic-agents, igotanoffer]
+  - phase: deep-dive
+    prompt: "Reliability: how do you handle errors, retries, and keep a long run consistent?"
+    reference: |
+      Agents run long and call many tools, so failures are normal, not exceptional. Handle
+      them: retries with backoff on transient tool errors, RECONCILIATION for partial
+      progress (if the invite was sent but the calendar write failed, detect and repair
+      rather than double-book), idempotency keys on side-effecting calls, and timeouts /
+      circuit breakers per tool. Keep durable run state so you can resume after a crash
+      instead of restarting. Add a deterministic FACT-CHECK / validation step before acting
+      on model output. Interviewers specifically reward showing error handling and edge
+      cases, and IGotAnOffer lists retries, reconciliation, and failure recovery as expected
+      topics. [anthropic-multi-agent, doctolib, promptlayer, igotanoffer]
+  - phase: deep-dive
+    prompt: "Evaluation & observability: how do you know the agent actually works?"
+    reference: |
+      You can't ship an agent you can't see. Add FULL TRACING of every step: the plan, each
+      tool call and result, and the decision path — Anthropic emphasizes production tracing
+      to understand agent decision patterns. Evaluate TASK COMPLETION, not just per-response
+      quality: Doctolib scores an "achievement" level (did it accomplish the goal), plus
+      end-to-end latency and NUMBER OF STEPS (a proxy for efficiency/looping). Build a suite
+      of representative tasks and run them as regression evals. Add online signals (success
+      rate, human-override rate, escalations). Meaningful evaluation metrics are an explicit
+      interview grading criterion. [anthropic-multi-agent, doctolib, promptlayer]
+  - phase: tradeoffs
+    prompt: "What's the cost/latency reality of agents, and how do you keep it bounded?"
+    reference: |
+      Agents are EXPENSIVE and SLOW. Anthropic found agents use ~4x the tokens of chat and
+      multi-agent systems ~15x, and token usage alone explains ~80% of performance variance
+      — so more capability literally means more tokens. Multi-agent is only worth it for
+      high-value tasks with heavy parallelization, context that exceeds one window, or many
+      complex tools; it's a poor fit for tightly coupled tasks that must share context (like
+      most coding edits). Bound cost/latency with step/budget caps, parallelizing
+      independent work, routing easy sub-tasks to cheaper models, caching, and — again —
+      preferring a fixed workflow when the task doesn't truly need autonomy. [anthropic-multi-agent, anthropic-agents]
+  - phase: tradeoffs
+    prompt: "What breaks, how do you detect it, and how does the system fail safe?"
+    reference: |
+      Name failure modes AND detection. (1) Infinite loops / no progress: detect via step
+      count and repeated states; cap steps and escalate to a human. (2) Wrong or harmful
+      action: prevent with least-privilege tools + human approval on writes; detect via the
+      override/rollback rate. (3) Prompt injection through tool outputs (a malicious calendar
+      entry or email steering the agent): sanitize/verify tool inputs, keep control flow in
+      code, scope permissions. (4) Cost/latency blowup: monitor tokens and step count per
+      run; cap budgets, downshift models. (5) Partial-failure inconsistency: reconciliation
+      + idempotency. Fail SAFE — when uncertain, stop and ask a human rather than act. Close
+      with the biggest risks (safety of write actions, cost) and what you'd harden first.
+      [igotanoffer, anthropic-agents, doctolib]
+
+diagram: |
+  graph TD
+    G[User goal] --> ORC[Orchestrator agent - control flow in code]
+    ORC --> PLAN[Decompose into sub-tasks + plan]
+    PLAN --> LOOP{Next step? within step/budget limit}
+    LOOP -->|delegate| W1[Worker: calendar agent]
+    LOOP -->|delegate| W2[Worker: email agent]
+    LOOP -->|delegate| W3[Worker: code-review agent]
+    W1 --> TOOLS[Tool layer - least privilege + user permissions]
+    W2 --> TOOLS
+    W3 --> TOOLS
+    TOOLS --> RES[Results + validation / fact-check node]
+    RES --> LOOP
+    LOOP -->|write action| HITL{Human-in-the-loop approval}
+    HITL -->|approved| ACT[Execute side-effecting action - idempotent]
+    HITL -->|rejected| ORC
+    LOOP -->|done| OUT[Synthesized result]
+    STATE[(Durable run state + memory)] --- ORC
+    TRACE[Tracing + evals: achievement, steps, latency, tokens] -.-> ORC
+    TRACE -.-> TOOLS

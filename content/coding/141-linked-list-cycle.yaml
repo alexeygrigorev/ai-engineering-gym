@@ -9,15 +9,15 @@ tags: [dsa]
 ai_relevant: true
 hints:
   - "Use two pointers that move through the list at different speeds."
-  - "Advance a slow pointer one step and a fast pointer two steps each iteration; a cycle forces them to eventually collide."
+  - "Advance a slow pointer one step and a fast pointer two steps each iteration. A cycle forces them to eventually collide."
   - "This runs in O(n) time and O(1) space with no extra data structure needed."
 status: draft
 answer:
   approach: >
-    Floyd's tortoise-and-hare. Advance a slow pointer one step and a fast
-    pointer two steps at a time; if a cycle exists the fast pointer laps around
-    and meets the slow one, otherwise fast reaches the end (null). Uses constant
-    extra space.
+    Floyd's tortoise-and-hare advances a slow pointer one step and a fast
+    pointer two steps at a time. If a cycle exists the fast pointer laps around
+    and meets the slow one, otherwise fast reaches the end (null). It uses
+    constant extra space.
   pseudocode: |
     slow = head; fast = head
     while fast and fast.next:

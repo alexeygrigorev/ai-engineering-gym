@@ -8,17 +8,17 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: true
 hints:
-  - "The kth largest element has a fixed final index once the array is sorted, so you do not need to fully sort it."
-  - "Use quickselect: partition around a pivot, then recurse only into the side of the partition containing the target index."
+  - "The kth largest element has a fixed final index once the array is sorted, so you don't need to fully sort it."
+  - "Use quickselect by partitioning around a pivot, then recursing only into the side of the partition containing the target index."
   - "Shuffle the array first to avoid worst-case behavior, giving O(n) average time versus O(n log n) for full sorting."
 status: draft
 answer:
   approach: >
-    Quickselect. The k-th largest element sits at index n-k in sorted order;
-    partition the array (Hoare partition) around a pivot and recurse only into
-    the side that contains that target index, ignoring the other half. This
-    averages O(n); a random shuffle first guards against adversarial worst-case
-    inputs.
+    Quickselect works because the k-th largest element sits at index n-k in
+    sorted order. Partition the array (Hoare partition) around a pivot and
+    recurse only into the side that contains that target index, ignoring the
+    other half. This averages O(n). A random shuffle first guards against
+    adversarial worst-case inputs.
   pseudocode: |
     target = n - k
     select(lo, hi):

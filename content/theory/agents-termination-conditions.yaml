@@ -19,29 +19,29 @@ sources:
 
 answer:
   short: >
-    Define explicit exits for every way a run can end — success, budget, and
-    failure — and enforce them outside the model. Success: a completion check
-    (verifiable criteria or a validator, optionally with the model's
-    self-assessment) marks the goal met. Budget: max steps, max tokens/cost, and max
-    wall-clock time bound how long it may run. Failure/abort: repeated errors, an
-    unrecoverable tool failure, or a guardrail violation stop the run and escalate.
-    For high-stakes actions, a human-in-the-loop approval gate pauses the run until
-    approved or rejected. Prefer external, deterministic checks over trusting the
-    model to stop itself, and always log why it stopped.
+    Define explicit exits for every way a run can end (success, budget, and failure),
+    and enforce them outside the model. A success exit is a completion check
+    (verifiable criteria or a validator, optionally with the model's self-assessment)
+    that marks the goal met. Budget exits (max steps, max tokens/cost, and max
+    wall-clock time) bound how long it may run. Failure or abort exits (repeated
+    errors, an unrecoverable tool failure, or a guardrail violation) stop the run and
+    escalate. For high-stakes actions, a human-in-the-loop approval gate pauses the
+    run until approved or rejected. Prefer external, deterministic checks over
+    trusting the model to stop on its own, and always log why it stopped.
   key_points:
     - "Success exit: an explicit completion check (verifiable criteria/validator, optionally + model self-assessment)"
     - "Budget exits: max steps, max tokens/cost, and max wall-clock time"
     - "Failure/abort exits: repeated errors, unrecoverable tool failure, or guardrail violation → stop and escalate"
     - "Human-in-the-loop approval gates pause the run for high-stakes actions until approved/rejected"
-    - "Enforce externally and deterministically, not by trusting the model; log the reason it stopped"
+    - "Enforce externally and deterministically, not by trusting the model, and log the reason it stopped"
 
 hints:
-  - "List every way a run could legitimately end — not just 'it finished'."
-  - "Separate 'the goal is met' from 'we ran out of budget' from 'something went wrong'."
+  - "List every way a run could legitimately end, not just 'it finished'."
+  - "Separate 'we succeeded' from 'we ran out of budget' from 'something went wrong'."
   - "Think about where a human should be able to pause or approve."
 
 follow_ups:
-  - "How do you verify the goal is actually met rather than the model claiming it?"
+  - "How do you verify a run met its goal rather than the model claiming it did?"
   - "How is a termination condition different from loop detection?"
   - "Where do you insert human approval gates?"
   - "How do you log and monitor why runs terminate?"

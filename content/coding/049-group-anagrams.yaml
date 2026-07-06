@@ -9,13 +9,13 @@ tags: [dsa]
 ai_relevant: true
 hints:
   - "Two words are anagrams exactly when they share the same multiset of letters, so you need a canonical form to compare them by."
-  - "Sort the letters of each word to get a canonical key, and use a hash map from that key to the list of words sharing it."
+  - "Sort the letters of each word to get a canonical key. Use a hash map from that key to the list of words sharing it."
   - "One pass over all words, sorting each into its bucket, gives O(N * k log k) time for N words of max length k."
 status: draft
 answer:
   approach: >
     Two words are anagrams exactly when their sorted letters are identical, so use the
-    sorted string as a canonical key. Walk the input, sort each word to get its key, and
+    sorted string as a canonical key. Scan the input, sort each word to get its key, and
     append the original word to a hash map bucket under that key. The map's values are
     the anagram groups.
   pseudocode: |

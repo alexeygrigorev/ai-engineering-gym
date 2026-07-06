@@ -9,14 +9,14 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "This is the same row-by-row placement problem as N-Queens, but you never need to materialize a board."
-  - "Backtrack by placing one queen per row in a free column, marking its column and diagonals as attacked, and recursing on a copy of that attack state."
-  - "Instead of recording boards, simply increment a counter whenever a placement reaches row n; the search is still exponential but touches only masks, not full boards."
+  - "Backtrack by placing one queen per row in a free column. Mark its column and diagonals as attacked, and recurse on a copy of that attack state."
+  - "Instead of recording boards, increment a counter whenever a placement reaches row n. The search is still exponential but touches only masks, not full boards."
 status: draft
 answer:
   approach: >
     Identical backtracking to N-Queens, but we only need the count of solutions, not the
     boards. Place one queen per row in a free column, mark its column and diagonals as
-    attacked, recurse on a copy of the mask, and when row n is reached increment a
+    attacked, and recurse on a copy of the mask. When row n is reached, increment a
     counter instead of reconstructing a board.
   pseudocode: |
     solve(row, mask, count):

@@ -26,7 +26,7 @@ sources:
 
 answer:
   short: >
-    Evaluate retrieval and generation separately so you can localize failures — a bad
+    Evaluate retrieval and generation separately so you can localize failures. A bad
     answer is either a retrieval problem (the right information wasn't surfaced) or a
     generation problem (it was surfaced but ignored or hallucinated over). For retrieval,
     use rank-unaware metrics (hit rate / recall@k, precision) and rank-aware ones (MRR,
@@ -34,8 +34,8 @@ answer:
     recall (does the context contain everything needed). For generation, use faithfulness
     / groundedness (every claim traceable to context), answer relevance (does it address
     the question), and answer correctness (matches a reference when you have one). The
-    RAG triad — context relevance, groundedness, answer relevance — is reference-free, so
-    it runs both offline in CI and on live production traffic; the failing leg points at
+    RAG triad (context relevance, groundedness, answer relevance) is reference-free, so
+    it runs both offline in CI and on live production traffic. The failing leg points at
     the component to fix. Build a golden dataset of {question, ground-truth context,
     reference answer}, and do component eval (unit-test the retriever with IR metrics)
     alongside end-to-end eval so improving one stage doesn't silently regress the whole
@@ -44,19 +44,19 @@ answer:
     - "Evaluate retrieval and generation separately so you can localize whether a bad answer is a retrieval or a generation failure"
     - "Retrieval metrics: rank-unaware (recall@k / hit rate, precision) and rank-aware (MRR, nDCG), plus context precision and context recall"
     - "Generation metrics: faithfulness/groundedness, answer relevance, and answer correctness (when a reference exists)"
-    - "The RAG triad (context relevance, groundedness, answer relevance) is reference-free, so it runs offline and on live traffic; the failing leg points at the fix"
-    - "Build a golden dataset of {question, ground-truth context/chunks, reference answer}; reference-based metrics need it, triad metrics don't"
+    - "The RAG triad (context relevance, groundedness, answer relevance) is reference-free, so it runs offline and on live traffic. The failing leg points at the fix"
+    - "Build a golden dataset of {question, ground-truth context/chunks, reference answer}. Reference-based metrics need it, triad metrics don't"
     - "Do component eval (unit-test the retriever in isolation) AND end-to-end eval to catch both regressions and interaction effects"
 
 hints:
-  - "A RAG system has two stages — evaluate them separately so you know which one failed."
-  - "Name the metrics for each stage; recall the reference-free triad."
+  - "A RAG system has two stages, so evaluate them separately to know which one failed."
+  - "Name the metrics for each stage, and recall the reference-free triad."
   - "Retrieval: context precision/recall, recall@k, MRR, nDCG. Generation: faithfulness, answer relevance, correctness. The RAG triad (context relevance, groundedness, answer relevance) is reference-free."
 
 follow_ups:
-  - "End-to-end answer quality is low but faithfulness is high — how do you diagnose whether it's retrieval or the question set?"
+  - "End-to-end answer quality is low but faithfulness is high. How do you diagnose whether it's retrieval or the question set?"
   - "How do you construct a golden dataset for RAG, and how do you handle questions with multiple valid supporting chunks?"
-  - "Faithfulness and answer-relevance are both LLM-judged — how do you validate that the judge itself is trustworthy?"
+  - "Faithfulness and answer-relevance are both LLM-judged, so how do you validate that the judge is trustworthy?"
 
 exercises:
   - kind: mcq

@@ -50,7 +50,7 @@ answer:
 
 hints:
   - "Start by defining it: faithfulness vs factuality, intrinsic vs extrinsic."
-  - "Separate detection from mitigation. Detection is a portfolio of signals, not one tool."
+  - "Separate detection from mitigation, since detection is a portfolio of signals, not one tool."
   - "Detect with LLM-judge/NLI entailment, self-consistency (SelfCheckGPT), log-prob uncertainty. Mitigate with RAG grounding, citations, 'I don't know', low temperature, and a verification pass."
 
 follow_ups:

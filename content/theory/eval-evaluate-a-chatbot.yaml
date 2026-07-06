@@ -50,11 +50,11 @@ answer:
 
 hints:
   - "Think about two splits: offline vs online, and single-turn vs whole-conversation."
-  - "What is the one outcome that matters most, and how would you phrase the judgment?"
-  - "Offline golden conversations in CI (LLM-judge) + online A/B tests and CSAT; turn-level and conversation-level; goal completion as pass/fail; support bots add containment/escalation KPIs."
+  - "What's the one outcome that matters most, and how would you phrase the judgment?"
+  - "Offline golden conversations in CI (LLM-judge) + online A/B tests and CSAT. Turn-level and conversation-level, goal completion as pass/fail, support bots add containment/escalation KPIs."
 
 follow_ups:
-  - "Your LLM judge gives high scores but users are unhappy — how do you debug the gap between offline scores and online satisfaction?"
+  - "Your LLM judge gives high scores but users are unhappy. How do you debug the gap between offline scores and online satisfaction?"
   - "How would you design an A/B test to prove a new chatbot version is better, and what guardrail metrics would you watch?"
   - "How do you build and maintain a golden multi-turn test set without it going stale as the product changes?"
 

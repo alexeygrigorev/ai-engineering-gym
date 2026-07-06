@@ -19,7 +19,7 @@ sources:
 
 probes:
   - "What was the AI solution supposed to do, and how did you define success?"
-  - "How did the failure show up — offline metrics, production, or user feedback?"
+  - "How did the failure show up: offline metrics, production, or user feedback?"
   - "What was the root cause: data, evaluation gap, distribution shift, or wrong problem framing?"
   - "How did you catch it, and how quickly?"
   - "What did you do to recover or contain the impact?"
@@ -35,21 +35,21 @@ rubric:
   - "Action shows AI-specific diagnosis: data issues, eval blind spots, train/serve skew, hallucination, distribution shift"
   - "Takes ownership and shows containment/recovery, not just a post-mortem"
   - "Result: what improved and the durable change (better eval, monitoring, guardrails, tighter problem framing)"
-  - "Reflection shows AI maturity — treating failures as evaluation and process gaps"
+  - "Reflection shows AI maturity, treating failures as evaluation and process gaps"
 
 example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): An AI feature/model with a clear goal (e.g. a classifier, a RAG
      assistant, a recommendation) that underperformed in production.
   T (Task): What you owned and how success was defined.
-  A (Action): The concrete steps YOU took — diagnosed the root cause (data, eval,
+  A (Action): The concrete steps YOU took: diagnosed the root cause (data, eval,
      drift, framing), contained user impact, and fixed the underlying gap.
   R (Result): The recovery and the durable improvement to your eval/monitoring/
      guardrails, plus a one-line lesson on building reliable AI.
 
 hints:
   - "Show AI-specific depth: point at data, evaluation, or drift, not just 'a bug'."
-  - "Own the miss, then emphasize diagnosis and the systemic fix (better eval/monitoring)."
+  - "Own the miss, then focus on the diagnosis and the systemic fix (better eval/monitoring)."
   - "Frame the lesson as improved rigor, which is exactly what AI interviewers probe for."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

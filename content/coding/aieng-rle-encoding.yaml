@@ -12,13 +12,8 @@ status: draft
 ai_relevant: true
 answer:
   approach: >
-    RLE is a single linear scan. Walk the string tracking the current character and a
-    run counter; when the next character differs (or you reach the end), emit the
-    character and its count, then reset. The only subtlety is flushing the final run
-    after the loop — a classic off-by-one. Decoding is the inverse: read a character,
-    read its count, repeat the character that many times. Watch the ambiguity when the
-    data itself contains digits (real RLE variants escape counts or use fixed markers);
-    for the interview version, state the assumption (alphabetic input, or counts always
+    RLE is a single linear scan. Iterate over the string, tracking the current character and a run counter. When the next character differs (or you reach the end), emit the character and its count, then reset. The only subtlety is flushing the final run after the loop, a classic off-by-one. Decoding is the inverse: read a character,
+    read its count, repeat the character that many times. Watch the ambiguity when the data contains digits (real RLE variants escape counts or use fixed markers). For the interview version, state the assumption (alphabetic input, or counts always
     emitted even for runs of length 1) so encode/decode round-trip exactly.
   pseudocode: |
     def encode(s):
@@ -46,8 +41,8 @@ answer:
     time: "O(n) to encode and O(output length) to decode"
     space: "O(n) for the output (RLE can expand incompressible input, so it isn't in-place)"
 hints:
-  - "One pass: track the current char and a run count; emit (char, count) each time the char changes."
-  - "Don't forget to flush the final run after the loop ends — that's the usual off-by-one bug."
+  - "In one pass, track the current char and a run count, and emit (char, count) each time the char changes."
+  - "Don't forget to flush the final run after the loop ends. That's the usual off-by-one bug."
   - "Decoding must parse multi-digit counts (a run of 12 is 'a12'), and state your assumption about digits in the input so encode/decode round-trip."
 follow_ups:
   - "How do you handle input that already contains digits without breaking the decoder?"

@@ -14,10 +14,10 @@ hints:
 status: draft
 answer:
   approach: >
-    Match parentheses with a stack of indices, then measure runs. Scan left to right:
-    push the index of each '(' ; on a ')', if the stack is non-empty, pop the matching
+    Match parentheses with a stack of indices, then measure runs. Scan left to right,
+    pushing the index of each '('. On a ')', if the stack is non-empty, pop the matching
     '(' index and record that it closes at the current position (end_ptr[open] = i).
-    This gives, for every opening bracket that is part of a valid pair, where its pair
+    This gives, for every opening bracket that's part of a valid pair, where its pair
     ends. Then sweep the string: whenever a position has a recorded end, chain forward
     through consecutive matched segments to accumulate the length of a contiguous valid
     run, keeping the maximum.

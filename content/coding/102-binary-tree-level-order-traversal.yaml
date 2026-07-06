@@ -14,8 +14,8 @@ hints:
 status: draft
 answer:
   approach: >
-    Group node values by depth. Do a DFS tracking the current level. The first
-    time a level is seen, start a new bucket, then append each node's value to
+    Group node values by depth with a DFS that tracks the current level. The
+    first time a level is seen, start a new bucket, then append each node's value to
     its level's bucket. Visiting the left child before the right keeps
     left-to-right order within each level. A BFS that processes the queue one
     level at a time is the equivalent iterative approach.

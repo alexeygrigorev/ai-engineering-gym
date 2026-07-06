@@ -20,24 +20,24 @@ sources:
 answer:
   short: >
     Total prediction error on unseen data decomposes into bias, variance, and
-    irreducible noise. Bias is error from wrong or overly simple assumptions — the model
-    is too rigid to capture the true pattern (e.g. fitting a line to a curve). Variance is
-    error from sensitivity to the specific training set — the model swings a lot if you
+    irreducible noise. Bias is error from wrong or overly simple assumptions. The model
+    is too rigid to capture the true signal (e.g. fitting a line to a curve). Variance is
+    error from sensitivity to the specific training set. The model swings a lot if you
     resample the data because it's chasing noise. The tradeoff: making a model more
-    complex (more features, depth, capacity) lowers bias but raises variance; making it
-    simpler does the opposite. High bias shows up as underfitting — poor performance on
-    both training and test data. High variance shows up as overfitting — great on training,
-    poor on test, with a big train-test gap. The goal isn't to zero out either one but to
+    complex (more features, depth, capacity) lowers bias but raises variance, while making
+    it simpler does the opposite. High bias shows up as underfitting: poor performance on
+    both training and test data. High variance shows up as overfitting: great on training,
+    poor on test, with a big train-test gap. You don't try to zero out either one. You
     find the complexity that minimizes total error on held-out data. You navigate it with
-    regularization, more data, cross-validation, and simpler-vs-richer models — trading a
+    regularization, more data, cross-validation, and simpler-vs-richer models, trading a
     little bias for a lot less variance (or vice versa).
   key_points:
     - "Expected test error = bias² + variance + irreducible error"
-    - "Bias: error from overly simple/wrong assumptions — the model can't capture the true signal"
-    - "Variance: error from over-sensitivity to the training set — the model fits noise and swings under resampling"
+    - "Bias: error from overly simple/wrong assumptions, so the model can't capture the true signal"
+    - "Variance: error from over-sensitivity to the training set, so the model fits noise and swings under resampling"
     - "High bias → underfitting: poor on both train and test"
     - "High variance → overfitting: great on train, poor on test (large train-test gap)"
-    - "More complexity lowers bias but raises variance, and vice versa — pick complexity that minimizes total held-out error"
+    - "More complexity lowers bias but raises variance, and vice versa. Pick the complexity that minimizes total held-out error"
     - "Levers: regularization, more data, cross-validation, feature selection, model capacity"
 
 follow_ups:
@@ -47,9 +47,9 @@ follow_ups:
   - "Do ensembles like random forests reduce bias, variance, or both?"
 
 hints:
-  - "Break the error into two competing sources — one from being too simple, one from being too sensitive to the exact data."
-  - "One source shows up as bad-everywhere; the other as great-on-train-but-bad-on-test. Match each to underfitting vs overfitting."
-  - "Bias = wrong/simple assumptions → underfitting (bad on train and test). Variance = fitting noise → overfitting (big train-test gap). More complexity trades bias for variance; minimize total error on held-out data."
+  - "Break the error into two competing sources: one from being too simple, one from being too sensitive to the exact data."
+  - "One source shows up as bad-everywhere, the other as great-on-train-but-bad-on-test. Match each to underfitting vs overfitting."
+  - "Bias = wrong/simple assumptions → underfitting (bad on train and test). Variance = fitting noise → overfitting (big train-test gap). More complexity trades bias for variance, so minimize total error on held-out data."
 
 exercises:
   - kind: mcq

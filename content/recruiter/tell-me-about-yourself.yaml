@@ -16,7 +16,7 @@ sources:
 probes:
   - "Can you say that in one line?"
   - "What are you doing day-to-day right now?"
-  - "So you're a founder — are you actually looking to leave that?"
+  - "So you're a founder. Are you actually looking to leave that?"
   - "Where does the ML/engineering depth come from?"
   - "What kind of role are you hoping this conversation leads to?"
 
@@ -24,44 +24,44 @@ rubric:
   - "Opens with the market category, not 'teacher/founder returning to industry': Senior/Staff Applied AI Engineer who turns real workflows into production AI systems"
   - "Hits the four beats in order: production ML/platform background -> DataTalks.Club scale -> current AI automation work (RAG, evals, deployment) -> why now (selective, product engineering at scale)"
   - "Names concrete proof, not adjectives: FAQ Assistant / DataOps / OLX"
-  - "Lands the 'not because something is broken, I'm exploring' framing so it reads as strength, not job hunt"
-  - "Fits the time asked for — a tight 30s or a 60s version, never rambling past it"
+  - "Delivers the 'not because something is broken, I'm exploring' framing so it reads as strength, not job hunt"
+  - "Fits the time asked for, a tight 30s or a 60s version, never rambling past it"
   - "Ends pointed at the role type (senior/staff applied AI), inviting the next question"
 
 hints:
-  - "Lead with the category label, not your job title — 'Applied AI Engineer who builds production systems', then back it with DataTalks.Club and OLX."
+  - "Lead with the category label, not your job title: 'Applied AI Engineer who builds production systems', then back it with DataTalks.Club and OLX."
   - "Four beats: background -> scale -> what you build now -> why now. Say them in that order and stop."
-  - "Close on 'exploring, being selective' — confident, not available-and-anxious."
+  - "Close on 'exploring, being selective': confident, not available-and-anxious."
 
 example_structure: |
-  # HIS actual pitch — rehearse toward this. Two lengths.
+  # HIS actual pitch: rehearse toward this. Two lengths.
 
   ## 30-second version (recruiter screen)
   "I run DataTalks.Club, and I have been automating large parts of it with
   production AI systems: a Slack FAQ assistant, FAQ maintenance, and internal
   operations workflows. That freed up some of my time and reminded me that I miss
-  building products at larger scale. I am selectively exploring senior/staff
+  building products at larger scale. I'm selectively exploring senior/staff
   applied AI roles where I can combine my ML platform background, product
   engineering, and hands-on LLM/RAG/evals work."
 
   ## 60-second version (general)
-  "I am the founder of DataTalks.Club, where I have built an education and
+  "I'm the founder of DataTalks.Club, where I have built an education and
   community platform for a large technical audience. Over the last year, I have
   been turning more of the business into AI-assisted operations: a Slack FAQ
   assistant, automated FAQ maintenance, an internal DataOps portal, and workflows
   for content and podcast operations. That gave me a lot of hands-on production AI
   work: RAG, evals, serverless deployment, observability, and feedback loops.
 
-  I am not exploring because something is broken. I am exploring because I miss
+  I'm not exploring because something is broken. I'm exploring because I miss
   product engineering at larger scale. Before DataTalks.Club, I led ML platform
   work and production ML systems at OLX. I would like to apply this mix of ML,
   platform engineering, product thinking, and user empathy to a product I care
-  about. I am being selective and looking for a team where the product, technical
+  about. I'm being selective and looking for a team where the product, technical
   depth, and values fit."
 
   ## One-line fallback (if they ask for it even shorter)
-  "I build and deploy AI systems in real-world workflows — RAG assistants,
-  agentic automations, evals, and cloud deployment — and I'm selectively
+  "I build and deploy AI systems in real-world workflows (RAG assistants,
+  agentic automations, evals, and cloud deployment) and I'm selectively
   exploring senior/staff applied AI roles."
 
 # The user's own rehearsed answer is captured per-user at runtime, NOT stored here.

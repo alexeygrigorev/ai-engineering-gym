@@ -8,17 +8,17 @@ difficulty: hard
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "Since exactly one queen goes in each row, think of placing queens row by row and tracking which columns and diagonals are already under attack."
-  - "Backtrack: at each row try every free column, mark the cells that queen attacks (its column and both diagonals), and recurse into the next row before undoing the choice."
-  - "Reaching row n with a valid placement means a full board is found; this exponential backtracking is bounded by the number of ways to place n non-attacking queens."
+  - "Since exactly one queen goes in each row, place queens row by row while tracking which columns and diagonals are already under attack."
+  - "Backtrack at each row by trying every free column and marking the cells that queen attacks (its column and both diagonals). Recurse into the next row before undoing the choice."
+  - "Reaching row n with a valid placement means a full board is found. This exponential backtracking is bounded by the number of ways to place n non-attacking queens."
 status: draft
 answer:
   approach: >
-    Backtracking row by row. Since each row holds exactly one queen, place a queen in
-    some free column of the current row, mark all cells it attacks (its column, and both
+    Backtrack row by row, since each row holds exactly one queen. Place a queen in some
+    free column of the current row, mark all cells it attacks (its column and both
     diagonals) as taken, and recurse to the next row on a copy of that attack mask. When
     every free column in a row has been tried, backtrack. Reaching row n means all queens
-    are placed — reconstruct the board from the mask and record it as a solution.
+    are placed, so reconstruct the board from the mask and record it as a solution.
   pseudocode: |
     solve(row, mask, solutions):
         if row == n:

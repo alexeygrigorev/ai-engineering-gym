@@ -16,13 +16,9 @@ answer:
     A progressive round (reported at Anthropic): you start with a correct
     single-threaded crawler and evolve it under new requirements, so the seams matter
     more than the first version. Model it as a work queue (frontier of URLs to visit) +
-    a visited set for dedup + a fetch/parse/enqueue loop. The single most important early
-    decision is URL normalization: strip fragments, resolve relative links against the
+    a visited set for dedup + a fetch/parse/enqueue loop. The most important early decision is URL normalization: strip fragments, resolve relative links against the
     base, lowercase the host, drop default ports, so the visited set actually dedups.
-    Keep fetch, parse, and the frontier as separate components — that separation is what
-    lets you swap the frontier for a rate-limited one (L2) and the loop for a thread pool
-    (L3) without a rewrite. Clarify scope up front (same domain only? max depth? respect
-    robots.txt?). Handle errors and timeouts gracefully with backoff — real pages fail.
+    Keep fetch, parse, and the frontier as separate components. That separation is what lets you swap the frontier for a rate-limited one (L2) and the loop for a thread pool (L3) without a rewrite. Clarify scope up front (same-domain only, a max depth, whether to respect robots.txt). Handle errors and timeouts gracefully with backoff. Real pages fail.
   extension_points:
     - level: "L1 — single-threaded crawl"
       approach: >
@@ -54,13 +50,13 @@ answer:
 hints:
   - "Model it as frontier queue + visited set + a fetch/parse/enqueue loop. Normalize URLs (strip fragments, resolve relative links) before dedup, or the visited set is useless."
   - "Rate limiting is per-host, not global: track last-fetch time per domain and defer URLs whose host was hit too recently. Honor Retry-After and back off with jitter."
-  - "For concurrency, share a thread-safe frontier across N workers; the visited set and per-host timers now need locking. Track in-flight work so you know when the crawl finishes."
+  - "For concurrency, share a thread-safe frontier across N workers. The visited set and per-host timers now need locking too, so track in-flight work to know when the crawl finishes."
 follow_ups:
   - "How do you respect robots.txt and crawl-delay?"
   - "How would you detect and avoid crawler traps (infinite calendars, session-id URLs)?"
   - "How do you scale the visited set past memory (bloom filter, sharded store)?"
   - "How would you distribute this across many machines, and how is the frontier partitioned?"
-  - "Thread pool vs. asyncio here — which fits an I/O-bound crawler and why?"
+  - "Thread pool vs. asyncio here: which fits an I/O-bound crawler and why?"
 sources:
   - key: hello-crawler
     title: "Hello Interview — Design a Web Crawler"

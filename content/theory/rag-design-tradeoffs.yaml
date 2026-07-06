@@ -20,38 +20,38 @@ sources:
 answer:
   short: >
     Almost every RAG design decision is a knob on the same triangle: retrieval
-    quality (recall/precision) vs latency vs cost — with freshness and complexity as
+    quality (recall/precision) vs latency vs cost, with freshness and complexity as
     extra axes. Chunk size: small chunks give precise retrieval but fragment context
-    and inflate the index; large chunks preserve context but add noise, tokens, and
+    and inflate the index. Large chunks preserve context but add noise, tokens, and
     cost. Top-k: retrieving more raises recall but stuffs the prompt, raising latency,
-    token cost, and distraction; too few risks missing the answer. Reranking: a
-    cross-encoder reranker sharply improves precision but adds a compute/latency step
-    — worth it for high-value queries, overkill for cheap ones. Retrieval method:
+    token cost, and distraction. Too few risks missing the answer. Reranking: a
+    cross-encoder reranker sharply improves precision but adds a compute/latency step.
+    It's worth it for high-value queries, overkill for cheap ones. Retrieval method:
     keyword is cheap and exact, vector captures meaning, hybrid is best quality but
-    more moving parts. Index type: exact search is accurate but doesn't scale; ANN is
-    fast but trades some recall; heavy compression saves memory at recall cost.
+    more moving parts. Index type: exact search is accurate but doesn't scale, ANN is
+    fast but trades some recall, and heavy compression saves memory at recall cost.
     Freshness vs cost: frequent re-indexing keeps answers current but costs compute.
     Advanced tricks (contextual retrieval, hierarchical chunking) lift accuracy but
-    add ingestion cost and latency. There's no globally right setting — you tune to
+    add ingestion cost and latency. There's no globally right setting. You tune to
     the product's quality bar, latency budget, and cost ceiling, and validate with
     eval.
   key_points:
-    - "Central tension: retrieval quality (recall/precision) vs latency vs cost; freshness and complexity are extra axes"
-    - "Chunk size: small = precise but fragmented + bigger index; large = more context but noisier + costlier"
-    - "Top-k: more = higher recall but more tokens/latency/distraction; fewer = risk of missing the answer"
-    - "Reranking: big precision gain, extra latency/compute — worth it for high-value queries"
+    - "Central tension: retrieval quality (recall/precision) vs latency vs cost. Freshness and complexity are extra axes"
+    - "Chunk size: small = precise but fragmented + bigger index, large = more context but noisier + costlier"
+    - "Top-k: more = higher recall but more tokens/latency/distraction, fewer = risk of missing the answer"
+    - "Reranking: big precision gain, extra latency/compute, worth it for high-value queries"
     - "Retrieval method (keyword/vector/hybrid) and index (exact vs ANN vs compressed) trade accuracy against speed/scale/memory"
-    - "Freshness vs cost: re-indexing frequency; no universal optimum — tune to quality bar, latency budget, cost ceiling, and eval it"
+    - "Freshness vs cost: re-indexing frequency. No universal optimum, tune to quality bar, latency budget, cost ceiling, and eval it"
 
 follow_ups:
-  - "You have a strict latency budget. Which knobs do you turn first?"
+  - "You have a strict latency budget, so which knobs do you turn first?"
   - "When is reranking not worth the added latency?"
   - "How does chunk size interact with top-k and the context window?"
 
 hints:
   - "Most answers collapse into one triangle. What three things are you constantly trading against each other in retrieval?"
-  - "Go knob by knob — chunk size, top-k, reranking, retrieval method, index type — and for each say what you gain and what you pay."
-  - "It's quality vs latency vs cost (plus freshness/complexity). Small vs large chunks, high vs low top-k, rerank or not, keyword/vector/hybrid, exact vs ANN index, re-index often or not. No universal optimum — tune to the product and validate with eval."
+  - "Go knob by knob (chunk size, top-k, reranking, retrieval method, index type) and for each say what you gain and what you pay."
+  - "It's quality vs latency vs cost (plus freshness/complexity). Small vs large chunks, high vs low top-k, rerank or not, keyword/vector/hybrid, exact vs ANN index, re-index often or not. No universal optimum, so tune to the product and validate with eval."
 
 exercises:
   - kind: mcq

@@ -10,13 +10,13 @@ ai_relevant: false
 hints:
   - "A linked list has no random access, so favor a sorting method that only needs sequential traversal."
   - "Find the middle with slow/fast pointers, split the list in half, and recursively sort each half."
-  - "Merge the two sorted halves by splicing nodes in order, giving O(n log n) time overall."
+  - "Merge the two sorted parts by splicing nodes in order, giving O(n log n) time overall."
 status: draft
 answer:
   approach: >
     Merge sort on a linked list, which needs no random access. Find the middle
-    with slow/fast pointers and split into two halves, recursively sort each
-    half, then merge the two sorted lists by splicing nodes in order. This gives
+    with slow/fast pointers and split it into two parts, then recursively sort
+    each part. Merge the two sorted lists by splicing nodes in order. This gives
     O(n log n) time with O(log n) recursion depth.
   pseudocode: |
     sort(head):

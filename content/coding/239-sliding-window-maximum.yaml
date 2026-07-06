@@ -15,9 +15,9 @@ status: draft
 answer:
   approach: >
     Report the maximum of each size-k window. This solution keeps the window in
-    an ordered multiset (a balanced tree of value -> count): sliding one step
-    removes the outgoing element and inserts the incoming one, and the current
-    maximum is the largest key, so each step is O(log k). The optimal O(n)
+    an ordered multiset (a balanced tree of value -> count). Sliding one step
+    removes the outgoing element and inserts the incoming one. The largest key
+    gives the current maximum, so each step is O(log k). The optimal O(n)
     method keeps a monotonic decreasing deque of indices.
   pseudocode: |
     window = ordered multiset

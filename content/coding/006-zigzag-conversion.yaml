@@ -15,8 +15,8 @@ status: draft
 answer:
   approach: >
     Simulate the zigzag path instead of building a 2D grid, keeping one string buffer
-    per row. Iterate over the characters, appending to row 0, 1, 2, ... down to the
-    last row, then bounce back up to row 1 and repeat. Each character gets appended to
+    per row. Iterate over the characters, appending down through the rows to the last
+    one, then bounce back up to row 1 and repeat. Each character gets appended to
     the buffer of its current row. At the end, concatenate the row buffers top to
     bottom. The single-row case is returned unchanged.
   pseudocode: |

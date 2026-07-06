@@ -15,10 +15,10 @@ status: draft
 answer:
   approach: >
     Extend the two-heap median idea to a moving window by using two balanced
-    multisets - a max-side and a min-side - so elements can be removed as they
-    leave the window. Each slide removes the outgoing value from whichever side
-    holds it and inserts the incoming value, rebalances the two sides, and reads
-    the median off the boundary element(s).
+    multisets split into a max-side and a min-side. This lets elements be
+    removed as they leave the window. Each slide removes the outgoing value from
+    whichever side holds it and inserts the incoming value. It then rebalances
+    the two sides and reads the median off the boundary element(s).
   pseudocode: |
     left (max side) and right (min side) as ordered multisets, kept balanced
     init with the first k elements; balance the two sizes

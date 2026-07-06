@@ -9,7 +9,7 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Since every word has the same fixed length, precompute for each position in the string which of the words, if any, starts there."
-  - "For each candidate start index, try to greedily consume the required words with backtracking, tracking how many of each distinct word are still needed and undoing a choice when it leads nowhere."
+  - "For each candidate start index, try to greedily consume the required words with backtracking. Track how many of each distinct word are still needed, undoing a choice when it leads nowhere."
   - "Restricting attempts to starts whose total span fits, and stopping early at positions with no matching word, keeps this close to O(n * total words) in typical cases."
 status: draft
 answer:
@@ -18,10 +18,10 @@ answer:
     of all the words appears back to back. Precompute, for each position i in s, which
     words match starting at i (a small candidate list per position). Also count how many
     times each distinct word must be used. Then, for each viable start (one whose total
-    span fits), try to consume the words greedily with backtracking: at the current
+    span fits), try to consume the words greedily with backtracking. At the current
     position pick an unused matching word, decrement its remaining count, jump forward by
-    its length, and recurse until all words are consumed; undo on failure. Record starts
-    that succeed.
+    its length, and recurse until all words are consumed, undoing on failure. Record
+    starts that succeed.
   pseudocode: |
     L = word length; total = number of words
     counts = required count per distinct word

@@ -9,14 +9,14 @@ tags: [dsa]
 ai_relevant: true
 hints:
   - "A stack naturally tracks which opening brackets are still waiting to be closed."
-  - "Push every opening bracket; on a closing bracket, check the stack's top is the matching opener and pop it, failing immediately if the stack is empty or the pair doesn't match."
+  - "Push every opening bracket, and on a closing bracket check the stack's top is the matching opener and pop it, failing immediately if the stack is empty or the pair doesn't match."
   - "One linear pass with this stack is valid only if the stack ends up empty at the end, giving O(n) time and O(n) space."
 status: draft
 answer:
   approach: >
-    Use a stack. Push every opening bracket. On a closing bracket, the stack must be
-    non-empty and its top must be the matching opener — pop it and check the pair
-    matches; if the stack is empty or the pair is wrong, the string is invalid. After
+    Use a stack and push every opening bracket. On a closing bracket, the stack must be
+    non-empty and its top must be the matching opener. Pop it and check the pair
+    matches. If the stack is empty or the pair is wrong, the string is invalid. After
     scanning everything, the string is valid only if the stack is empty (no unclosed
     openers).
   pseudocode: |

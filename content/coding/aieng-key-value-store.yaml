@@ -13,18 +13,10 @@ ai_relevant: true
 source_refs: [linkjob-anthropic]
 answer:
   design_approach: >
-    This is a progressive implementation round: a single problem revealed in levels,
-    where the grade is mostly about whether your Level 1 design absorbs Levels 2 and 3
-    without a rewrite. Start deliberately small but with clean seams. Level 1 is just a
+    A progressive implementation round reveals a single problem in levels, where the grade is mostly about whether your Level 1 design absorbs Levels 2 and 3 without a rewrite. Start deliberately small but with clean seams. Level 1 is just a
     dict wrapped in a class: set(k, v), get(k) -> value or None, delete(k). Resist adding
     anything else yet, but keep the store behind a small interface so you can change the
-    stored value type later. The key design decision that pays off: store each value as a
-    record (value + metadata) rather than the bare value, because Level 2 needs an
-    expiry timestamp and Level 3 needs it too. Talk through the trade-offs out loud
-    (lazy vs. active expiry; log vs. snapshot persistence) — interviewers weight
-    reasoning over feature count. Clarify requirements before coding (single-threaded?
-    concurrent? durability guarantees?) since jumping straight to code is the most-cited
-    failure mode.
+    stored value type later. The design decision that pays off: store each value as a record (value + metadata) rather than the bare value. Level 2 needs an expiry timestamp, and Level 3 needs it too. Talk through the trade-offs out loud (lazy vs. active expiry, log vs. snapshot persistence). Interviewers weight reasoning over feature count. Clarify requirements before coding (whether it's single-threaded or concurrent, and what durability guarantees are needed) since jumping straight to code is the most-cited failure mode.
   extension_points:
     - level: "L1 — SET / GET / DELETE"
       approach: >
@@ -54,7 +46,7 @@ answer:
     time: "O(1) average for set/get/delete; expiry sweep O(log n) per eviction with a heap"
     space: "O(n) for n live keys, plus the on-disk log/snapshot"
 hints:
-  - "Clarify first (single-threaded? durability?), then build Level 1 as a thin dict wrapper — but store each value as a {value, expires_at} record, not a bare value."
+  - "Clarify first (single-threaded? durability?), then build Level 1 as a thin dict wrapper, but store each value as a {value, expires_at} record, not a bare value."
   - "For TTL, prefer lazy expiration: check-and-evict on get so expired keys are never returned. Then mention an active background sweep as the memory-vs-work trade-off."
   - "For persistence, contrast a write-ahead log (append every mutation, replay on restart) with periodic snapshots (fast recovery, may lose recent writes). Real systems combine both."
 follow_ups:

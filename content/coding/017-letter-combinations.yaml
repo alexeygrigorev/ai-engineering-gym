@@ -9,16 +9,16 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Map each digit to its phone-keypad letters and think of building each combination one digit at a time."
-  - "Use backtracking: recurse on the remaining digits, trying each letter of the current digit and appending it to the prefix built so far before recursing further."
+  - "Backtrack by recursing on the remaining digits. Try each letter of the current digit, appending it to the prefix built so far before recursing further."
   - "Emitting the prefix once no digits remain explores all O(4^n) combinations with only O(n) recursion depth."
 status: draft
 answer:
   approach: >
-    Backtracking over the digits. Map each digit to its phone-keypad letters. Recurse
-    one digit at a time, carrying a prefix built so far; for the current digit try each
-    of its letters, appending it to the prefix and recursing on the remaining digits.
-    When there are no digits left, the prefix is a complete combination — emit it.
-    Empty input yields no combinations.
+    Backtrack over the digits, mapping each digit to its phone-keypad letters. Recurse
+    one digit at a time, passing along the prefix built so far. For the current digit
+    try each of its letters, appending it to the prefix and recursing on the remaining
+    digits. When there are no digits left, the prefix is a complete combination, so
+    emit it. Empty input yields no combinations.
   pseudocode: |
     pad = {'2':"abc", '3':"def", ..., '9':"wxyz"}
     generate(prefix, digits):

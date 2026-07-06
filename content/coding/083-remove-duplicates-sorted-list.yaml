@@ -14,9 +14,9 @@ hints:
 status: draft
 answer:
   approach: >
-    The list is sorted, so equal values are adjacent; keep the first occurrence of each
-    value and drop the rest. Walk with a prev pointer at the last kept node: if the current
-    node equals prev's value, unlink it (prev.next = node.next); otherwise advance prev to
+    The list is sorted, so equal values are adjacent. Keep the first occurrence of each
+    value and drop the rest. Walk with a prev pointer at the last kept node. If the current
+    node equals prev's value, unlink it (prev.next = node.next). Otherwise advance prev to
     the current node. One linear pass, in place.
   pseudocode: |
     prev = head

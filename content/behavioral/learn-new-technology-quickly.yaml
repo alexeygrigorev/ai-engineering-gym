@@ -18,7 +18,7 @@ sources:
     supports: "structure an adaptability story around a concrete situation and result"
 
 probes:
-  - "Why did you have to learn it fast — new project, a gap on the team?"
+  - "Why did you have to learn it fast: new project, a gap on the team?"
   - "How did you approach learning it efficiently?"
   - "How did you get productive before you were an expert?"
   - "Where did you get stuck and how did you get unstuck?"
@@ -40,14 +40,14 @@ example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A project needed a technology you didn't yet know (e.g. a new
      framework, a vector DB, an agent orchestration library) on a short timeline.
-  T (Task): What you owned — ship using it despite the learning curve.
-  A (Action): The concrete steps YOU took — found the fastest reliable sources,
-     built a small prototype, leaned on experts/community, validated as you went.
+  T (Task): What you owned: ship using it despite the learning curve.
+  A (Action): The concrete steps YOU took: found the fastest reliable sources,
+     built a small prototype, relied on experts/community, validated as you went.
   R (Result): Delivered with the new tech, quantified, plus a one-line lesson on
      how you ramp fast.
 
 hints:
-  - "This maps to adaptability — foreground your learning method, which transfers to anything."
+  - "This maps to adaptability, so foreground your learning method, which transfers to anything."
   - "Show 'learning by doing': a prototype or spike beats 'I read the docs'."
   - "Prove you got real results and can name your repeatable ramp-up approach."
 

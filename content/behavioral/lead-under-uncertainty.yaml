@@ -18,7 +18,7 @@ sources:
     supports: "show a decision process: reducing ambiguity, making calls, adjusting as you learn"
 
 probes:
-  - "What made the situation uncertain — unknown data, new tech, shifting requirements?"
+  - "What made the situation uncertain: unknown data, new tech, shifting requirements?"
   - "How did you decide when you had enough information to act?"
   - "How did you keep the team moving without false certainty?"
   - "What was your plan if your bet was wrong?"
@@ -30,10 +30,10 @@ scaffold:
   slots: [Situation, Task, Action, Result]
 
 rubric:
-  - "Situation is genuinely ambiguous — unclear requirements, unproven approach, or incomplete data (common in AI/ML work)"
+  - "Situation is genuinely ambiguous: unclear requirements, unproven approach, or incomplete data (common in AI/ML work)"
   - "Task shows you were responsible for moving forward despite the fog"
   - "Action centers on YOUR process: framing assumptions, de-risking with small experiments, making reversible bets, communicating uncertainty honestly"
-  - "Shows decisiveness balanced with adaptability — not paralysis, not recklessness"
+  - "Shows decisiveness balanced with adaptability: not paralysis, not recklessness"
   - "Result: progress or a good outcome despite the risk, and how you course-corrected"
   - "Reflection on a repeatable approach to leading under uncertainty"
 
@@ -41,16 +41,16 @@ example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A project with major unknowns (e.g. whether an LLM approach would
      even meet the quality bar, or fast-moving requirements).
-  T (Task): What you owned — keep the team progressing and make good calls.
-  A (Action): The concrete steps YOU took — named the key uncertainties, ran cheap
+  T (Task): What you owned: keep the team progressing and make good calls.
+  A (Action): The concrete steps YOU took: named the key uncertainties, ran cheap
      experiments to reduce them, made reversible decisions, set checkpoints,
      communicated risk transparently.
   R (Result): The outcome and how you adapted as you learned, plus a one-line
      lesson on deciding under uncertainty.
 
 hints:
-  - "Name the specific unknowns — vague 'it was uncertain' undersells the challenge."
+  - "Name the specific unknowns: vague 'it was uncertain' undersells the challenge."
   - "Show a method: de-risk cheaply, make reversible bets, set checkpoints, communicate honestly."
-  - "Highlight a course-correction — leading under uncertainty means adapting as data arrives."
+  - "Highlight a course-correction: leading under uncertainty means adapting as data arrives."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

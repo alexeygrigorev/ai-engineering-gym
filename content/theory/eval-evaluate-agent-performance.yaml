@@ -27,7 +27,7 @@ sources:
 answer:
   short: >
     Evaluate an agent at three complementary levels. First, final-response / outcome eval:
-    did it accomplish the goal — task / goal completion rate. Second, single-step eval:
+    did it accomplish the goal (task / goal completion rate). Second, single-step eval:
     was the right tool chosen with correct parameters (tool selection quality plus
     argument correctness and tool-error rate). Third, trajectory eval: was the whole
     sequence of steps sound. Because multiple valid paths usually exist, score
@@ -36,28 +36,28 @@ answer:
     steps so near-misses beat total deviations. Action advancement (does each step make
     progress) and action/task completion (did it achieve all goals in the session) capture
     progress at trace vs session level. Context adherence measures whether outputs stay
-    grounded in provided/retrieved context — the agent analog of RAG groundedness, catching
-    closed-domain hallucinations. Track efficiency and cost as first-class metrics — number
-    of steps, latency, tokens/dollars per run, and looping/convergence stability — since an
+    grounded in provided/retrieved context, the agent analog of RAG groundedness, catching
+    closed-domain hallucinations. Track efficiency and cost as first-class metrics (number
+    of steps, latency, tokens/dollars per run, and looping/convergence stability), since an
     agent that succeeds in 30 steps and $5 may be worse than one that succeeds in 5. And
     include error recovery / robustness plus safety guardrails, because agents take real
     actions.
   key_points:
     - "Use three complementary levels: final-response/outcome (goal completion rate), single-step (tool selection + arguments), and trajectory (whole step sequence)"
     - "Tool selection quality decomposes into: right tool chosen, correct arguments/parameters, and successful execution (tool-error rate)"
-    - "Score trajectories with exact/in-order/any-order match OR LLM-as-judge over the trace — multiple valid paths make brittle exact match unfair; count incorrect steps"
-    - "Action advancement = progress per step (trace-level); action/task completion = achieving all goals (session-level)"
-    - "Context adherence = outputs stay grounded in provided/retrieved context — the agent analog of RAG groundedness, catching closed-domain hallucinations"
+    - "Score trajectories with exact/in-order/any-order match OR LLM-as-judge over the trace, since multiple valid paths make brittle exact match unfair. Count incorrect steps"
+    - "Action advancement = progress per step (trace-level). Action/task completion = achieving all goals (session-level)"
+    - "Context adherence = outputs stay grounded in provided/retrieved context, the agent analog of RAG groundedness, catching closed-domain hallucinations"
     - "Track efficiency and cost as first-class (steps, latency, tokens/$ per run, convergence stability), plus error recovery and safety guardrails since agents take real actions"
 
 hints:
-  - "An agent is more than its final answer — think about levels of evaluation."
-  - "Consider outcome, each step, and the whole path; then add efficiency and safety."
-  - "Final-response (goal completion) + single-step (tool selection/arguments) + trajectory (LLM-judge over the trace); plus action advancement, context adherence, and steps/latency/cost."
+  - "An agent is more than its final answer, so think about levels of evaluation."
+  - "Consider outcome, each step, and the whole path, then add efficiency and safety."
+  - "Final-response (goal completion) + single-step (tool selection/arguments) + trajectory (LLM-judge over the trace). Plus action advancement, context adherence, and steps/latency/cost."
 
 follow_ups:
-  - "Your agent reaches the correct final answer but takes a wildly inefficient path — how do you catch and score that, and does it matter?"
-  - "There are multiple valid trajectories for a task — how do you evaluate the path without over-fitting to one golden sequence?"
+  - "Your agent reaches the correct final answer but takes a wildly inefficient path. How do you catch and score that, and does it matter?"
+  - "There are multiple valid trajectories for a task. How do you evaluate the path without over-fitting to one golden sequence?"
   - "How would you evaluate an agent's ability to recover from a tool that returns an error or malformed output?"
 
 exercises:

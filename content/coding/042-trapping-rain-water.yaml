@@ -15,11 +15,11 @@ status: draft
 answer:
   approach: >
     Water above a bar is bounded by the tallest bar to its left and the tallest to its
-    right; the trapped amount at that bar is min(left_max, right_max) - height. Sweep
+    right. The trapped amount at that bar is min(left_max, right_max) - height. Sweep
     from both ends toward the global maximum: from the left, track the running left_max
-    and add left_max - height wherever the current bar is lower; symmetrically from the
-    right with right_max. The two sweeps meet at the tallest bar, which correctly bounds
-    both sides, so every position is counted once in a single O(n) pass with O(1) space.
+    and add left_max - height wherever the current bar is lower. Do the same symmetrically
+    from the right with right_max. The two sweeps meet at the tallest bar, which correctly
+    bounds both sides. Every position is counted once in a single O(n) pass with O(1) space.
   pseudocode: |
     m = index/height of global max
     left_max = h[0]

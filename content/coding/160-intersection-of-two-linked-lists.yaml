@@ -10,15 +10,15 @@ ai_relevant: false
 hints:
   - "If two lists intersect, they share the exact same tail from the intersection node onward."
   - "Measure both lengths, then advance the longer list's pointer by the difference so both pointers are equally far from the end."
-  - "Move both pointers together one step at a time; they meet exactly at the intersection node in O(n+m) time, O(1) space."
+  - "Move both pointers together one step at a time. They meet exactly at the intersection node in O(n+m) time, O(1) space."
 status: draft
 answer:
   approach: >
     Two lists that intersect share the same tail from the intersection node
     onward. Measure both lengths (and confirm they end at the same last node,
-    otherwise there is no intersection). Advance the longer list's pointer by
-    the length difference so both pointers are equidistant from the end, then
-    move them together; they meet at the intersection node.
+    otherwise there's no intersection). Advance the longer list's pointer by
+    the length difference so both pointers are equidistant from the end. Then
+    move them together until they meet at the intersection node.
   pseudocode: |
     len1, len2 = lengths of A and B
     if last node of A != last node of B: return null
@@ -27,7 +27,7 @@ answer:
     return that node
   complexity: { time: "O(n+m)", space: "O(1)" }
 follow_ups:
-  - "Solve it without computing lengths using the two-pointer swap trick."
+  - "Solve it without computing lengths using the two-pointer swap."
   - "Detect intersection when the lists might also contain cycles."
   - "Why does aligning by the length difference guarantee they meet?"
 sources:

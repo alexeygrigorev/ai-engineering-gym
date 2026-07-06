@@ -20,36 +20,36 @@ sources:
 answer:
   short: >
     The difference is whether the training data has labels. Supervised learning trains
-    on labeled examples — each input paired with the correct output — and learns a mapping
+    on labeled examples (each input paired with the correct output). It learns a mapping
     from inputs to outputs so it can predict labels for new data. Its two main tasks are
     classification (discrete labels, e.g. spam/not-spam) and regression (continuous values,
     e.g. house price). You can measure accuracy directly because you have ground truth.
-    Unsupervised learning trains on unlabeled data and looks for hidden structure — no
+    Unsupervised learning trains on unlabeled data and looks for hidden structure, with no
     target to predict. Its main tasks are clustering (group similar points, e.g. customer
     segments), dimensionality reduction (compress features, e.g. PCA), and anomaly
     detection. Evaluation is fuzzier because there's no ground-truth label to check
-    against. Rule of thumb: use supervised learning when you have labels and a clear
-    prediction target; use unsupervised learning to explore, segment, or reduce data when
+    against. Use supervised learning when you have labels and a clear
+    prediction target. Use unsupervised learning to explore, segment, or reduce data when
     labels are unavailable or expensive. (Semi-supervised and self-supervised sit in
-    between, using a little labeled data or labels derived from the data itself.)
+    between, using a little labeled data or labels derived from the data.)
   key_points:
-    - "Core difference: supervised uses labeled data; unsupervised uses unlabeled data"
+    - "Core difference: supervised uses labeled data, unsupervised uses unlabeled data"
     - "Supervised goal: learn input→output mapping to predict labels on new data"
     - "Supervised tasks: classification (discrete) and regression (continuous)"
     - "Unsupervised goal: discover hidden structure with no target variable"
     - "Unsupervised tasks: clustering, dimensionality reduction, anomaly detection"
-    - "Supervised is easy to evaluate against ground truth; unsupervised evaluation is harder (no labels)"
+    - "Supervised is easy to evaluate against ground truth, but unsupervised evaluation is harder (no labels)"
     - "Semi-supervised / self-supervised are middle grounds"
 
 follow_ups:
-  - "Give an example task for each and the algorithm you'd reach for."
+  - "Give an example task for each and the algorithm you'd use."
   - "How do you evaluate an unsupervised model without labels?"
   - "Where does self-supervised learning (as in LLM pretraining) fit in?"
-  - "What is semi-supervised learning and when is it useful?"
+  - "What's semi-supervised learning and when is it useful?"
 
 hints:
   - "The whole distinction hinges on one property of the training data."
-  - "If every example comes with the 'right answer', you're in one regime; if you only have raw inputs and must find patterns yourself, you're in the other."
+  - "If every example comes with the 'right answer', you're in one regime. If you only have raw inputs and must find patterns yourself, you're in the other."
   - "Supervised = labeled data, predict a target (classification/regression). Unsupervised = unlabeled data, find structure (clustering, dimensionality reduction)."
 
 exercises:

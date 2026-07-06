@@ -9,15 +9,15 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "If the intervals are sorted by their start, any interval that could merge with the current one is guaranteed to appear right after it."
-  - "Sort by start, then walk the intervals keeping a running result list: extend the last result interval's end when the next interval overlaps it, otherwise start a new interval."
+  - "Sort by start, then scan the intervals keeping a running result list. Extend the last result interval's end when the next interval overlaps it, otherwise start a new interval."
   - "This single pass after sorting gives O(n log n) time overall (dominated by the sort) and O(n) space for the result."
 status: draft
 answer:
   approach: >
-    Sort the intervals by start. Walk them in order, keeping a result list seeded with
+    Sort the intervals by start. Scan them in order, keeping a result list seeded with
     the first interval. For each next interval, if its start is within the current last
     result interval (start <= last.end) the two overlap, so extend last.end to the larger
-    of the two ends; otherwise there's a gap, so append it as a new interval. Sorting
+    of the two ends. Otherwise there's a gap, so append it as a new interval. Sorting
     guarantees any interval that could merge with the current one comes right after it.
   pseudocode: |
     sort intervals by start

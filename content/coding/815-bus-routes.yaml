@@ -9,16 +9,16 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Think of buses, not stops, as the nodes of the graph you should search over."
-  - "Build an index from stop to buses, connect any two buses that share a stop, and add artificial start and end nodes linked to the buses serving S and T."
+  - "Build an index from stop to buses, and connect any two buses that share a stop. Then add artificial start and end nodes linked to the buses serving S and T."
   - "A BFS over this bus graph gives the minimum number of buses as the path length minus the two artificial nodes."
 status: draft
 answer:
   approach: >
     Model routes as a graph over buses, not over stops. Build an inverted index
-    stop -> buses, then connect two buses whenever they share a stop; add
+    stop -> buses, then connect two buses whenever they share a stop. Add
     artificial start and end nodes linked to the buses that serve S and T. A BFS
-    from the start node gives the fewest buses (edges) needed to reach T, since
-    each edge crossed is one bus change.
+    from the start node gives the fewest buses (edges) needed to reach T. Each
+    edge crossed is one bus change.
   pseudocode: |
     index[stop] = list of buses serving it
     for each stop served by >= 2 buses: connect all those buses pairwise

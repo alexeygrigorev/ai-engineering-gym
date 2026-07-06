@@ -40,7 +40,7 @@ answer:
 hints:
   - "What happens if a document the agent reads contains hidden instructions?"
   - "Think about which permissions the agent's tools hold and what an attacker could do with them."
-  - "No single control is enough. What layered defenses would you stack?"
+  - "No single control is enough, so what layered defenses would you stack?"
 
 follow_ups:
   - "What's the difference between direct and indirect prompt injection?"

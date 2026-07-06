@@ -21,9 +21,9 @@ answer:
   short: >
     Trigger on a pull request and give the agent the diff plus enough context (the
     changed files, related tests, and the team's style/guidelines) so it reviews the
-    change, not the whole repo. Combine deterministic tools with LLM reasoning. Run
+    change, not the whole repo. Combine deterministic tools with LLM reasoning: run
     cheap static analysis, linters, SAST, and the test suite first to catch obvious
-    issues, cut cost, and reduce false positives. Then have the LLM reason about
+    issues, cut cost, and reduce false positives, then have the LLM reason about
     correctness, security, performance, and readability. Optionally split into
     focused checks/sub-agents (bugs, security, style, perf). Post a structured PR
     summary plus line-level comments, each grounded in the code and citing the rule
@@ -33,7 +33,7 @@ answer:
   key_points:
     - "Trigger on the PR/diff and scope context to changed files + tests + guidelines: review the diff, not the whole repo"
     - "Hybrid: run linters/static analysis/SAST/tests first (cheap, deterministic), then LLM reasoning over what's left"
-    - "Cover multiple aspects (correctness/bugs, security, performance, style), optionally via focused sub-agents"
+    - "Cover multiple aspects (correctness/bugs, security, performance, style) optionally via focused sub-agents"
     - "Output a structured summary + line-level comments grounded in the code and citing the rule/why, and avoid nitpicks"
     - "Human stays the approver, ship as a CI step, and evaluate on comment precision and false-positive rate"
 

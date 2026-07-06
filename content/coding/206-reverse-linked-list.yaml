@@ -9,14 +9,15 @@ tags: [dsa]
 ai_relevant: true
 hints:
   - "Reversing means flipping each node's next pointer to point backward instead of forward."
-  - "Walk the list with a prev pointer, saving each node's next before overwriting node.next to point at prev."
-  - "One pass with O(n) time and O(1) space; prev becomes the new head once the cursor runs off the end."
+  - "Traverse the list with a prev pointer, saving each node's next before overwriting node.next to point at prev."
+  - "One pass with O(n) time and O(1) space. prev becomes the new head once the cursor runs off the end."
 status: draft
 answer:
   approach: >
-    Reverse the pointers in a single pass. Walk the list keeping a prev pointer;
-    for each node, save its next, point the node back to prev, then advance prev
-    and the cursor. When the cursor runs off the end, prev is the new head.
+    Reverse the pointers in a single pass, traversing the list with a prev
+    pointer. For each node, save its next, point the node back to prev, then
+    advance prev and the cursor. When the cursor runs off the end, prev is the
+    new head.
   pseudocode: |
     prev = null; node = head
     while node:

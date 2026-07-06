@@ -32,7 +32,7 @@ answer:
     - "Known, fixed path → use a workflow/pipeline: more predictable, cheaper, easier to test"
     - "Low error tolerance → agents are risky: reliability multiplies across steps, early mistakes propagate"
     - "Cost/latency-sensitive → each autonomous turn re-calls a large model (can be several× a plain workflow)"
-    - "Anthropic: use the simplest solution that passes eval. Add autonomy only when needed"
+    - "Anthropic: use the simplest solution that passes eval, and add autonomy only when needed"
     - "Reserve agents for open-ended tasks you can't hardcode but can still verify progress on"
 
 hints:

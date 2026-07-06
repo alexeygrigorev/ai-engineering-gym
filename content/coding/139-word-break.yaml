@@ -16,7 +16,7 @@ answer:
   approach: >
     Decide whether s can be segmented into a sequence of dictionary words. From
     a start index, try each dictionary word that matches at that position and
-    recurse on the remainder; memoize start positions already known to fail so
+    recurse on the remainder. Memoize start positions already known to fail so
     each index is explored once. Bucketing dictionary words by their first
     letter prunes the candidates checked at each step.
   pseudocode: |

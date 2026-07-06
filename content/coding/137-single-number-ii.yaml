@@ -16,7 +16,7 @@ answer:
   approach: >
     Every element appears three times except one. Count occurrences in a hash
     map, deleting a key as soon as its count reaches three. The single key left
-    is the answer. The O(1)-space method instead sums each bit position modulo 3
+    gives the answer. The O(1)-space method instead sums each bit position modulo 3
     across all numbers.
   pseudocode: |
     count = {}

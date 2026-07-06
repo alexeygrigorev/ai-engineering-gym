@@ -21,8 +21,8 @@ probes:
   - "What was the disagreement, and what was at stake if it went the wrong way?"
   - "What evidence or reasoning did you bring?"
   - "How did you understand their position before pushing yours?"
-  - "Was there a moment they started to shift? What caused it?"
-  - "What if you had been the one who was wrong — how open were you to that?"
+  - "Was there a moment they started to shift, and what caused it?"
+  - "What if you had been the one who was wrong, how open were you to that?"
   - "What was the result, and did the relationship stay intact?"
 
 scaffold:
@@ -31,19 +31,19 @@ scaffold:
 
 rubric:
   - "Situation is a concrete decision where you disagreed with someone (peer, lead, manager)"
-  - "Shows you understood their view first — persuasion by listening, not steamrolling"
+  - "Shows you understood their view first: persuasion by listening, not steamrolling"
   - "Action centers on YOUR approach: data, a prototype, a small experiment, reframing the trade-off"
-  - "Demonstrates intellectual honesty — you were open to being wrong yourself"
-  - "Result: the mind changed AND the decision was better, ideally quantified; relationship preserved"
+  - "Demonstrates intellectual honesty: you were open to being wrong yourself"
+  - "Result: the mind changed AND the decision was better, ideally quantified, and the relationship preserved"
   - "Reflection on influencing without authority"
 
 example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A technical or product decision where someone favored a different
      approach than the evidence supported (e.g. build vs. buy, model choice).
-  T (Task): What you owned — get to the right decision without damaging the
+  T (Task): What you owned: get to the right decision without damaging the
      relationship.
-  A (Action): The concrete steps YOU took — heard their reasoning, ran a small
+  A (Action): The concrete steps YOU took: heard their reasoning, ran a small
      experiment or gathered data, presented the trade-off in their terms, stayed
      open to changing your own mind.
   R (Result): The decision changed and produced a measurable win (cost, latency,
@@ -51,7 +51,7 @@ example_structure: |
 
 hints:
   - "Show you earned the right to persuade by understanding their view first."
-  - "Make the pivot concrete — a prototype, a benchmark, a number that shifted the room."
+  - "Show the pivot as a prototype, a benchmark, a number that shifted the room."
   - "Signal you'd have committed to their call if the data went the other way."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

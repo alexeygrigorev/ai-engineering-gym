@@ -21,7 +21,7 @@ probes:
   - "What did you do differently from the other person, specifically?"
   - "How did you decide when to raise it versus let it go?"
   - "Whom did you talk to first, and why?"
-  - "Did you involve your manager? Why or why not?"
+  - "Did you involve your manager, and why or why not?"
   - "How did you keep it professional and avoid it escalating?"
   - "What was the measurable outcome, and what did you learn?"
   - "Looking back, what would you do differently?"
@@ -34,16 +34,16 @@ rubric:
   - "Situation is concrete: a real, specific disagreement with named context (project, deadline, decision)"
   - "Focuses on YOUR specific actions ('I proposed…', 'I asked…'), not what the team did"
   - "Shows conflict-resolution skills: listening to the other view, communicating your position, seeking common ground"
-  - "Stays professional — does not blame or disparage the teammate"
+  - "Stays professional, doesn't blame or disparage the teammate"
   - "Result is positive and quantified where possible (shipped on time, hours saved, relationship preserved)"
   - "Ends with a reflection: what you learned or would do differently"
 
 example_structure: |
   # Optional model STRUCTURE only — NOT a real personal story. Fill with your own.
-  S (Situation): Set the scene — the project, the two of you, and the specific
+  S (Situation): Set the scene: the project, the two of you, and the specific
      technical or process disagreement (e.g. two approaches to hitting a deadline).
   T (Task): What you owned and what was at stake (shipping on time, quality bar).
-  A (Action): The concrete steps YOU took — heard the other view, laid out
+  A (Action): The concrete steps YOU took: heard the other view, laid out
      trade-offs, proposed a structured way to decide (e.g. a short review), reached
      a shared decision without escalating.
   R (Result): The outcome, quantified if you can (delivered on time, X hours saved,

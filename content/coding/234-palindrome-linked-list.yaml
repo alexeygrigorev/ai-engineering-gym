@@ -9,15 +9,15 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "A palindrome check just means comparing the list to its own reverse."
-  - "Copy the list in reverse, or find the midpoint and reverse the second half, then walk both halves in lockstep comparing values."
+  - "Copy the list in reverse, or find the midpoint and reverse the second half, then walk both parts in lockstep comparing values."
   - "The midpoint-reverse approach reaches O(n) time with O(1) extra space."
 status: draft
 answer:
   approach: >
     Build a reversed copy of the list, then walk the original and the reversed
-    copy in lockstep comparing values; if every value matches, the list is a
+    copy in lockstep comparing values. If every value matches, the list is a
     palindrome. The O(1)-space variant instead finds the middle, reverses the
-    second half in place, and compares the two halves.
+    second half in place, and compares the two parts.
   pseudocode: |
     reversed = a new list with the nodes copied in reverse order
     walk original and reversed together:

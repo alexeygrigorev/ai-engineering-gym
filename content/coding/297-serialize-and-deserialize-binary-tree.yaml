@@ -9,16 +9,16 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "A tree can be fully captured by a preorder traversal as long as you also record where children are null."
-  - "Serialize by recursively writing each node's value and its children with a sentinel marker for null, then deserialize by parsing that same order with a position cursor."
+  - "Serialize by recursively writing each node's value and its children with a sentinel marker for null. Then deserialize by parsing that same order with a position cursor."
   - "Both directions run in O(n) time and O(n) space."
 status: draft
 answer:
   approach: >
     Serialize with a recursive preorder that writes each node's value plus its
-    two subtrees in parentheses, using a marker (such as 'x') for null children,
-    which fully captures the structure. Deserialize by parsing that string left
-    to right with a position cursor, rebuilding each node and then its left and
-    right subtrees recursively.
+    two subtrees in parentheses, using a marker (such as 'x') for null children.
+    This fully captures the structure. Deserialize by parsing that string left
+    to right with a position cursor, rebuilding each node, then its left and
+    right subtrees, recursively.
   pseudocode: |
     serialize(node):
         if node is null: emit "x"; return

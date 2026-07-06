@@ -42,15 +42,15 @@ example_structure: |
   S (Situation): A task where the standard approach was blocked (e.g. no labeled
      data, a hard latency/cost limit, a missing tool).
   T (Task): What you owned and needed to deliver.
-  A (Action): The concrete steps YOU took — the unconventional idea (e.g. weak
+  A (Action): The concrete steps YOU took: the unconventional idea (e.g. weak
      supervision, a clever cache, reusing an existing signal), how you validated it
      cheaply, and how you got buy-in.
   R (Result): The payoff versus the default path, quantified, plus a one-line
      lesson on creative-but-grounded problem solving.
 
 hints:
-  - "Establish why the normal path failed — that's what makes the creativity necessary."
-  - "Make the idea concrete and show you de-risked it; creativity plus judgment is the signal."
+  - "Establish why the normal path failed: that's what makes the creativity necessary."
+  - "Make the idea concrete and show you de-risked it, because creativity plus judgment is the signal."
   - "Quantify how the unconventional route beat the obvious one."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

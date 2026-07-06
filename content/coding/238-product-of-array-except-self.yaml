@@ -10,15 +10,15 @@ ai_relevant: false
 hints:
   - "Each answer is a product of everything to the left times everything to the right, so division can be avoided entirely."
   - "Do a left-to-right pass accumulating prefix products and a right-to-left pass accumulating suffix products, multiplying them into the output."
-  - "Both passes can be folded into the output array itself, giving O(n) time and O(1) extra space."
+  - "Both passes can be folded into the output array, giving O(n) time and O(1) extra space."
 status: draft
 answer:
   approach: >
     For each index the answer is the product of everything to its left times
     everything to its right. Compute prefix products in a left-to-right pass and
     suffix products in a right-to-left pass, multiplying them per index - no
-    division needed. The one-pass version fills both directions at once, keeping
-    only the output array plus two running scalars.
+    division needed. The one-pass version fills both directions together,
+    keeping only the output array plus two running scalars.
   pseudocode: |
     out = array of 1s
     prefix = 1

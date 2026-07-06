@@ -10,14 +10,14 @@ ai_relevant: false
 hints:
   - "Two subtrees are duplicates exactly when their structure and values match completely."
   - "Give every subtree a canonical signature built from its value and its children's signatures, then group nodes by that signature."
-  - "Any group with more than one member marks a duplicate; using assigned integer ids instead of raw strings brings the cost down from O(n^2) to O(n)."
+  - "Any group with more than one member marks a duplicate. Using assigned integer ids instead of raw strings brings the cost down from O(n^2) to O(n)."
 status: draft
 answer:
   approach: >
     Two subtrees are duplicates if and only if they have identical structure and
-    values. Give each subtree a canonical signature - a serialization (or a
-    bottom-up hash) of its value plus its children's signatures - and group
-    nodes by signature; any group with more than one node marks a duplicate, and
+    values. Give each subtree a canonical signature: a serialization (or a
+    bottom-up hash) of its value plus its children's signatures. Group
+    nodes by signature. Any group with more than one node marks a duplicate, and
     one representative per such group is reported.
   pseudocode: |
     signatures = map signature -> list of nodes

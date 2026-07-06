@@ -9,16 +9,16 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "BST ordering tells you which subtree both target nodes must lie in at each step."
-  - "Starting at the root, move left if both values are smaller and right if both are larger, until the point where they diverge or one matches the current node."
-  - "That first split point is the LCA, found in O(h) time and O(1) space."
+  - "Starting at the root, move left if both values are smaller and right if both are larger. Stop where they diverge or one matches the current node."
+  - "That first split point gives the LCA in O(h) time and O(1) space."
 status: draft
 answer:
   approach: >
-    Use the BST ordering. Starting at the root, if both p and q are smaller than
-    the current node go left, if both are larger go right; the first node where
-    they split - or that equals one of them - is the lowest common ancestor. His
-    implementation realizes this by tracing the root-to-p and root-to-q paths
-    and returning their last common node.
+    Use the BST ordering, walking down from the root. Go left if both p and q
+    are smaller than the current node, and go right if both are larger. The
+    first node where they split is the lowest common ancestor, as is any node
+    that equals p or q. The implementation traces the root-to-p and root-to-q
+    paths and returns their last common node.
   pseudocode: |
     node = root
     loop:

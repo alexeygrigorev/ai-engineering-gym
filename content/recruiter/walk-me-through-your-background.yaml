@@ -18,44 +18,44 @@ sources:
 
 probes:
   - "So what do you actually do day-to-day at DataTalks.Club?"
-  - "Walk me through the timeline — OLX to now."
+  - "Walk me through the timeline: OLX to now."
   - "Is this a solo thing or do you have a team?"
   - "How much of your recent work is hands-on engineering versus running a business?"
   - "How does the OLX experience connect to the AI work you do now?"
 
 rubric:
-  - "Frames the current role as Founder & AI/Product Engineering Lead — not 'community manager' — so the engineering is front and center"
+  - "Frames the current role as Founder & AI/Product Engineering Lead, not 'community manager', so the engineering is front and center"
   - "Gives a clean arc: 16 years software / 14 years ML -> OLX production ML & platform leadership -> founded DataTalks.Club -> now building production AI into its operations"
-  - "Makes the current work concrete and technical: FAQ Assistant, FAQ automation, DataOps portal, content/podcast workflows — RAG, evals, serverless, observability, feedback loops"
+  - "Makes the current work concrete and technical: FAQ Assistant, FAQ automation, DataOps portal, content/podcast workflows (RAG, evals, serverless, observability, feedback loops)"
   - "Connects OLX (production scale, ML platform, infra maturity) to today's AI systems as one continuous engineering thread"
-  - "Keeps ownership explicit — what he personally builds and decides, not just what 'the platform does'"
+  - "Keeps ownership explicit: what he personally builds and decides, not just what 'the platform does'"
   - "Ends pointed at 'why now / product engineering at larger scale', handing off to the next question"
 
 hints:
-  - "First words reframe the title: 'Founder and AI/product engineering lead' — kill the 'community manager' read immediately."
+  - "First words reframe the title: 'Founder and AI/product engineering lead'. Kill the 'community manager' read immediately."
   - "Give it as an arc with a spine: OLX production ML -> founded DataTalks.Club -> now building production AI into it. Three stops, chronological."
-  - "Make 'current situation' concrete with the projects (FAQ Assistant, DataOps) so it lands as engineering, not admin."
+  - "Make 'current situation' concrete with the projects (FAQ Assistant, DataOps) so it reads as engineering, not admin."
 
 example_structure: |
-  # HIS actual background arc — rehearse toward this.
+  # HIS actual background arc: rehearse toward this.
 
   ## The spine (chronological, ~4 beats)
   1. Foundation: "I'm a Senior/Staff Applied AI Engineer with 16 years in software
      engineering and 14 years in ML."
   2. OLX: "Before my current work, I led ML platform and production ML systems at
-     OLX — that's where my production-scale, infrastructure, and serving
+     OLX. That's where my production-scale, infrastructure, and serving
      credibility comes from."
   3. DataTalks.Club (reframed): "I founded DataTalks.Club, an education and
      community platform for a large technical audience. My role there isn't
-     'community manager' — it's founder and AI/product engineering lead."
+     'community manager' but founder and AI/product engineering lead."
   4. Current work: "Over the last year I've been building production AI into its
      operations end-to-end: a Slack FAQ assistant, automated FAQ maintenance, an
-     internal DataOps portal, and content/podcast workflows — with RAG, evals,
+     internal DataOps portal, and content/podcast workflows, with RAG, evals,
      serverless deployment, observability, and feedback loops."
 
   ## Ownership line to keep it hands-on
-  "These are systems I personally designed and shipped — retrieval, eval sets,
-  deployment, the answer-gap loop — not things I delegated."
+  "These are systems I personally designed and shipped (retrieval, eval sets,
+  deployment, the answer-gap loop), not things I delegated."
 
   ## Handoff to 'why now'
   "That automation has freed up my time, which is why I'm now exploring product

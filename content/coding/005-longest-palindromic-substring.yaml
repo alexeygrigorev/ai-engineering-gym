@@ -14,8 +14,8 @@ hints:
 status: draft
 answer:
   approach: >
-    This is a DP problem, so keep a boolean table palindromes[i][j] meaning s[i..j]
-    is a palindrome. s[i..j] is a palindrome when s[i] == s[j] and the inside s[i+1..j-1]
+    Fill a boolean DP table palindromes[i][j] marking whether s[i..j] is a palindrome.
+    s[i..j] is a palindrome when s[i] == s[j] and the inside s[i+1..j-1]
     is also a palindrome. So palindromes[i][j] = true if s[i] == s[j] and
     palindromes[i+1][j-1] is true (with length 1 and 2 as base cases). Fill the table
     and keep track of the longest span that comes out true.

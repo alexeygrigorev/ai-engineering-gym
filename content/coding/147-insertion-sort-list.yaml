@@ -8,7 +8,7 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "Build the sorted result incrementally, keeping in mind a linked list cannot be indexed like an array."
+  - "Build the sorted result incrementally, keeping in mind a linked list can't be indexed like an array."
   - "Repeatedly scan the unsorted remainder for the current minimum, unlink it, and attach it to the front of the growing sorted portion."
   - "This selection-sort-over-a-list approach runs in O(n^2) time and O(1) extra space."
 status: draft
@@ -16,7 +16,7 @@ answer:
   approach: >
     Sort a linked list by repeatedly selecting the minimum. Scan the unsorted
     remainder to find the minimum node, unlink it, and place it at the front of
-    the growing sorted result - a selection sort over the list. Classic
+    the growing sorted result. That's a selection sort over the list. Classic
     insertion sort instead walks the sorted prefix to find each node's insertion
     point.
   pseudocode: |

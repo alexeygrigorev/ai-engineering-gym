@@ -18,7 +18,7 @@ answer:
     '*' matches zero or more of the preceding element. If both s and p are empty,
     return true. If s is empty but p isn't, it only matches when the next regex
     element is starred (skip it: match("", p[2:])). When the second regex char is
-    '*' the current element is optional. Handle the '.' case and the specific-char
+    '*' the current element is optional, so handle the '.' case and the specific-char
     case: consume as many matching characters from s as possible and try continuing
     with p[2:], and also try the zero-match branch. Otherwise, if the first characters
     match ('.' or equal), recurse on match(s[1:], p[1:]). Otherwise return false.

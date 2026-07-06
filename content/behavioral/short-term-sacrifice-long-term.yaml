@@ -22,7 +22,7 @@ probes:
   - "How confident were you the long-term payoff would materialize?"
   - "How did you get others to accept the short-term hit?"
   - "How did you know it was the right call versus over-investing?"
-  - "Did the long-term gain actually land? How did you measure it?"
+  - "Did the long-term gain actually land, and how did you measure it?"
 
 scaffold:
   format: STAR
@@ -40,15 +40,15 @@ example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): Pressure to ship fast, but a shortcut would create lasting cost
      (e.g. no evaluation pipeline, brittle data handling).
-  T (Task): What you owned — decide whether to invest now or later.
-  A (Action): The concrete steps YOU took — quantified the future cost, made the
+  T (Task): What you owned: decide whether to invest now or later.
+  A (Action): The concrete steps YOU took: quantified the future cost, made the
      case to stakeholders, absorbed a short-term delay to build the durable thing.
   R (Result): The long-term payoff that arrived (faster iteration, fewer incidents,
      lower cost) plus a one-line lesson on trade-off judgment.
 
 hints:
   - "Name both the short-term pain and the long-term prize concretely."
-  - "Show you sold the trade-off to others — ownership includes bringing people along."
+  - "Show you sold the trade-off to others: ownership includes bringing people along."
   - "Prove the payoff with a number and note how you'd judge the call again."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

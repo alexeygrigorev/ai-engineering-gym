@@ -18,11 +18,11 @@ sources:
     supports: "prioritizing ruthlessly and delivering key outcomes under time pressure"
 
 probes:
-  - "What made the deadline tight — scope, dependencies, or a hard external date?"
+  - "What made the deadline tight: scope, dependencies, or a hard external date?"
   - "How did you decide what to cut or defer?"
   - "How did you keep quality acceptable under pressure?"
   - "How did you coordinate others to hit it?"
-  - "Did you make the deadline? What did it cost, and was it worth it?"
+  - "Did you make the deadline, and what did it cost? Was it worth it?"
   - "What would you do to avoid the crunch next time?"
 
 scaffold:
@@ -30,7 +30,7 @@ scaffold:
   slots: [Situation, Task, Action, Result]
 
 rubric:
-  - "Situation makes the time pressure concrete (hard launch date, incident, customer commitment)"
+  - "Situation establishes concrete time pressure (hard launch date, incident, customer commitment)"
   - "Task shows what had to ship and the constraints"
   - "Action centers on YOUR prioritization: scoping down, sequencing, unblocking, protecting quality where it mattered"
   - "Shows judgment, not just heroics or unsustainable overwork"
@@ -41,16 +41,16 @@ example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A hard deadline with more scope than time (e.g. a demo, launch,
      or customer commitment).
-  T (Task): What you owned — decide what ships and make the date safely.
-  A (Action): The concrete steps YOU took — cut scope to the essential, sequenced
+  T (Task): What you owned: decide what ships and make the date safely.
+  A (Action): The concrete steps YOU took: cut scope to the essential, sequenced
      the work, unblocked dependencies, protected the critical quality bar,
      communicated status early.
   R (Result): Delivered on time with clear trade-offs, quantified, plus a one-line
      lesson on prioritization and planning.
 
 hints:
-  - "The signal here is prioritization under pressure — show what you cut and why."
-  - "Avoid glorifying all-nighters; emphasize smart scoping over heroics."
+  - "The signal here is prioritization under pressure: show what you cut and why."
+  - "Avoid glorifying all-nighters, and favor smart scoping over heroics."
   - "Give an honest Result including trade-offs, and a lesson on avoiding the crunch."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

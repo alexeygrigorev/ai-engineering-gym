@@ -33,7 +33,7 @@ rubric:
   - "Situation is a project that hit a real feasibility wall (data unavailable, quality bar unreachable, cost prohibitive)"
   - "Shows rigor in confirming infeasibility rather than giving up early"
   - "Action centers on YOUR judgment: gathering evidence, raising it, proposing a pivot or graceful stop"
-  - "Demonstrates courage and stakeholder communication — you didn't hide the bad news"
+  - "Demonstrates courage and stakeholder communication: you didn't hide the bad news"
   - "Result: value salvaged (pivot, learnings, resources redirected), not just 'we cancelled it'"
   - "Reflection on avoiding sunk cost and validating feasibility earlier"
 
@@ -41,16 +41,16 @@ example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A project that, partway in, showed it couldn't meet its goal (e.g.
      the model couldn't reach the required accuracy, or the data didn't exist).
-  T (Task): What you owned — make the right call and protect the org's time.
-  A (Action): The concrete steps YOU took — validated the wall with evidence,
+  T (Task): What you owned: make the right call and protect the org's time.
+  A (Action): The concrete steps YOU took: validated the wall with evidence,
      surfaced it early, proposed alternatives (pivot, reduced scope, or stop),
      redirected the effort.
   R (Result): What was salvaged and the outcome, plus a one-line lesson on feasibility
      checks and avoiding sunk-cost traps.
 
 hints:
-  - "Prove the wall was real — show the evidence, not just a gut feeling."
-  - "Emphasize the courage to raise it early and propose a path forward, not just stop."
+  - "Prove the wall was real: show the evidence, not just a gut feeling."
+  - "Show the courage to raise it early and propose a path forward, not just stop."
   - "Salvage something (learnings, a pivot) so the story ends on judgment, not defeat."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

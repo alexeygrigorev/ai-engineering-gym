@@ -16,7 +16,7 @@ answer:
   approach: >
     The clean solution builds histograms row by row and uses DP with three helper
     arrays. For each cell, heights[i][j] counts the consecutive 1s stacked above
-    (and including) cell (i,j), left[i][j] is the leftmost column the all-1s bar at (i,j)
+    (and including) cell (i,j). left[i][j] is the leftmost column the all-1s bar at (i,j)
     can extend to, and right[i][j] is the rightmost such column. heights updates trivially
     from the row above. For left, sweep the row left to right maintaining left_start (reset
     to j+1 on a 0), and on a 1 set left = max(left-from-row-above, left_start). right is

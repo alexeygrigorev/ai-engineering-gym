@@ -19,32 +19,32 @@ sources:
 
 answer:
   short: >
-    Text (keyword/lexical) search — usually BM25 — matches the exact tokens in the
+    Text (keyword/lexical) search, usually BM25, matches the exact tokens in the
     query. It's fast, cheap, needs no embedding model, and is unbeatable for exact
     identifiers: product SKUs, error codes, names, acronyms, legal citations. Its
-    weakness is vocabulary mismatch — it misses relevant content that uses different
+    weakness is vocabulary mismatch: it misses relevant content that uses different
     words. Vector (semantic) search embeds the query and documents into a shared
-    space and retrieves by cosine similarity, so it finds content by *meaning* even
+    space and retrieves by cosine similarity, so it finds content by meaning even
     when wording differs (synonyms, paraphrases, cross-lingual). Its weakness is
-    exact matches — it can drift on rare tokens and precise strings. Rule of thumb:
-    keyword for "where is that exact thing?", vector for "what did the user mean?".
-    In practice most production RAG uses hybrid search — run both and fuse the scores
-    (e.g. reciprocal rank fusion) — to get keyword precision plus semantic recall.
+    exact matches: it can drift on rare tokens and precise strings. Use keyword
+    for "where is that exact thing?", vector for "what did the user mean?".
+    In practice most production RAG uses hybrid search: run both and fuse the scores
+    (e.g. reciprocal rank fusion) to get keyword precision plus semantic recall.
   key_points:
-    - "Text/keyword search (BM25): exact-token matching; fast, cheap, no embeddings; best for IDs, codes, names, rare terms"
-    - "Keyword weakness: vocabulary mismatch — misses relevant docs that use different words"
-    - "Vector/semantic search: embed query + docs, retrieve by similarity; finds meaning across synonyms/paraphrase"
+    - "Text/keyword search (BM25): exact-token matching. Fast, cheap, no embeddings. Best for IDs, codes, names, rare terms"
+    - "Keyword weakness: vocabulary mismatch, missing relevant docs that use different words"
+    - "Vector/semantic search: embed query + docs, retrieve by similarity, finds meaning across synonyms/paraphrase"
     - "Vector weakness: can miss exact strings and rare identifiers"
     - "Hybrid search fuses both (e.g. reciprocal rank fusion) and is the usual production default"
 
 follow_ups:
-  - "How would you combine the two scores — what is reciprocal rank fusion?"
-  - "Your users search by part numbers and error codes. Which do you lean on, and why?"
+  - "How would you combine the two scores: what's reciprocal rank fusion?"
+  - "Your users search by part numbers and error codes, so which do you rely on, and why?"
   - "When does pure vector search actively hurt retrieval quality?"
 
 hints:
   - "Think about the two things a query can be about: exact tokens versus meaning."
-  - "One is great for SKUs, error codes, and names; the other is great for synonyms and paraphrases. Which is which, and what's each one's blind spot?"
+  - "One is great for SKUs, error codes, and names, while the other is great for synonyms and paraphrases. Which is which, and what's each one's blind spot?"
   - "Keyword/BM25 = exact match, weak on vocabulary mismatch. Vector = semantic meaning, weak on exact strings. Most production RAG runs both and fuses scores (hybrid search)."
 
 exercises:

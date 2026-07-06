@@ -14,16 +14,7 @@ source_refs: [datainterview-mistral]
 answer:
   approach: >
     Logistic regression models P(y=1|x) = sigmoid(w·x + b). Fit by minimizing the
-    average binary cross-entropy loss plus an L2 penalty (lambda/2)*||w||^2 (do not
-    regularize the bias). The gradient of cross-entropy is beautifully simple: for a
-    single example, dL/dz = (sigmoid(z) - y), so the weight gradient is
-    (p - y)*x + lambda*w and the bias gradient is (p - y). SGD updates the weights
-    after each example (or small minibatch); shuffle each epoch. Early stopping
-    holds out a validation split, tracks its loss each epoch, and stops when it fails
-    to improve for `patience` epochs, restoring the best weights seen. Two numerical
-    details matter: use a numerically stable sigmoid (branch on the sign of z, or use
-    log1p) to avoid exp overflow, and standardize features so the single learning
-    rate works across dimensions.
+    average binary cross-entropy loss plus an L2 penalty (lambda/2)*||w||^2 (don't regularize the bias). The gradient of cross-entropy is beautifully simple. For a single example, dL/dz = (sigmoid(z) - y), so the weight gradient is (p - y)*x + lambda*w and the bias gradient is (p - y). SGD updates the weights after each example (or small minibatch), shuffling each epoch. Early stopping holds out a validation split and tracks its loss each epoch. It stops when the loss fails to improve for `patience` epochs, restoring the best weights seen. Two numerical details matter: use a numerically stable sigmoid (branch on the sign of z, or use log1p) to avoid exp overflow, and standardize features so the single learning rate works across dimensions.
   pseudocode: |
     def sigmoid(z):                      # stable: avoid exp(+large)
         return where(z >= 0, 1/(1+exp(-z)), exp(z)/(1+exp(z)))
@@ -51,9 +42,9 @@ answer:
     time: "O(epochs * n_samples * n_features) for training; O(n_features) per prediction"
     space: "O(n_features) for the weight vector (plus the data)"
 hints:
-  - "The gradient of binary cross-entropy w.r.t. the pre-activation z is just (p - y). That single fact gives you both the weight and bias updates."
-  - "SGD means update per example (shuffle each epoch), not per full pass. L2 adds a lambda*w term to the weight gradient only — never regularize the bias."
-  - "Early stopping needs a validation split: track val loss each epoch, keep the best weights, and stop after `patience` epochs with no improvement. Guard sigmoid against exp overflow."
+  - "The gradient of binary cross-entropy w.r.t. the pre-activation z is just (p - y), which gives you both the weight and bias updates."
+  - "SGD means update per example (shuffle each epoch), not per full pass. L2 adds a lambda*w term to the weight gradient only. Never regularize the bias."
+  - "Early stopping needs a validation split, so track val loss each epoch, keep the best weights, and stop after `patience` epochs with no improvement. Guard sigmoid against exp overflow."
 follow_ups:
   - "How would you switch from pure SGD to minibatch, and what's the trade-off?"
   - "How do you extend this to multiclass (softmax regression)?"

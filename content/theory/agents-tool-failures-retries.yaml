@@ -19,34 +19,34 @@ sources:
 
 answer:
   short: >
-    Feed the failure back to the agent as an observation — the error message plus
-    valid options — so the model can reason about it and self-correct (retry with
-    fixed arguments). Pick the retry policy by error type: rate limits (429) and
-    transient 5xx get exponential backoff with jitter; a bad-argument error lets the
-    model correct and retry; an unrecoverable failure stops and notifies. Make
-    writes idempotent so retries don't double-act: attach an idempotency key / unique
-    requestId that the downstream API dedupes (a GET is safe to retry, a POST is not
-    by default). Cap it all with retry budgets and circuit breakers — open after N
-    failures with a cooldown, alert on error-rate thresholds. Watch for context
+    Feed the failure back to the agent as an observation (the error message plus
+    valid options). Then the model can reason about it and self-correct by retrying
+    with fixed arguments. Pick the retry policy by error type. Rate limits (429) and
+    transient 5xx get exponential backoff with jitter. A bad-argument error lets the
+    model correct and retry. An unrecoverable failure stops and notifies. Make writes
+    idempotent so retries don't double-act. Attach an idempotency key / unique
+    requestId that the downstream API dedupes (a GET is safe to retry, a POST isn't
+    by default). Cap it all with retry budgets and circuit breakers that open after N
+    failures with a cooldown and alert on error-rate thresholds. Watch for context
     contamination: a failure preserved in history can make the agent repeat the same
     bad call, so sometimes prune or reset.
   key_points:
     - "Return the error to the model as an observation so it can reason and self-correct the tool call"
-    - "Retry by error type: 429/5xx → exponential backoff + jitter; bad args → let the model fix; hard failure → stop/notify"
+    - "Retry by error type: 429/5xx → exponential backoff + jitter, bad args → let the model fix, hard failure → stop/notify"
     - "Idempotency: attach an idempotency key / unique requestId so downstream dedupes retried writes (GET safe, POST not by default)"
     - "Retry budgets + circuit breakers: cap retries per turn, open after N failures with a cooldown, alert on error rate"
-    - "Beware context contamination — a preserved failure can make the agent repeat the bad call; prune/reset when needed"
+    - "Beware context contamination: a preserved failure can make the agent repeat the bad call, so prune/reset when needed"
 
 hints:
   - "What should the agent see when a tool call fails, so it can try something smarter?"
-  - "Which failures are worth retrying, and how do you space those retries?"
+  - "Which failures should you retry, and how do you space those retries?"
   - "If a retried 'create order' call runs twice, how do you stop a duplicate order?"
 
 follow_ups:
   - "Which HTTP errors should you retry and which should you fail fast on?"
   - "How do idempotency keys prevent duplicate side effects?"
   - "How do you keep retries from blowing the token/cost budget?"
-  - "What is context contamination and how do you mitigate it?"
+  - "What's context contamination and how do you mitigate it?"
 
 exercises:
   - kind: mcq

@@ -1,0 +1,151 @@
+id: perplexity-search-walkthrough
+category: ai-system-design
+type: walkthrough
+skill: rag
+question: "Design a real-time LLM-powered search engine (like Perplexity.ai)."
+difficulty: hard
+status: draft
+template_ref: sysdesign-rag-template
+source_refs: [colin-zhou, bytebytego-perplexity, igotanoffer]
+
+# My citations, researched for THIS walkthrough's reference answers.
+sources:
+  - key: bytebytego-perplexity
+    title: "ByteByteGo — How Perplexity Built an AI Google"
+    url: "https://blog.bytebytego.com/p/how-perplexity-built-an-ai-google"
+    supports: "five-stage pipeline (intent parse -> live retrieval -> snippet extract -> grounded generate with citations -> refine); Vespa hybrid vector+lexical+ML ranking; ~200B URLs, 400+PB hot storage, ~400M queries/month, tens of thousands of index updates/sec; fine-tuned Sonar models + third-party via Bedrock; classifier routes simple vs complex queries; answers say nothing not retrieved"
+  - key: vespa-perplexity
+    title: "Vespa Blog — Perplexity builds AI Search at scale on Vespa.ai"
+    url: "https://blog.vespa.ai/perplexity-builds-ai-search-at-scale-on-vespa-ai/"
+    supports: "each document stored as text + vector embeddings + structured metadata in one engine; real-time updates and continuous deployment; ~100ms per-query processing latency at thousands of QPS over billions of pages"
+  - key: chip-huyen-platform
+    title: "Chip Huyen — Building a Generative AI Platform"
+    url: "https://huyenchip.com/2024/07/25/genai-platform.html"
+    supports: "hybrid term-based + embedding-based retrieval, model gateway/router, caching, streaming, guardrails, observability"
+  - key: pinecone-rerank
+    title: "Pinecone — Rerankers and Two-Stage Retrieval"
+    url: "https://www.pinecone.io/learn/series/rag/rerankers/"
+    supports: "retrieve many candidates then rerank down to a few; LLM recall degrades as context grows"
+  - key: igotanoffer
+    title: "IGotAnOffer — Generative AI System Design Interview"
+    url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
+    supports: "clarify-first framing, grounding/citations to fight hallucination, cost/latency via routing + caching + streaming, failure modes and eval"
+
+scenario: |
+  Design a real-time, LLM-powered answer engine in the style of Perplexity: a user asks a
+  natural-language question, the system searches the LIVE web, and returns a synthesized
+  answer with inline citations, supporting follow-up questions in a conversation. Assume
+  web-scale freshness (new pages must be answerable quickly), very high query volume, a
+  few-second p95 to full answer with fast time-to-first-token, and a hard grounding bar
+  (never assert anything not found in a source). Answer each step OUT LOUD, then reveal the
+  reference and self-rate.
+
+steps:
+  - phase: clarify
+    prompt: "What do you clarify first? Frame freshness, grounding, scale, and how this differs from closed-corpus RAG."
+    reference: |
+      This is RAG, but over the LIVE WEB, not a fixed corpus — that changes everything.
+      Clarify: (1) Freshness: how fresh must answers be? A news/search product needs
+      near-real-time crawling and indexing, not a nightly batch — Perplexity ingests tens
+      of thousands of index updates per second. (2) Grounding bar: is the answer required to
+      cite sources and say nothing it didn't retrieve? For a search engine, yes — that's the
+      core promise. (3) Scale: web-scale index (Perplexity indexes ~200B URLs, 400+PB hot
+      storage, ~400M queries/month) and high QPS. (4) Latency: fast TTFT with streaming, a
+      few seconds to full answer. (5) Conversation: follow-ups keep context. (6) Cost per
+      query at that volume. State assumptions and confirm before designing. [bytebytego-perplexity, vespa-perplexity, igotanoffer]
+  - phase: high-level
+    prompt: "Sketch the end-to-end pipeline from question to cited answer."
+    reference: |
+      A five-stage online pipeline (Perplexity's shape): (1) QUERY UNDERSTANDING — an LLM
+      parses intent semantically, not by keywords, possibly rewriting/expanding the query.
+      (2) RETRIEVAL — search a live web index for candidate pages. (3) SNIPPET EXTRACTION —
+      pull the most relevant passages/chunks from those pages. (4) GENERATION — an answer
+      model synthesizes a response STRICTLY from the retrieved snippets, attaching inline
+      citations to each claim. (5) REFINEMENT — follow-up questions trigger new searches
+      while keeping dialogue context. Behind it: an OFFLINE crawl+index path keeping the web
+      index fresh, plus cross-cutting layers — a query-complexity router, caching, guardrails,
+      and observability. Stream tokens for fast perceived latency. [bytebytego-perplexity, chip-huyen-platform]
+  - phase: deep-dive
+    prompt: "The live index: how do you crawl and index the web for freshness at scale?"
+    reference: |
+      This is the hard, non-RAG-101 part: a continuously updated web index, not a static
+      vector DB. Crawl the web continuously and, on each page, store it in ONE engine as
+      (a) its text (for lexical/BM25 search), (b) vector embeddings (for semantic search),
+      and (c) structured metadata (URL, domain authority, publish/last-seen time) — Perplexity
+      does this on Vespa. Support REAL-TIME UPDATES and continuous deployment so fresh pages
+      become answerable within seconds and stale ones age out; the system sustains tens of
+      thousands of index-update requests per second while serving queries at thousands of QPS
+      with ~100ms per-query processing latency. Freshness signals (recency) feed ranking so
+      breaking topics surface new pages. [vespa-perplexity, bytebytego-perplexity]
+  - phase: deep-dive
+    prompt: "Retrieval & ranking: how do you find the right pages, and why hybrid + ML ranking?"
+    reference: |
+      Use HYBRID retrieval: lexical/BM25 nails exact terms, names, and rare identifiers;
+      dense vector search captures semantics and paraphrase. Retrieve a broad candidate set
+      combining both (high recall), then apply a MACHINE-LEARNED RANKER that scores
+      candidates on features like lexical relevance, vector similarity, DOMAIN AUTHORITY,
+      FRESHNESS, and user-engagement signals — reordering for precision. This mirrors
+      two-stage retrieval: cheap recall then expensive precision, sending only the best few
+      passages to the LLM (LLM answer quality degrades as you stuff more context). Vespa
+      unifies vector + lexical + structured filtering + ML ranking in one engine so this
+      happens in ~100ms. [bytebytego-perplexity, pinecone-rerank, chip-huyen-platform]
+  - phase: deep-dive
+    prompt: "Generation & grounding: how do you produce a trustworthy cited answer and avoid hallucination?"
+    reference: |
+      The rule: the model may say NOTHING it didn't retrieve. Feed the top extracted snippets
+      to the answer model and instruct it to synthesize ONLY from that context, attaching an
+      inline CITATION to every claim so users can verify each statement against its source.
+      Never treat the LLM as the source of truth — grounding + citations are the core
+      hallucination defense. When retrieval is weak (few or low-relevance sources), don't
+      fabricate: say the sources are thin or ask to narrow the question. Stream the answer
+      with citations as it generates. This grounding contract is exactly what makes it a
+      search engine rather than a chatbot guessing from memory. [bytebytego-perplexity, igotanoffer, chip-huyen-platform]
+  - phase: tradeoffs
+    prompt: "Cost & latency at web scale: how do you keep both in check?"
+    reference: |
+      Route by complexity: a CLASSIFIER decides query difficulty and sends simple queries to
+      a cheap, fast model and only complex ones to a powerful frontier model — Perplexity
+      routes this way, using its own fine-tuned Sonar models plus third-party frontier models
+      (GPT/Claude via Bedrock) behind a gateway. Cache aggressively: exact cache for repeated
+      popular queries, semantic cache for near-duplicates (flag its false-match risk), and
+      cache retrieval results for hot topics. Keep the context sent to the LLM small via
+      ranking + snippet extraction to cut tokens. Stream for fast TTFT. Track cost-per-query
+      and latency per model and per stage. [bytebytego-perplexity, chip-huyen-platform, igotanoffer]
+  - phase: tradeoffs
+    prompt: "What breaks at scale, how do you detect it, and how does it degrade gracefully?"
+    reference: |
+      Name failure modes AND detection. (1) Stale/lagging index: with real-time freshness a
+      slow crawl serves outdated answers — monitor index-update lag and coverage of fresh
+      URLs. (2) Hallucination / uncited claims: run a groundedness/faithfulness check that
+      every claim maps to a source; degrade by abstaining when sources are thin. (3) Low-
+      quality or spammy sources / misinformation: weight domain authority in ranking, and
+      diversify sources. (4) Latency or cost spikes under load: monitor p95, TTFT, cost/query,
+      cache hit rate; degrade to a smaller model, fewer sources, or shorter answers. (5)
+      Prompt injection from a malicious page steering the answer: sanitize retrieved content
+      and constrain generation. Close with the biggest risks (freshness lag, grounding) and
+      what you'd measure and improve first. [bytebytego-perplexity, vespa-perplexity, igotanoffer]
+
+diagram: |
+  graph LR
+    subgraph Crawl [Live crawl / index - real-time]
+      WEB[Web pages] --> CR[Continuous crawler]
+      CR --> IDXW[Extract: text + embeddings + metadata]
+      IDXW --> VES[(Vespa: vector + lexical + structured, ~100ms)]
+    end
+    subgraph Online [Query / Answer]
+      Q[User question] --> QU[Query understanding / rewrite - LLM]
+      QU --> RET[Hybrid retrieve: BM25 + vector]
+      VES --> RET
+      RET --> RANK[ML ranker: relevance + authority + freshness]
+      RANK --> SNIP[Snippet extraction - top passages]
+      SNIP --> ROUTE{Query complexity router}
+      ROUTE -->|simple| SONAR[Fine-tuned Sonar model]
+      ROUTE -->|complex| FRONTIER[Frontier model via gateway]
+      SONAR --> GEN[Generate answer strictly from sources + inline citations]
+      FRONTIER --> GEN
+      GEN --> ANS[Streamed answer + citations]
+      ANS --> FUP[Follow-up keeps context] --> QU
+    end
+    CACHE[(Exact / semantic / retrieval cache)] --- ROUTE
+    OBS[Observability: index lag, groundedness, p95, TTFT, cost/query] -.-> RET
+    OBS -.-> GEN

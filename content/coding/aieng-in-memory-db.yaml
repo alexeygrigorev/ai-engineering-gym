@@ -16,14 +16,11 @@ answer:
   design_approach: >
     A machine-coding / multi-level OOP round: they judge data-model choices and how
     cleanly you extend, not clever algorithms. Model each table as an object holding its
-    column count, a rows container, and a next-id counter. The crucial spec detail people
-    miss: ids auto-increment and never reuse — deleting a row does NOT decrement the
-    counter, and the next insert still gets last_id + 1 even if that row was deleted. So
+    column count, a rows container, and a next-id counter. The spec detail people miss: ids auto-increment and never reuse. Deleting a row doesn't decrement the counter, and the next insert still gets last_id + 1 even if that row was deleted. So
     store rows in a dict keyed by id (not a list), which makes delete O(1) and keeps ids
     stable and sparse. Keep a top-level dict of table_name -> Table. Validate inputs
     (right number of columns, table exists, 1-based column index) and decide error
-    behavior explicitly. Talk through the model before coding; clarify whether column
-    types/names matter or columns are positional.
+    behavior explicitly. Talk through the model before coding. Clarify whether column types/names matter or columns are positional.
   extension_points:
     - level: "L1 — schema + insert with auto-increment"
       approach: >
@@ -49,7 +46,7 @@ answer:
     time: "O(1) insert/delete/select-cell; O(n) export or full-table scan; O(1) indexed equality lookup"
     space: "O(rows * columns), plus O(rows) per secondary index"
 hints:
-  - "Store rows in a dict keyed by id, not a list. The spec's trick is that ids auto-increment forever — deleting a row must not reuse or shift ids."
+  - "Store rows in a dict keyed by id, not a list. The spec requires ids to auto-increment forever. Deleting a row must not reuse or shift ids."
   - "The id counter increments on every insert and is never rolled back by a delete. A dict keyed by id keeps delete and select-cell O(1) and ids stable."
   - "For CSV export, iterate rows in id order. For fast WHERE lookups under follow-ups, add a secondary index (column value -> set of ids) maintained on insert/delete."
 follow_ups:

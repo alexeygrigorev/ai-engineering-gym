@@ -18,8 +18,7 @@ answer:
     a right part, then solve the single-transaction problem (problem 121)
     independently on each side. Take the split that maximizes the sum of the
     two best profits. This split approach costs O(n^2), but an O(n) DP refines
-    it by tracking four running states: best first buy, first sell, second buy,
-    and second sell.
+    it by tracking four running states for the two buys and two sells.
   pseudocode: |
     best121(a, lo, hi): one-pass max single-transaction profit within a[lo:hi]
     answer = best121(prices, 0, n)

@@ -16,7 +16,7 @@ answer:
   approach: >
     Rotating an n x n matrix 90 degrees clockwise in place is transpose-then-reverse.
     First transpose the matrix (swap m[i][j] with m[j][i], touching only one triangle so
-    each pair swaps once). Then reverse each row. The composition of those two O(n^2)
+    each pair swaps once), then reverse each row. The composition of those two O(n^2)
     passes is exactly the clockwise rotation, and it needs no extra matrix.
   pseudocode: |
     # transpose

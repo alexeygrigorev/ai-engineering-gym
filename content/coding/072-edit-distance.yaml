@@ -10,17 +10,17 @@ ai_relevant: false
 hints:
   - "Think about building a table where each cell represents the edit distance between a prefix of one string and a prefix of the other."
   - "Each cell's value comes from the best of three neighboring cells, representing a substitution, a deletion, and an insertion."
-  - "Fill the table bottom-up in O(n1 * n2) time and space, seeding the first row and column with 0, 1, 2, ..."
+  - "Fill the table bottom-up in O(n1 * n2) time and space. Seed the first row and column with 0, 1, 2, ..."
 status: draft
 answer:
   approach: >
-    A DP problem (Levenshtein distance). Keep a table distance[i][j] = the edit distance
-    between the first i characters of s1 and the first j characters of s2. Each cell is the
-    minimum of three moves: substitution — distance[i-1][j-1], plus 1 unless s1[i] == s2[j]
-    (in which case the characters already line up for free); deletion — distance[i-1][j] + 1;
-    and insertion — distance[i][j-1] + 1. Initialize the first row/column to 0,1,2,...
-    (turning an empty string into a prefix costs one edit per character). The answer is
-    distance[n1][n2].
+    Build a DP table (Levenshtein distance), where distance[i][j] is the edit distance
+    between the first i characters of s1 and the first j characters of s2. Each
+    cell is the minimum of three moves. Substitution is distance[i-1][j-1], plus 1 unless
+    s1[i] == s2[j] (in which case the characters already line up for free). Deletion is
+    distance[i-1][j] + 1. Insertion is distance[i][j-1] + 1. Initialize the first
+    row/column to 0,1,2,... (turning an empty string into a prefix costs one edit per
+    character). The answer is distance[n1][n2].
   pseudocode: |
     dp[0][j] = j ; dp[i][0] = i
     for i in 1..n1:

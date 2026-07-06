@@ -9,17 +9,17 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Process the list one group of k nodes at a time rather than reversing the whole list in one go."
-  - "For each group, first confirm k nodes actually remain, then reverse just those k nodes in place and reconnect the previous group's tail to the new group's head."
-  - "Remember the node right after the group before reversing so you can continue correctly, and use a dummy head to simplify stitching the first group; this runs in O(n) time and O(1) space."
+  - "For each group, first confirm k nodes actually remain. Then reverse just those k nodes in place and reconnect the previous group's tail to the new group's head."
+  - "Remember the node right after the group before reversing so you can continue correctly. Use a dummy head to simplify stitching the first group. This runs in O(n) time and O(1) space."
 status: draft
 answer:
   approach: >
-    Walk the list group by group. For each group of k nodes, first check there are k
-    nodes left by advancing to the group end; if fewer than k remain, leave that tail
-    as-is and stop. Otherwise remember the node after the group, reverse the k nodes in
-    place, and wire the previous group's tail to the new head (the old group end) while
-    the old group start becomes the new tail. Continue from the saved next node. A dummy
-    head simplifies stitching the first group.
+    Process the list group by group. For each group of k nodes, first check there are k
+    nodes left by advancing to the group end. If fewer than k remain, leave that tail
+    as-is and stop. Otherwise remember the node after the group and reverse the k nodes
+    in place. Connect the previous group's tail to the new head (the old group end)
+    while the old group start becomes the new tail. Continue from the saved next node.
+    A dummy head simplifies stitching the first group.
   pseudocode: |
     dummy -> head; prev = dummy
     group_start = head

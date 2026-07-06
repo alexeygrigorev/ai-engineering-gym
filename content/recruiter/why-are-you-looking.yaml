@@ -18,38 +18,38 @@ probes:
   - "Are you planning to shut down or step back from DataTalks.Club?"
   - "Is this about money, or something else?"
   - "Why now specifically, and not a year ago or a year from now?"
-  - "How active is your search — are you interviewing a lot of places?"
+  - "How active is your search? Are you interviewing a lot of places?"
 
 rubric:
-  - "Leads with the 'nothing is broken' frame — this is exploration from a position of strength, not a forced move"
+  - "Leads with the 'nothing is broken' frame: this is exploration from a position of strength, not a forced move"
   - "Gives the real 'why now': automating the business created room, and he misses product engineering at larger scale"
   - "Signals selectivity and no urgency ('not in a rush', 'being selective') without sounding uninterested"
   - "States what would make a role worth it: product, team, technical depth, and values align"
-  - "Does not badmouth anything, invent a crisis, or over-explain the founder situation"
-  - "Stays short — this is a reassurance question, not a life story"
+  - "Doesn't badmouth anything, invent a crisis, or over-explain the founder situation"
+  - "Stays short: this is a reassurance question, not a life story"
 
 hints:
-  - "First sentence must be 'not because something is broken' — set the frame before any reasons."
+  - "First sentence must be 'not because something is broken': set the frame before any reasons."
   - "The pull is 'I miss product engineering at larger scale', not a push away from DataTalks.Club."
   - "End on your bar (product, team, depth, values) so 'selective' sounds like standards, not indecision."
 
 example_structure: |
-  # HIS actual narrative — rehearse toward this.
+  # HIS actual narrative: rehearse toward this.
 
   ## Core answer
   "I have been automating more of my business operations, which gives me room to
-  selectively explore. I also miss product engineering at larger scale. I am not
-  in a rush, but I am interested in roles where the product, team, technical
+  selectively explore. I also miss product engineering at larger scale. I'm not
+  in a rush, but I'm interested in roles where the product, team, technical
   depth, and values align."
 
   ## Fuller version (if they want more)
-  "I am not looking because something is broken. I am exploring because I have
-  automated more of my business operations, I miss product engineering at larger
-  scale, and I want to apply AI engineering to a product and team where the
-  values, scope, and technical depth align."
+  "I'm not looking because something is broken. I'm exploring because I have
+  automated more of my business operations and I miss product engineering at
+  larger scale. I also want to apply AI engineering to a product and team where
+  the values, scope, and technical depth align."
 
   ## If pushed on 'why leave your own company'
-  "I'm not stepping away from it in a panic — the automation work I've built means
+  "I'm not stepping away from it in a panic. The automation work I've built means
   it needs less of me day-to-day. That's exactly what freed me up to look for
   where I can do product engineering at a scale I can't reach on my own."
 

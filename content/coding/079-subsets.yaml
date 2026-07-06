@@ -16,9 +16,9 @@ answer:
   approach: >
     There are 2^n subsets of n elements, and each corresponds to an n-bit mask where bit j
     says whether nums[j] is included. So enumerate all masks 0 .. 2^n - 1 and, for each,
-    collect the elements whose bit is set. (Equivalent formulations are a recursive
-    include/exclude backtracking, or the iterative approach that starts with the empty set
-    and, for each new element, appends copies of all existing subsets extended by it.)
+    collect the elements whose bit is set. (An equivalent formulation is recursive
+    include/exclude backtracking. Another starts with the empty set and, for each new
+    element, appends copies of all existing subsets extended by it.)
   pseudocode: |
     result = []
     for mask in 0 .. 2^n - 1:

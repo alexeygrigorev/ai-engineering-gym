@@ -18,7 +18,7 @@ sources:
     supports: "pick a genuine mistake, own it, and show the concrete lesson and change"
 
 probes:
-  - "Why did the mistake happen — what did you miss?"
+  - "Why did the mistake happen, and what did you miss?"
   - "What was the impact, and who else was affected?"
   - "How did you handle it once you realized?"
   - "What specifically did you change afterward?"
@@ -33,20 +33,20 @@ rubric:
   - "Takes full ownership in the first person"
   - "Action shows how you responded: owned it, fixed it, communicated honestly"
   - "The lesson is specific and led to a concrete change in behavior or process"
-  - "Shows growth and that the change stuck; result is honest about impact"
+  - "Shows growth, that the change stuck, and an honest account of impact"
   - "Tone is self-aware and constructive, not defensive or overly self-critical"
 
 example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
-  S (Situation): A real mistake you made (e.g. shipped without a guardrail, made an
-     assumption that broke something, mis-scoped an estimate).
+  S (Situation): A real mistake you made (e.g. shipping without a guardrail, making
+     an assumption that broke something, mis-scoping an estimate).
   T (Task): What you were responsible for.
-  A (Action): The concrete steps YOU took after realizing — owned it, fixed the
+  A (Action): The concrete steps YOU took after realizing: owned it, fixed the
      immediate damage, communicated, then changed the underlying cause.
   R (Result): How it resolved and the durable change you made, plus what you learned.
 
 hints:
-  - "Choose a real mistake with stakes; a disguised strength reads as evasive."
+  - "Choose a real mistake with stakes, because a disguised strength reads as evasive."
   - "Spend little time on the error and most on ownership, the fix, and the lesson."
   - "Make the lesson a concrete process change you can show actually stuck."
 

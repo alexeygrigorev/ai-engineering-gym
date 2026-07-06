@@ -1,0 +1,172 @@
+id: chatgpt-chatbot-walkthrough
+category: ai-system-design
+type: walkthrough
+skill: chatbot
+question: "Design an AI chatbot like ChatGPT (a conversational LLM service at scale)."
+difficulty: hard
+status: draft
+template_ref: sysdesign-rag-template
+source_refs: [igotanoffer, chip-huyen-platform, designgurus, process-analysis]
+
+# My citations, researched for THIS walkthrough's reference answers.
+sources:
+  - key: igotanoffer
+    title: "IGotAnOffer — Generative AI System Design Interview"
+    url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
+    supports: "scope reduction in a 45-min round, streaming to mask latency, context-window/token budgeting, rate limits/retries/idempotency/backpressure to protect providers, model routing + caching + prompt compression for cost"
+  - key: igotanoffer-openai
+    title: "IGotAnOffer — OpenAI System Design Interviews"
+    url: "https://igotanoffer.com/en/advice/openai-system-design-interview"
+    supports: "scale framing — ChatGPT grew to 800M+ weekly users; reduce scope to one slice in a short round"
+  - key: chip-huyen-platform
+    title: "Chip Huyen — Building a Generative AI Platform"
+    url: "https://huyenchip.com/2024/07/25/genai-platform.html"
+    supports: "model gateway (unified access, per-app access control, provider fallback/retry), intent-classifier router, prompt/exact/semantic caching (cached-input discount; semantic cache is risky), input/output guardrails, TTFT and TPS latency metrics, human approval for write actions"
+  - key: openai-memory-help
+    title: "OpenAI Help Center — How does 'Reference saved memories' work?"
+    url: "https://help.openai.com/en/articles/11146739-how-does-reference-saved-memories-work"
+    supports: "two memory mechanisms — explicit saved memories vs inferred reference-chat-history; ChatGPT does not retain every detail; memories change over time"
+  - key: openai-memory-dreaming
+    title: "OpenAI — Dreaming: Better memory for a more helpful ChatGPT"
+    url: "https://openai.com/index/chatgpt-memory-dreaming/"
+    supports: "background 'dreaming' process synthesizes memory from many conversations; memories update and forget over time (e.g. future trip -> past trip); compute cost of serving memory matters"
+  - key: openai-memory-controls
+    title: "OpenAI — Memory and new controls for ChatGPT"
+    url: "https://openai.com/index/memory-and-new-controls-for-chatgpt/"
+    supports: "user controls: turn memory off, view/delete specific memories, temporary chats bypass memory, deleting a chat does not delete its memories"
+
+scenario: |
+  Design an AI chatbot in the style of ChatGPT / Claude chat: a multi-turn conversational
+  assistant backed by a large language model, serving a very large user base (assume tens
+  of millions of daily users, spiky traffic, a p50 time-to-first-token in the low hundreds
+  of milliseconds, and a hard cost-per-message budget). It must keep coherent multi-turn
+  context, stream responses, stay safe, and remember useful facts across conversations.
+  Answer each step OUT LOUD, then reveal the reference and self-rate.
+
+steps:
+  - phase: clarify
+    prompt: "What do you pin down before designing? Frame users, scope, latency, safety, and the memory requirement."
+    reference: |
+      Don't jump in. A ChatGPT-scale system is huge, and in a ~45-minute round you must
+      REDUCE SCOPE to one crucial slice (e.g. the online serving path plus memory), not
+      the whole product. Clarify: (1) Users & product: general-purpose assistant vs a
+      narrow domain? public consumer scale (ChatGPT passed 800M weekly users) means spiky,
+      global, abusive-at-the-edges traffic. (2) Turns & context: multi-turn, so I must
+      manage conversation history against a fixed context window. (3) Latency: streaming
+      chat lives or dies on time-to-first-token (TTFT), so target low-hundreds-ms TTFT and
+      steady tokens-per-second (TPS). (4) Cost: per-token inference is a continuous cost,
+      so I need a cost-per-message budget. (5) Safety: input/output guardrails, abuse,
+      jailbreaks, PII. (6) Memory: do we personalize across conversations? State
+      assumptions and confirm before drawing. [igotanoffer, igotanoffer-openai, chip-huyen-platform]
+  - phase: high-level
+    prompt: "Sketch the end-to-end serving path for one chat message. Name the cross-cutting layers."
+    reference: |
+      Client (streaming UI) -> API gateway / auth + rate limiting -> orchestrator. The
+      orchestrator: loads conversation state, applies INPUT guardrails (PII masking,
+      jailbreak/abuse checks), retrieves relevant long-term MEMORY, assembles the prompt
+      (system prompt + memory + trimmed history + user turn) within the token budget,
+      calls the model through a MODEL GATEWAY, streams tokens back, and runs OUTPUT
+      guardrails on the stream. The model call itself is STATELESS: all needed context is
+      passed per request; the model retains nothing between requests. Cross-cutting
+      layers: model gateway/router (unified multi-provider access, per-app access control,
+      fallback + retry when a provider is down), a multi-layer cache, guardrails, and
+      observability/eval. Conversation history and memory live in stores outside the model.
+      [chip-huyen-platform, igotanoffer]
+  - phase: deep-dive
+    prompt: "Conversation state: how do you keep multi-turn context coherent without blowing the context window?"
+    reference: |
+      Persist each conversation (message list + metadata) in a fast store keyed by
+      conversation id. On each turn, rebuild the prompt from the system prompt + as much
+      recent history as fits the token budget. When history outgrows the window, don't
+      just hard-truncate: keep the latest turns verbatim and REPLACE older turns with a
+      running summary (rolling summarization), so the model keeps the gist without paying
+      for every token. Budget tokens explicitly (reserve room for the reply). This is
+      context/prompt budgeting — a core LLM constraint interviewers probe. Optionally cache
+      the shared prefix (system prompt + stable context) so repeated prefixes are cheaper.
+      [igotanoffer, chip-huyen-platform]
+  - phase: deep-dive
+    prompt: "Cross-conversation memory: how do you make the bot remember useful facts across sessions?"
+    reference: |
+      Two distinct mechanisms, mirroring how ChatGPT does it. (1) EXPLICIT saved memories:
+      facts the user asks to remember (name, preferences), stored as durable structured
+      records and injected into the system prompt. (2) INFERRED memory from chat history:
+      a BACKGROUND process reads across many past conversations and synthesizes salient,
+      reusable facts (OpenAI calls this "dreaming") into a per-user memory store (vector
+      store for semantic recall + structured profile). At query time, retrieve the
+      memories relevant to the current turn (RAG over the user's own memory) and add them
+      to context. Memory must UPDATE and FORGET: revise "going to Singapore in July" to
+      "went to Singapore" once the date passes, and don't retain everything. Give users
+      control: turn memory off, view/delete individual memories, temporary chats that
+      bypass memory. Note the extraction/synthesis is real compute you must budget.
+      [openai-memory-help, openai-memory-dreaming, openai-memory-controls]
+  - phase: deep-dive
+    prompt: "Serving & latency: how do you hit a low TTFT and protect the model providers under spiky load?"
+    reference: |
+      Stream tokens as they generate so the user sees output almost immediately — TTFT is
+      the metric that governs perceived speed; TPS governs the felt "typing" rate. In
+      front of the model, protect providers with rate limits, queues + backpressure,
+      timeouts, retries with idempotency keys, and circuit breakers so a provider hiccup
+      doesn't cascade. The model gateway centralizes routing and provider FALLBACK: if the
+      primary model/endpoint is unavailable, retry or route to an alternate. Scale
+      inference on GPU pools with continuous batching to keep utilization high. Warm
+      capacity for spikes and shed/queue gracefully when saturated. [chip-huyen-platform, igotanoffer]
+  - phase: deep-dive
+    prompt: "Safety: what guardrails do you run, and where?"
+    reference: |
+      Guardrails on BOTH sides. INPUT: mask PII (e.g. replace a phone number with a
+      placeholder), detect jailbreak/prompt-injection and disallowed requests before the
+      model call. OUTPUT: scan the streamed response for toxic/unsafe content, malformed
+      output, and sensitive-data leakage, and be ready to stop/replace the stream. Any
+      action with side effects (tools that write data) must sit behind human approval —
+      you don't let an unreliable model execute irreversible actions on its own. Log
+      everything for audit and abuse investigation. [chip-huyen-platform, igotanoffer]
+  - phase: tradeoffs
+    prompt: "How do you keep cost per message down at tens of millions of users without hurting quality?"
+    reference: |
+      Bend the cost curve rather than just buying GPUs. Caching: cache the shared
+      system-prompt prefix (cached input tokens are heavily discounted), an exact cache for
+      identical requests, and a semantic cache for near-duplicates — but flag that semantic
+      caching is risky, since a wrong similarity match returns a wrong answer. Model
+      tiering / routing: an intent classifier sends easy turns to a small cheap model and
+      only hard turns to the premium model. Compress prompts and summarize history to cut
+      input tokens; cap output length. Track cost-per-message and TTFT/TPS per model and
+      per prompt version through the gateway. [chip-huyen-platform, igotanoffer]
+  - phase: tradeoffs
+    prompt: "What breaks at scale, how do you detect it, and how does the system degrade gracefully?"
+    reference: |
+      Name failure modes AND detection. (1) Provider outage / rate-limit: detect via error
+      rate + latency, degrade by gateway fallback to an alternate model. (2) Latency
+      blowup under spikes: monitor TTFT/TPS, queue depth, GPU utilization; degrade to a
+      smaller model, shorter context, or graceful queueing. (3) Context overflow / lost
+      coherence in long chats: monitor truncation rate; degrade via summarization. (4)
+      Unsafe or hallucinated output: output guardrails + an eval/feedback loop (thumbs
+      up/down) with metrics segmented by model and prompt version. (5) Memory errors —
+      stale or wrong personal facts: version and expire memories, and expose user controls.
+      (6) Cost blowup: monitor cost-per-message and cache hit rate, throttle or downshift
+      models. Close with the biggest risks and what you'd measure and improve first.
+      [chip-huyen-platform, igotanoffer, openai-memory-controls]
+
+diagram: |
+  graph LR
+    U[User chat client - streaming UI] --> GW[API gateway / auth / rate limit]
+    GW --> ORC[Chat orchestrator]
+    ORC --> IG[Input guardrails + PII mask]
+    IG --> HIST[Load + trim history with rolling summary]
+    HIST --> MEM[Retrieve relevant long-term memory]
+    MEM --> PB[Assemble prompt within token budget]
+    PB --> MGW[Model gateway / router + fallback]
+    MGW --> ROUTE{Intent complexity router}
+    ROUTE -->|easy| SMALL[Small cheap model]
+    ROUTE -->|hard| BIG[Premium model]
+    SMALL --> OG[Output guardrails on stream]
+    BIG --> OG
+    OG --> U
+    CONV[(Conversation store)] --- HIST
+    subgraph MemPipe [Cross-conversation memory]
+      DREAM[Background synthesis - dreaming] --> MSTORE[(Per-user memory: vector + profile)]
+      MSTORE --- MEM
+      CONV --> DREAM
+    end
+    CACHE[(Cache: prefix / exact / semantic)] --- MGW
+    OBS[Observability: TTFT, TPS, cost/msg, feedback, guardrail hits] -.-> ORC
+    OBS -.-> OG

@@ -41,16 +41,16 @@ example_structure: |
   S (Situation): A non-technical stakeholder needed to understand a technical
      concept (e.g. why an LLM hallucinates, or why evaluation takes time) to make
      a decision.
-  T (Task): What you owned — get them to a confident, correct-enough mental model.
-  A (Action): The concrete steps YOU took — chose an analogy, stripped jargon,
+  T (Task): What you owned: get them to a confident, correct-enough mental model.
+  A (Action): The concrete steps YOU took: chose an analogy, stripped jargon,
      used a simple diagram or example, paused to check understanding, answered
      their real question.
   R (Result): The decision or outcome that followed (approval, realistic timeline,
      trust) plus a one-line lesson on communicating with non-technical partners.
 
 hints:
-  - "Name the audience and the decision first — that frames why clarity mattered."
-  - "In Action, quote the actual analogy or framing you used; specifics beat 'I explained it simply'."
+  - "Name the audience and the decision first, which frames why clarity mattered."
+  - "In Action, quote the actual analogy or framing you used. Specifics beat 'I explained it simply'."
   - "Close with the decision your explanation unblocked, not just 'they understood'."
 
 # The user's own answer is captured per-user at runtime, NOT stored in this file.

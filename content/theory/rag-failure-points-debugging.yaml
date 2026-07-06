@@ -21,37 +21,37 @@ answer:
   short: >
     Debug RAG by splitting it into retrieval failures and generation failures, then
     isolating which stage broke. Barnett et al.'s "seven failure points" is a good
-    map: (1) missing content — the answer isn't in the corpus at all; (2) missed
-    top-k — it's in the index but ranked too low to be retrieved; (3) not in context
-    — retrieved but dropped during consolidation/reranking or truncated by the
-    context window; (4) not extracted — present in context but the model didn't use
-    it (often noise/distraction); (5) wrong format — ignored a requested output
-    format; (6) incorrect specificity — too vague or too detailed; (7) incomplete —
+    map: (1) missing content: the answer isn't in the corpus at all. (2) missed
+    top-k: it's in the index but ranked too low to be retrieved. (3) not in context:
+    retrieved but dropped during consolidation/reranking or truncated by the
+    context window. (4) not extracted: present in context but the model didn't use
+    it (often noise/distraction). (5) wrong format: ignored a requested output
+    format. (6) incorrect specificity: too vague or too detailed. (7) incomplete:
     misses parts even though the info was retrieved. To debug, instrument each stage:
-    log the retrieved chunks and inspect them independently of the LLM. If the right
-    chunk isn't retrieved, the problem is upstream — chunking, embeddings, or the
+    log the retrieved chunks and look at them independently of the LLM. If the right
+    chunk isn't retrieved, the problem is upstream: chunking, embeddings, or the
     index (fix chunk size, try hybrid search, add a reranker). If the right chunk
-    *was* retrieved but the answer is still wrong, it's a generation/prompt problem —
+    was retrieved but the answer is still wrong, it's a generation/prompt problem:
     context stuffing/order, prompt instructions, or the model. A key insight from the
-    paper: RAG robustness can only really be validated in operation, so you need
+    paper: RAG robustness can only be validated in operation, so you need
     continuous eval, not a one-time design.
   key_points:
     - "Split failures into retrieval-side vs generation-side and isolate the broken stage"
     - "Seven failure points (Barnett et al.): missing content, missed top-k ranking, not in context (consolidation/window), not extracted, wrong format, incorrect specificity, incomplete"
-    - "Debug retrieval first: log/inspect retrieved chunks independently of the LLM"
+    - "Debug retrieval first: log and look at retrieved chunks independently of the LLM"
     - "Wrong chunk retrieved -> fix chunking, embeddings, hybrid search, reranking"
     - "Right chunk retrieved but wrong answer -> prompt/context ordering/model problem"
     - "RAG robustness is validated in operation -> continuous evaluation, not one-time design"
 
 follow_ups:
   - "How do you tell a retrieval failure apart from a generation failure in production?"
-  - "The right chunk is retrieved but the model ignores it — what do you try?"
+  - "The right chunk is retrieved but the model ignores it. What do you try?"
   - "What would a RAG eval suite measure to catch these before users do?"
 
 hints:
   - "Before naming failures, split the pipeline in half: retrieval vs generation. That framing is what interviewers want."
   - "Walk each stage: is the answer even in the corpus? indexed but ranked too low? retrieved but dropped from context? in context but ignored by the model? Each is a different fix."
-  - "Reference the seven failure points (missing content, missed top-k, not in context, not extracted, wrong format, wrong specificity, incomplete). Debug by logging retrieved chunks: wrong chunk = fix retrieval; right chunk + wrong answer = fix prompt/model. Validate continuously in operation."
+  - "Reference the seven failure points (missing content, missed top-k, not in context, not extracted, wrong format, wrong specificity, incomplete). Debug by logging retrieved chunks: wrong chunk = fix retrieval, right chunk + wrong answer = fix prompt/model. Validate continuously in operation."
 
 exercises:
   - kind: mcq

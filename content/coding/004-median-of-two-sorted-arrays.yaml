@@ -8,7 +8,7 @@ difficulty: hard
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "The median is the k-th smallest element across both arrays (or the average of two such elements). Reframe the task as finding the k-th smallest."
+  - "Treat the median as the k-th smallest element across both arrays (or the average of two such elements). Reframe the task as finding the k-th smallest."
   - "Compare the m-th elements of each array, where m = k/2, to see which array's prefix can never contain the answer and discard it, shrinking k."
   - "Discarding roughly half of the remaining elements at each step gives O(log(n+m)) instead of merging in O(n+m)."
 status: draft

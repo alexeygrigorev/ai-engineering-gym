@@ -14,11 +14,11 @@ hints:
 status: draft
 answer:
   approach: >
-    Because the list is sorted, any duplicated value forms a contiguous run, and here we
-    must drop such runs entirely (leaving only values that appear exactly once). Process
+    Because the list is sorted, any duplicated value forms a contiguous run. Here we must
+    drop such runs entirely, leaving only values that appear exactly once. Process
     recursively: if the head's value repeats into the next node, skip the whole run of that
-    value and recurse on the first node past it. Otherwise the head is unique — keep it and
-    recurse on the rest, linking it to the cleaned tail.
+    value and recurse on the first node past it. Otherwise the head is unique, so keep it
+    and recurse on the rest, linking it to the cleaned tail.
   pseudocode: |
     dedup(head):
         if head is null or head.next is null: return head

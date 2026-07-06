@@ -19,23 +19,23 @@ sources:
 
 answer:
   short: >
-    The goal is to make "I don't know" a first-class, rewarded answer instead of
+    Make "I don't know" a first-class, rewarded answer instead of
     letting the model fill the gap. Do it in layers. Prompt/instruction: explicitly
-    tell the model to answer *only* from the provided context and to say it can't
+    tell the model to answer only from the provided context and to say it can't
     find the answer when the context doesn't support one. Retrieval gating: put a
-    relevance/similarity threshold (and ideally a reranker score) on retrieval — if
-    the top chunks fall below it, treat retrieval as empty and short-circuit to a
+    relevance/similarity threshold (and ideally a reranker score) on retrieval. If
+    the top chunks don't clear it, treat retrieval as empty and short-circuit to a
     graceful "I couldn't find that" rather than passing weak context to the model.
     Grounded generation: require citations so every claim is tied to a retrieved
-    span; an uncited claim is a red flag. Verification: optionally add a
+    span. An uncited claim is a red flag. Verification: optionally add a
     self-check/faithfulness pass (LLM-as-judge or NLI) that checks the answer is
     entailed by the context and suppresses or flags unsupported answers. And design
     the UX so abstaining, asking a clarifying question, or escalating to a human is
     an acceptable outcome.
   key_points:
     - "Make abstention a valid answer: instruct the model to answer only from context and to say 'I don't know' when it can't"
-    - "Retrieval gating: similarity/rerank threshold; if nothing clears it, short-circuit instead of feeding weak context"
-    - "Grounded generation with mandatory citations — uncited claims are suspect"
+    - "Retrieval gating: similarity/rerank threshold. If nothing clears it, short-circuit instead of feeding weak context"
+    - "Grounded generation with mandatory citations, since uncited claims are suspect"
     - "Verification pass (faithfulness / NLI / LLM-as-judge) to catch answers not entailed by context"
     - "Fallback UX: clarifying question or human escalation beats a confident fabrication"
 
@@ -46,7 +46,7 @@ follow_ups:
 
 hints:
   - "The core mindset shift: what should the model be allowed to say when it genuinely has nothing?"
-  - "Attack it at two points — before generation (was anything relevant even retrieved?) and after (is every claim actually grounded?)."
+  - "Attack it at two points: before generation (was anything relevant even retrieved?) and after (is every claim actually grounded?)."
   - "Instruct 'answer only from context, else say you don't know' + a retrieval relevance threshold that short-circuits on weak hits + mandatory citations + a faithfulness/verification check. Abstaining or escalating is a valid outcome."
 
 exercises:

@@ -23,12 +23,12 @@ answer:
     instead of only its frozen training weights. Offline, you chunk your documents,
     embed each chunk into a vector, and store those vectors in an index. At query
     time you embed the user's question, retrieve the top-k most similar chunks, paste
-    that context into the prompt, and let the LLM generate a grounded answer — often
-    with citations. The model's weights never change; you're changing what's in the
+    that context into the prompt, and let the LLM generate a grounded answer, often
+    with citations. The model's weights never change, only what's in the
     context window. This reduces hallucinations and lets you serve fresh,
     domain-specific knowledge.
   key_points:
-    - "Retrieval augments the prompt with external context; the model's weights are unchanged (not fine-tuning)"
+    - "Retrieval augments the prompt with external context, and the model's weights are unchanged (not fine-tuning)"
     - "Offline/ingestion path: chunk documents, embed chunks, store vectors in an index"
     - "Online/query path: embed the query, retrieve top-k similar chunks, augment the prompt, generate"
     - "Grounding the answer in retrieved context reduces hallucination and enables source citations"

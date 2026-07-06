@@ -17,60 +17,60 @@ sources:
     supports: "'strongest where AI meets real workflows' as the bridge to fill per company; product/technical-depth/values fit criteria"
 
 probes:
-  - "What specifically about us — not just 'AI is exciting'?"
+  - "What specifically about us, not just 'AI is exciting'?"
   - "What do you know about our product / what we're building?"
   - "Why this role rather than a bigger-name company?"
   - "What would you want to work on in your first 90 days here?"
   - "What would make you turn us down?"
 
 rubric:
-  - "Names something specific and true about THIS company — a product, problem, or workflow — not generic 'you're doing cool AI'"
-  - "Bridges from the specific to his positioning: 'AI meets real workflows — discovery, product engineering, deployment, evals, adoption'"
+  - "Names something specific and true about THIS company (a product, problem, or workflow), not generic 'you're doing cool AI'"
+  - "Bridges from the specific to his positioning: 'AI meets real workflows: discovery, product engineering, deployment, evals, adoption'"
   - "Maps his proof (FAQ Assistant / DataOps / OLX) onto what the role actually needs"
   - "Uses the good-signal language deliberately (own end-to-end, production systems, evals, field learnings inform roadmap) and quietly screens out warning-sign roles"
   - "Shows genuine fit reasoning (product, technical depth, values), consistent with 'being selective', not flattery"
-  - "Sounds researched and per-company, not a reusable template read aloud — the framework is filled, not recited"
+  - "Sounds researched and per-company, not a reusable template read aloud: the framework is filled, not recited"
 
 hints:
-  - "One specific, verifiable detail about them first — a product, a problem they're solving — before anything about you."
+  - "One specific, verifiable detail about them first (a product, a problem they're solving) before anything about you."
   - "Then bridge: their specific thing -> 'AI meets real workflows' -> your matching proof point (FAQ Assistant / DataOps / OLX)."
-  - "This is a reusable frame you fill per company — never let it sound like a template; the specificity is the whole point."
+  - "Fill this reusable frame per company, and never let it sound like a template. The specificity is the whole point."
 
 example_structure: |
-  # A REUSABLE FRAMEWORK Alexey fills per company — rehearse the shape, swap the specifics.
+  # A REUSABLE FRAMEWORK Alexey fills per company: rehearse the structure, swap the specifics.
 
   ## The 4-slot frame
   1. [SPECIFIC HOOK] One concrete, true thing about the company: the product they
      build, the workflow/problem they attack, or a signal from the JD
      ("you own deployments end-to-end", "field learnings feed the roadmap").
   2. [WHY IT RESONATES] Connect it to his center of gravity: "I'm strongest where
-     AI meets real workflows — discovery, product engineering, deployment, evals,
+     AI meets real workflows: discovery, product engineering, deployment, evals,
      and adoption." Say why their specific thing IS that.
-  3. [PROOF MAP] Point to the matching evidence:
+  3. [PROOF MAP] Show the matching evidence:
        - customer/workflow-facing AI product -> FAQ Assistant + DataTalks.Club as
-         a real deployment environment;
-       - internal automation / operations platform -> DataOps;
+         a real deployment environment
+       - internal automation / operations platform -> DataOps
        - platform/infra/serving scale -> OLX production ML & platform work.
   4. [FIT + SELECTIVITY] Close on product / technical depth / values fit, framed as
      a deliberate choice: "I'm being selective, and this is the kind of team where
      the product, the technical depth, and the values line up for me."
 
-  ## Filled example (illustrative — a company that deploys AI into customer workflows)
+  ## Filled example (illustrative: a company that deploys AI into customer workflows)
   "What caught my attention is that you [ship AI directly into customers' real
-  workflows and let those field learnings shape the product roadmap]. That's
-  exactly where I'm strongest — AI meeting real workflows: discovery, building,
+  workflows and let those field learnings inform the product roadmap]. That's
+  exactly where I'm strongest, AI meeting real workflows: discovery, building,
   deploying, evaluating, driving adoption. I've been doing that inside my own
   business: the FAQ Assistant is a production Slack RAG system with evals and a
   feedback loop, and DataOps turns messy operations into semi-automated workflows.
   Before that I did production ML and platform work at OLX. So the role reads as a
-  larger-scale version of what I already do — and being selective, this is the kind
+  larger-scale version of what I already do. Being selective, this is the kind
   of product, depth, and values fit I'm looking for."
 
   ## Prep note (do this per company before the call)
   Fill slot 1 from the JD/site using the 'good signals' vocabulary (own end-to-end,
   production systems, customer discovery, evals, field learnings inform roadmap).
   If the role trips the 'warning signals' (low-code only, implementation
-  consultant, no engineering depth), it's a practice role — calibrate energy
+  consultant, no engineering depth), it's a practice role. Calibrate energy
   accordingly.
 
 # The user's own rehearsed answer is captured per-user at runtime, NOT stored here.

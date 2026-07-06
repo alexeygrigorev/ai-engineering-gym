@@ -12,13 +12,8 @@ ai_relevant: true
 source_refs: [reddit-microsoft-aiml]
 answer:
   approach: >
-    This is base-26 conversion with a twist: it's bijective base-26 (letters A-Z map to
-    1-26), so there is no digit zero. That off-by-one is the whole problem. In ordinary
-    base-26 you'd take n % 26; here you must subtract 1 first at each step so that a
-    multiple of 26 (like 26 -> "Z") maps to the last letter rather than rolling over to a
-    zero. Loop: decrement n by 1, take remainder = n % 26 to pick the letter
-    chr(ord('A') + remainder), then n //= 26; prepend letters because you generate the
-    least-significant one first. The (n-1) adjustment is what makes 26 give "Z" and 27
+    This is base-26 conversion, but bijective: letters A-Z map to 1-26, so there's no digit zero. The whole problem comes down to that off-by-one. In ordinary base-26 you'd take n % 26. Here you must subtract 1 first at each step so that a multiple of 26 (like 26 -> "Z") maps to the last letter rather than rolling over to a zero. Loop: decrement n by 1, take remainder = n % 26 to pick the letter
+    chr(ord('A') + remainder), then n //= 26. Prepend letters because you generate the least-significant one first. The (n-1) adjustment is what makes 26 give "Z" and 27
     give "AA" instead of the naive "A0"/"BA".
   pseudocode: |
     def to_column(n):
@@ -32,14 +27,14 @@ answer:
     time: "O(log_26 n) — one iteration per output letter"
     space: "O(log_26 n) for the result string"
 hints:
-  - "Think base-26, but there's no zero digit — A is 1, not 0. That's why plain n % 26 fails at 26, 52, 702, ..."
-  - "Fix it by decrementing n by 1 at the start of each loop iteration before taking n % 26; then divide n by 26."
+  - "Think base-26, but with no zero digit: A is 1, not 0. That's why plain n % 26 fails at 26, 52, 702, ..."
+  - "Fix it by decrementing n by 1 at the start of each loop iteration before taking n % 26, then divide n by 26."
   - "You produce the least-significant letter first, so build the string in reverse (or prepend)."
 follow_ups:
   - "Why is the (n-1) adjustment needed, and what breaks without it (test n = 26, 52, 702)?"
   - "Write the inverse: convert a column name like 'AAA' back to its number."
   - "How does this bijective base-26 differ from a standard positional base-26 with a zero?"
-  - "How would you handle very large column numbers that overflow a fixed-width integer?"
+  - "How would you handle large column numbers that overflow a fixed-width integer?"
 sources:
   - key: leetcode-168
     title: "LeetCode — 168. Excel Sheet Column Title"

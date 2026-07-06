@@ -19,38 +19,38 @@ sources:
 
 answer:
   short: >
-    The context window is the maximum amount of text — measured in tokens — that an
-    LLM can attend to at once, covering both the input (prompt, system message, history,
-    retrieved docs) and the tokens it generates. It's the model's working memory: nothing
-    outside it exists to the model. When you exceed it, one of a few things happens
-    depending on the tool: the API returns an error, or the input is silently truncated
+    The context window sets the maximum amount of text, measured in tokens, that an
+    LLM can attend to at the same time, covering both the input (prompt, system message,
+    history, retrieved docs) and the tokens it generates. It's the model's working memory:
+    nothing outside it exists to the model. When you exceed it, what happens depends on
+    the tool. The API returns an error, or the input is silently truncated
     (usually dropping the oldest tokens), so the model loses earlier instructions or
-    context and quality degrades. Even below the hard limit, very long contexts suffer
-    "lost in the middle" — the model attends best to the start and end and can miss facts
-    buried in the middle, and attention cost grows roughly quadratically. To handle long
-    documents you don't just cram everything in: (1) chunk and use RAG to retrieve only
-    the relevant passages at query time; (2) summarize or compress — hierarchically /
-    map-reduce for very long docs; (3) truncate deliberately, keeping the parts that
-    matter; (4) roll up conversation history into a running summary. RAG is the default
+    context and quality degrades. Even below the hard limit, long contexts show the
+    "lost in the middle" problem. The model attends best to the start and end but can miss
+    facts buried in the middle, and attention cost grows roughly quadratically. To handle
+    long documents you don't just cram everything in: (1) chunk and use RAG to retrieve
+    only the relevant passages at query time. (2) Summarize or compress (hierarchically /
+    map-reduce for long docs). (3) Truncate deliberately, keeping the parts that
+    matter. (4) Roll up conversation history into a running summary. RAG is the default
     for corpora far larger than any window.
   key_points:
-    - "Context window = max tokens the model can process at once, spanning input + output"
-    - "It is the model's working memory; anything outside it is invisible to the model"
+    - "Context window = max tokens the model can process in a single pass, spanning input + output"
+    - "It's the model's working memory, and anything outside it is invisible to the model"
     - "Exceed it → API error or silent truncation (oldest tokens dropped), losing earlier context and degrading quality"
     - "Even within the limit, long context degrades: 'lost in the middle', higher latency/cost (attention scales ~quadratically)"
-    - "Handle long docs with RAG (chunk + retrieve only relevant parts) — the default when the corpus exceeds any window"
+    - "Handle long docs with RAG (chunk + retrieve only relevant parts), the default when the corpus exceeds any window"
     - "Also: summarize/compress (hierarchical/map-reduce), deliberate truncation, and rolling conversation summaries"
 
 follow_ups:
   - "Why does a 1M-token window not make RAG obsolete?"
-  - "What is the 'lost in the middle' problem and how do you mitigate it?"
+  - "What's the 'lost in the middle' problem and how do you mitigate it?"
   - "How do you decide chunk size and overlap when splitting a long document?"
   - "How do you manage a long multi-turn conversation that keeps growing past the window?"
 
 hints:
-  - "Think of it as the model's working memory measured in a specific unit — what unit, and what does it include besides the prompt?"
+  - "Think of it as the model's working memory measured in a specific unit. What unit, and what does it include besides the prompt?"
   - "Two different failure modes when you go over: a hard one from the API and a quiet one from the tooling. And even under the limit, position matters."
-  - "It's the max tokens (input + output) the model attends to. Exceed it → error or silent truncation; even below it, 'lost in the middle' hurts. Handle long docs with RAG, summarization/compression, and deliberate truncation."
+  - "It's the max tokens (input + output) the model attends to. Exceed it → error or silent truncation. Even below it, 'lost in the middle' hurts. Handle long docs with RAG, summarization/compression, and deliberate truncation."
 
 exercises:
   - kind: mcq

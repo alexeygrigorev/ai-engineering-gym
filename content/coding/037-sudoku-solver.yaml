@@ -8,9 +8,9 @@ difficulty: hard
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "For every empty cell, precompute the set of candidate digits allowed by its row, column, and box, plus the list of other empty cells sharing a unit with it."
-  - "Backtrack by always filling the empty cell with the fewest remaining candidates first, propagating each placement by removing it from peers' candidate sets and pruning if any peer hits zero candidates."
-  - "This constraint-propagation plus most-constrained-cell backtracking is exponential worst case but fast in practice; undo placements and candidate removals on failure."
+  - "For every empty cell, precompute the set of candidate digits allowed by its row, column, and box. Also list the other empty cells sharing a unit with it."
+  - "Backtrack by always filling the empty cell with the fewest remaining candidates first. Propagate each placement by removing it from peers' candidate sets, and prune if any peer hits zero candidates."
+  - "This constraint-propagation plus most-constrained-cell backtracking is exponential worst case but fast in practice. Undo placements and candidate removals on failure."
 status: draft
 answer:
   approach: >
@@ -18,9 +18,9 @@ answer:
     For each empty cell, precompute its candidate digits (those not already used in its
     row, column, or box) and the list of "peer" empty cells that share a unit with it.
     Then solve recursively: always pick the empty cell with the fewest remaining
-    candidates (fail fast). Try each candidate — place it, remove it from all peers'
-    candidate sets, and recurse; if a peer would be left with zero candidates, prune
-    that branch immediately. On failure, restore the digit and the peers' candidates
+    candidates (fail fast). Try each candidate by placing it, removing it from all
+    peers' candidate sets, and recursing. If a peer would be left with zero candidates,
+    prune that branch immediately. On failure, restore the digit and the peers' candidates
     and try the next. When no empty cells remain, the board is solved.
   pseudocode: |
     build candidate sets and peer lists for all empty cells

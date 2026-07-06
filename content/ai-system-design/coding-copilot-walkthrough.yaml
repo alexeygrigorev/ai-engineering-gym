@@ -1,0 +1,166 @@
+id: coding-copilot-walkthrough
+category: ai-system-design
+type: walkthrough
+skill: serving
+question: "Design an AI coding copilot (inline code completion like GitHub Copilot)."
+difficulty: hard
+status: draft
+template_ref: sysdesign-rag-template
+source_refs: [colin-zhou, igotanoffer, chip-huyen-platform]
+
+# My citations, researched for THIS walkthrough's reference answers.
+sources:
+  - key: gh-understanding
+    title: "GitHub Blog — How GitHub Copilot is getting better at understanding your code"
+    url: "https://github.blog/ai-and-ml/github-copilot/how-github-copilot-is-getting-better-at-understanding-your-code/"
+    supports: "fill-in-the-middle (prefix/suffix, ~10% relative acceptance lift); ~6000-char context budget for a fast model; neighboring-tabs context from open files (~5% acceptance lift with a low inclusion threshold)"
+  - key: gh-inside
+    title: "GitHub Blog — Inside GitHub: Working with the LLMs behind GitHub Copilot"
+    url: "https://github.blog/ai-and-ml/github-copilot/inside-github-working-with-the-llms-behind-github-copilot/"
+    supports: "prompt crafting builds a pseudo-document; sub-300ms average end-to-end completion latency at millions of completions/day; neighboring-tab text gave a large lift in acceptance/characters retained"
+  - key: gh-custom-model
+    title: "GitHub Blog — The road to better completions: a new custom model"
+    url: "https://github.blog/ai-and-ml/github-copilot/the-road-to-better-completions-building-a-faster-smarter-github-copilot-with-a-new-custom-model/"
+    supports: "a purpose-built completion model traded for speed: 35% lower latency, 3x throughput; chat/agent models cause cursor-misaligned inserts and prefix/suffix duplication — inline completion is a distinct serving problem"
+  - key: copilot-internals
+    title: "copilot-explorer — Copilot Internals (reverse-engineered client behavior)"
+    url: "https://thakkarparth007.github.io/copilot-explorer/posts/copilot-internals.html"
+    supports: "client debounce (~75ms) while typing; a small logistic-regression 'contextual filter' (~11 features, ~15% threshold) decides whether to even call the model; aggressive caching of results and suffix; request only 1-3 suggestions to stay fast"
+  - key: cody-lifecycle
+    title: "Sourcegraph — The lifecycle of a code AI completion"
+    url: "https://sourcegraph.com/blog/the-lifecycle-of-a-code-ai-completion"
+    supports: "sub-second latency goal for ghost text; smart throttle, cancel/recycle in-flight requests, stream and truncate early, Tree-sitter syntactic triggers to suppress low-value completions"
+  - key: chip-huyen-platform
+    title: "Chip Huyen — Building a Generative AI Platform"
+    url: "https://huyenchip.com/2024/07/25/genai-platform.html"
+    supports: "model gateway, caching, TTFT metric, guardrails; contrast of completion serving vs chat/agent orchestration"
+
+scenario: |
+  Design an AI coding copilot that gives inline "ghost text" completions inside an IDE as
+  the developer types (in the style of GitHub Copilot). It serves millions of developers,
+  fires a completion request on almost every keystroke pause, and must feel instant:
+  target sub-300ms end-to-end for the common case and sub-second worst case, at a
+  per-completion cost low enough to be sustainable. Contrast this with a chat/agent mode
+  later. Answer each step OUT LOUD, then reveal the reference and self-rate.
+
+steps:
+  - phase: clarify
+    prompt: "What do you clarify first? Frame the product surface, latency bar, and what makes copilot different from a chatbot."
+    reference: |
+      Clarify the surface and the constraints. (1) Which surface: INLINE completion (ghost
+      text mid-file) vs a chat/agent panel? They're different systems — inline is a
+      latency-obsessed completion server, chat is an orchestration problem. Assume inline
+      first. (2) Latency: inline completion is triggered constantly and must feel instant;
+      GitHub targets sub-300ms average end-to-end, and ghost text generally needs to be
+      under a second. Latency, not raw model quality, dominates the UX. (3) Cost: at
+      millions of developers and a request per typing pause, most requests must be cheap or
+      skipped entirely. (4) Quality: fill-in-the-middle correctness, matching the
+      surrounding code style, not just left-to-right generation. (5) Privacy/trust: code
+      is sensitive IP. State assumptions and confirm. [gh-inside, gh-understanding, cody-lifecycle]
+  - phase: high-level
+    prompt: "Sketch the end-to-end path of one completion, from keystroke to ghost text."
+    reference: |
+      Mostly client-driven. In the IDE: the user types -> DEBOUNCE (wait ~75ms so we don't
+      fire on every keystroke) -> a client-side GATE decides whether a completion is even
+      worth requesting -> gather CONTEXT (code before/after cursor + snippets from
+      neighboring open tabs) -> build the FILL-IN-THE-MIDDLE prompt -> send to the
+      completion service -> a fast, purpose-built completion model generates -> STREAM
+      tokens back, truncate early once we have a coherent suggestion -> render as ghost
+      text -> user accepts (Tab) or keeps typing (implicit reject). Server side: a thin
+      completion service behind a model gateway routing to GPU inference, plus caching and
+      light output filtering. The whole loop is optimized to add as little latency as
+      possible; snippet selection is done without stalling thanks to caching. [gh-inside, copilot-internals, cody-lifecycle]
+  - phase: deep-dive
+    prompt: "Context assembly: how do you build a good prompt within a tiny latency and token budget?"
+    reference: |
+      Prompt crafting = building a "pseudo-document" that leads the model to the completion
+      the developer wants. Use FILL-IN-THE-MIDDLE: give the model the PREFIX (code before
+      the cursor) and the SUFFIX (code after), so it generates code that fits between them,
+      not just continues forward — GitHub measured ~10% relative acceptance lift from FIM.
+      Enrich with NEIGHBORING TABS: search other open files for text similar to the code
+      around the cursor and splice in the best matches (a deliberately LOW inclusion
+      threshold worked best, ~5% acceptance lift). All of this must fit a small context
+      budget — for a model fast enough to serve inline, usable context is only ~6000
+      characters — so you select, prioritize, and filter snippets in real time. Add file
+      path/language hints. [gh-understanding, gh-inside]
+  - phase: deep-dive
+    prompt: "How do you decide whether to even call the model? (this is the main cost lever)"
+    reference: |
+      Don't call the model on every pause — most keystrokes don't warrant a completion, and
+      calls cost money and latency. Two gates: (1) SYNTACTIC suppression — use a parser
+      (e.g. Tree-sitter) to skip low-value positions, like right after a completed
+      statement. (2) A cheap CONTEXTUAL FILTER — a small logistic-regression model over
+      lightweight features (language, whether the last suggestion was accepted or rejected,
+      time since last accept/reject, last line length, char before the cursor) predicts
+      whether a suggestion is likely to be accepted; if it scores below a threshold (~15%),
+      skip the LLM call entirely. This filter is the primary cost/quality gate. Combine
+      with client DEBOUNCE (~75ms) and requesting only 1-3 candidates to stay fast.
+      [copilot-internals, cody-lifecycle]
+  - phase: deep-dive
+    prompt: "Serving: why a purpose-built completion model, and how do you keep in-flight requests cheap?"
+    reference: |
+      Inline completion is a DIFFERENT serving problem from chat. Chat/agent models, used
+      for inline, produce cursor-misaligned inserts and duplicate the prefix or overwrite
+      the suffix. A model trained specifically for FIM completion is both more correct AND
+      much faster — GitHub's custom completion model cut latency ~35% and tripled
+      throughput. Keep the model small and fast; use continuous batching on GPUs for
+      utilization. On the client, aggressively CANCEL/RECYCLE in-flight requests: when the
+      user keeps typing, cancel the stale request (and sometimes reuse a request across
+      nearby keystrokes) so you're never paying for outdated completions. Cache model
+      results and even the suffix across calls. Stream and TRUNCATE EARLY once the
+      suggestion is a coherent unit rather than waiting for the full response. [gh-custom-model, copilot-internals, cody-lifecycle]
+  - phase: deep-dive
+    prompt: "How do you evaluate a copilot, given there's no single 'correct' completion?"
+    reference: |
+      The north-star online metric is ACCEPTANCE RATE (did the developer keep the
+      suggestion via Tab) and, better, CHARACTERS RETAINED after some time (did the code
+      survive, not just get accepted then deleted). A/B test every change — FIM,
+      neighboring tabs, the contextual-filter threshold, and the custom model were all
+      validated by measured acceptance lifts. Watch latency percentiles (p50/p95 TTFT and
+      end-to-end) as a first-class quality metric, since slow completions get ignored.
+      Offline, use held-out code with masked spans to score FIM correctness. Segment by
+      language, since acceptance and useful context differ a lot across languages. [gh-understanding, gh-inside, gh-custom-model]
+  - phase: tradeoffs
+    prompt: "What's the core tension, and how does a chat/agent mode differ from inline completion?"
+    reference: |
+      The central tension is LATENCY/COST vs QUALITY: a bigger model or more context raises
+      acceptance but blows the latency and cost budget that inline completion lives under —
+      so the whole design is 'smallest fast model + tightest useful context + skip when in
+      doubt.' A CHAT/AGENT mode flips the priorities: the user tolerates seconds of
+      latency, so you use a larger model, a much bigger context (repo-scale retrieval /
+      RAG over the codebase), multi-step tool use (read files, run tests, edit), and heavier
+      guardrails — that's an orchestration problem sitting behind a model gateway, not a
+      keystroke-latency problem. Same product, two very different backends. [gh-custom-model, chip-huyen-platform]
+  - phase: tradeoffs
+    prompt: "What breaks at scale, how do you detect it, and how does it degrade gracefully?"
+    reference: |
+      Name failure modes AND detection. (1) Latency regressions: monitor p50/p95 end-to-end
+      and TTFT; degrade by shrinking context, dropping to a smaller model, or suppressing
+      completions when the backend is slow. (2) Cost blowup from over-triggering: watch
+      call rate vs acceptance and cache hit rate; tighten the contextual-filter threshold
+      and debounce. (3) Wasted spend on cancelled requests: ensure in-flight cancellation
+      actually stops GPU work. (4) Bad/insecure suggestions (leaking secrets, vulnerable
+      patterns): output filtering and public-code matching. (5) Privacy: don't retain code
+      you shouldn't; scope any retrieval to the user's own repos. Close with the biggest
+      risks and what you'd tune first (usually the trigger gate and the latency budget).
+      [copilot-internals, gh-inside, chip-huyen-platform]
+
+diagram: |
+  graph LR
+    subgraph IDE [IDE client]
+      K[Keystrokes] --> DEB[Debounce ~75ms]
+      DEB --> SYN[Syntactic trigger check - Tree-sitter]
+      SYN --> CF{Contextual filter score >= threshold?}
+      CF -->|no| SKIP[Skip - no request]
+      CF -->|yes| CTX[Gather prefix + suffix + neighboring tabs]
+      CTX --> FIM[Build fill-in-the-middle prompt <= 6000 chars]
+      GT[Render ghost text - truncate early] --> ACC{Accept / keep typing}
+    end
+    FIM --> GW[Completion service / model gateway]
+    GW --> M[Fast purpose-built FIM model - continuous batching]
+    M --> OF[Output filter + secret/public-code check]
+    OF --> GT
+    CANCEL[Cancel / recycle stale in-flight request] -.-> GW
+    CACHE[(Result + suffix cache)] --- GW
+    ACC -->|accept / retained| OBS[Observability: acceptance rate, chars retained, p95 latency, cost, by language]
+    OBS -.-> CF

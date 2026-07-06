@@ -9,16 +9,16 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Eviction needs both a frequency ordering and a recency tiebreaker among equally-frequent entries."
-  - "Keep a hash map from key to node plus a structure ordering nodes by (frequency, last-used time), updating both on every get and put by removing and reinserting the touched node."
-  - "An ordered-set version costs O(log n) per operation; the true O(1) design instead chains a doubly linked list per frequency bucket."
+  - "Keep a hash map from key to node plus a structure ordering nodes by (frequency, last-used time). Update it on each get and put by reinserting the touched node."
+  - "An ordered-set version costs O(log n) per operation. The true O(1) design instead chains a doubly linked list per frequency bucket."
 status: draft
 answer:
   approach: >
     Evict the least-frequently-used entry, breaking ties by least-recently-used.
     This design keeps a hash map key -> node plus an ordered set of nodes sorted
-    by (frequency, last-use timestamp); get and put bump a node's frequency and
-    timestamp by removing and reinserting it, and eviction removes the set's
-    first (smallest) node - O(log n) per operation. The O(1) design instead
+    by (frequency, last-use timestamp). Both get and put bump a node's frequency
+    and timestamp, then remove and reinsert it. Eviction removes the set's
+    first (smallest) node, at O(log n) per operation. The O(1) design instead
     chains a doubly linked list per frequency bucket.
   pseudocode: |
     nodes: key -> node(freq, last_used, value)

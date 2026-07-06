@@ -19,32 +19,32 @@ sources:
 
 answer:
   short: >
-    At 10M+ documents (often 100M+ chunks) brute-force similarity is off the table,
+    At 10M+ documents (often 100M+ chunks) brute-force similarity is impractical,
     so scaling is about the index, the topology, and a staged retrieval funnel.
-    Index: use an approximate nearest neighbor (ANN) index — HNSW for high
-    recall/low latency, IVF for memory-efficient clustering — instead of exact
-    search; both trade a little recall for a huge latency win. Memory: 10M+
+    Index: use an approximate nearest neighbor (ANN) index (HNSW for high
+    recall/low latency, IVF for memory-efficient clustering) instead of exact
+    search. Both trade a little recall for a huge latency win. Memory: 10M+
     high-dimensional vectors is terabytes of RAM, so compress with product
     quantization (PQ) to cut memory ~an order of magnitude at some recall cost.
     Topology: shard the index across nodes (partition the vectors, query all shards
     in parallel, aggregate the top results) and replicate shards to handle query
     volume and stay available. Retrieval funnel: do cheap high-recall ANN to pull a
     few hundred candidates, then an expensive high-precision reranker (cross-encoder)
-    on just those — you don't rerank 10M docs, only the shortlist. Add metadata
+    on just those. You don't rerank 10M docs, only the shortlist. Add metadata
     filtering to prune the search space (recency, source, ACLs), a semantic cache for
     repeated queries, and asynchronous/batched ingestion so the index stays fresh
     without blocking. Throughout it's a recall-vs-latency-vs-cost-vs-memory
     trade-off, so you need continuous eval to know where you sit.
   key_points:
-    - "Use ANN indexes (HNSW / IVF), not exact search — trade a little recall for large latency gains"
-    - "Compress with product quantization (PQ) — 10M+ high-dim vectors is terabytes of RAM"
+    - "Use ANN indexes (HNSW / IVF), not exact search, trading a little recall for large latency gains"
+    - "Compress with product quantization (PQ): 10M+ high-dim vectors is terabytes of RAM"
     - "Shard the index across nodes (parallel query + aggregate) and replicate for throughput/availability"
     - "Two-stage funnel: cheap high-recall ANN -> rerank only the shortlist with a cross-encoder"
-    - "Metadata filtering (recency/source/ACL) to prune search space; semantic cache for repeated queries"
-    - "Async/batched ingestion to keep the index fresh; continuous eval on recall-latency-cost-memory trade-offs"
+    - "Metadata filtering (recency/source/ACL) to prune search space, semantic cache for repeated queries"
+    - "Async/batched ingestion to keep the index fresh, continuous eval on recall-latency-cost-memory trade-offs"
 
 follow_ups:
-  - "HNSW vs IVF vs IVF-PQ — how do you choose for 10M vectors at low latency?"
+  - "HNSW vs IVF vs IVF-PQ: how do you choose for 10M vectors at low latency?"
   - "How do you keep the index fresh as new articles arrive without downtime?"
   - "Why rerank only a shortlist instead of the whole corpus?"
 

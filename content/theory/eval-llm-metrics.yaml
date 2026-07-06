@@ -27,32 +27,32 @@ sources:
 answer:
   short: >
     Pick metrics by task type, and always cover quality, operations, and safety.
-    For classification/extraction use accuracy, precision/recall, F1, exact match;
-    for ranking/retrieval use recall@k, MRR, nDCG. For generated text, reference-based
+    For classification/extraction use accuracy, precision/recall, F1, exact match.
+    For ranking/retrieval use recall@k, MRR, nDCG. For generated text, reference-based
     overlap metrics (BLEU, ROUGE, METEOR) are cheap but weak because they measure
-    n-gram overlap, not meaning; BERTScore adds semantic similarity but still needs a
+    n-gram overlap, not meaning. BERTScore adds semantic similarity but still needs a
     reference. For open-ended output, use a reference-free LLM-as-judge (e.g. G-Eval),
-    which correlates far better with humans — but validate it against human labels. RAG
+    which correlates far better with humans, but validate it against human labels. RAG
     needs decomposed metrics: faithfulness and answer relevance for generation, context
     precision and context recall for retrieval. Always add operational metrics (latency
     p50/p95, cost per request, throughput) and safety metrics (toxicity, bias,
     hallucination rate), and keep human eval as the calibration gold standard.
   key_points:
-    - "Choose metrics by task: accuracy/precision/recall/F1/exact-match for classification-extraction; recall@k, MRR, nDCG for retrieval/ranking"
-    - "Reference-based text metrics (BLEU, ROUGE, METEOR) measure n-gram overlap, not meaning; BERTScore adds semantic similarity but still needs a reference"
-    - "For open-ended output use reference-free LLM-as-judge (G-Eval), which correlates better with humans — but validate the judge against human labels"
+    - "Choose metrics by task: accuracy/precision/recall/F1/exact-match for classification-extraction, and recall@k, MRR, nDCG for retrieval/ranking"
+    - "Reference-based text metrics (BLEU, ROUGE, METEOR) measure n-gram overlap, not meaning. BERTScore adds semantic similarity but still needs a reference"
+    - "For open-ended output use reference-free LLM-as-judge (G-Eval), which correlates better with humans, but validate the judge against human labels"
     - "RAG needs decomposed metrics: faithfulness + answer relevance (generation) and context precision + context recall (retrieval)"
     - "Always include operational metrics: latency (p50/p95), cost per request/token, throughput"
-    - "Include safety metrics — toxicity, bias, hallucination rate — and keep human eval as the calibration gold standard"
+    - "Include safety metrics (toxicity, bias, hallucination rate) and keep human eval as the calibration gold standard"
 
 hints:
-  - "Metrics depend on the task — start by grouping by task type (classification, retrieval, generation)."
+  - "Metrics depend on the task, so start by grouping by task type (classification, retrieval, generation)."
   - "Don't forget the non-quality axes an interviewer wants to hear about."
   - "Task metrics (F1/exact-match, recall@k/MRR/nDCG), generation (BLEU/ROUGE/BERTScore, LLM-as-judge), RAG (faithfulness, context precision/recall), plus latency, cost, and safety."
 
 follow_ups:
-  - "BLEU/ROUGE are high but users say the answers are wrong — what's happening, and what would you measure instead?"
-  - "Your RAG answer-relevance is high but faithfulness is low — what does that tell you, and where do you fix it?"
+  - "BLEU/ROUGE are high but users say the answers are wrong. What's happening, and what would you measure instead?"
+  - "Your RAG answer-relevance is high but faithfulness is low. What does that tell you, and where do you fix it?"
   - "How do you trade off answer quality against latency and cost when choosing a production model?"
 
 exercises:

@@ -38,7 +38,7 @@ answer:
     versioned regression eval set in CI so prompt- and model-version changes can't
     silently degrade quality.
   key_points:
-    - "LLM decoding is non-deterministic. Temperature=0 reduces variance but doesn't guarantee identical output (batching, floating-point, no stable seed)"
+    - "LLM decoding is non-deterministic, and temperature=0 reduces variance but doesn't guarantee identical output (batching, floating-point, no stable seed)"
     - "Constrain the output surface: structured outputs / JSON-schema-constrained decoding or function calling guarantees the structure"
     - "Add deterministic post-processing: schema and business-rule validators with bounded retries / re-ask on failure"
     - "Raise accuracy with prompt engineering, retrieval grounding, and self-consistency (sample N, majority vote) for high-stakes answers"

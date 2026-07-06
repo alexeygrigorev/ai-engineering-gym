@@ -8,16 +8,16 @@ difficulty: hard
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "The median only depends on the boundary between the lower and upper halves of the data."
-  - "Keep a max-heap for the smaller half and a min-heap for the larger half, rebalancing after each insert so the sizes differ by at most one."
+  - "The median only depends on the boundary between the lower and upper parts of the data."
+  - "Keep a max-heap for the smaller half and a min-heap for the larger half. Rebalance after each insert so the sizes differ by at most one."
   - "This gives O(log n) inserts and O(1) median lookup from the two heap tops."
 status: draft
 answer:
   approach: >
-    Keep the stream split into two halves: a max-heap holding the smaller half
+    Keep the stream split into two parts: a max-heap holding the smaller half
     and a min-heap holding the larger half, kept balanced in size. On each
     insert, push into one heap and rebalance so the two sizes differ by at most
-    one; the median is then the top of the larger heap (odd count) or the
+    one. The median is then the top of the larger heap (odd count) or the
     average of the two tops (even count). Both heaps expose the boundary
     elements around the median in O(1), with O(log n) inserts.
   pseudocode: |

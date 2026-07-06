@@ -21,36 +21,36 @@ answer:
   short: >
     Both come from the confusion matrix and answer different questions about the positive
     class. Precision = TP / (TP + FP): of everything the model flagged positive, what
-    fraction really was — it punishes false positives. Recall (sensitivity) = TP / (TP + FN):
-    of all the actual positives, what fraction did the model catch — it punishes false
+    fraction was correct, punishing false positives. Recall (sensitivity) = TP / (TP + FN):
+    of all the actual positives, what fraction did the model catch, punishing false
     negatives. There's a tradeoff: pushing the decision threshold to catch more positives
     (higher recall) usually lets in more false alarms (lower precision), and vice versa.
     Which you optimize depends on the cost of each error type. Optimize recall when missing
-    a positive is expensive — disease screening, fraud detection, security — you'd rather
+    a positive is expensive (disease screening, fraud detection, security). You'd rather
     tolerate false alarms than miss a real case. Optimize precision when a false positive
-    is costly or annoying — spam filtering, recommending content, flagging accounts for
-    suspension — you don't want to wrongly act on negatives. When you need one number that
-    balances both, use the F1 score (harmonic mean of precision and recall), which is far
+    is costly or annoying (spam filtering, recommending content, flagging accounts for
+    suspension). You don't want to wrongly act on negatives. When you need one number that
+    balances both, use the F1 score (harmonic mean of precision and recall). It's far
     more informative than accuracy on imbalanced data, where a majority-class baseline can
     look "accurate" while catching none of the minority class.
   key_points:
-    - "Precision = TP / (TP + FP): correctness of positive predictions; penalizes false positives"
-    - "Recall = TP / (TP + FN): coverage of actual positives; penalizes false negatives"
+    - "Precision = TP / (TP + FP): correctness of positive predictions, penalizing false positives"
+    - "Recall = TP / (TP + FN): coverage of actual positives, penalizing false negatives"
     - "Precision-recall tradeoff: moving the threshold trades one for the other"
     - "Optimize recall when false negatives are costly (disease, fraud, security)"
     - "Optimize precision when false positives are costly (spam, recommendations, account suspension)"
-    - "F1 = harmonic mean of precision and recall — one balanced number"
-    - "On imbalanced data, accuracy is misleading; precision/recall/F1 are the right lens"
+    - "F1 = harmonic mean of precision and recall, one balanced number"
+    - "On imbalanced data, accuracy is misleading, so precision/recall/F1 are the right lens"
 
 follow_ups:
   - "How does moving the classification threshold change precision and recall?"
   - "When would you use the F1 score versus AUC-ROC versus PR-AUC?"
   - "Why is accuracy a bad metric for a 99%-negative dataset?"
-  - "What is the difference between recall and specificity?"
+  - "What's the difference between recall and specificity?"
 
 hints:
-  - "Both focus on the positive class but count different mistakes — one cares about false positives, the other about false negatives."
-  - "Ask 'of what I flagged, how much was right?' versus 'of all the real positives, how many did I catch?' — those are the two metrics."
+  - "Both focus on the positive class but count different mistakes: one cares about false positives, the other about false negatives."
+  - "Ask 'of what I flagged, how much was right?' (precision) versus 'of all the real positives, how many did I catch?' (recall)."
   - "Precision = TP/(TP+FP), penalizes false positives. Recall = TP/(TP+FN), penalizes false negatives. Optimize recall when misses hurt (fraud/disease), precision when false alarms hurt (spam). F1 balances both."
 
 exercises:

@@ -14,14 +14,11 @@ source_refs: [khushal-kumar]
 answer:
   approach: >
     Two standard answers, and interviewers like to hear you compare them. Trial division:
-    for each candidate m, test divisibility only up to sqrt(m) — if no divisor is found,
-    m is prime. The sqrt bound is the key insight (any factor larger than sqrt(m) pairs
-    with one smaller than sqrt(m)), and you only need to test odd divisors after 2. Sieve
+    for each candidate m, test divisibility only up to sqrt(m). If no divisor is found, m is prime. The sqrt bound works because any factor larger than sqrt(m) pairs with one smaller than sqrt(m), and you only need to test odd divisors after 2. Sieve
     of Eratosthenes: mark a boolean array [2..n] all prime, then for each still-prime p,
-    strike out its multiples starting at p*p; whatever stays marked is prime. For a small
+    strike out its multiples starting at p*p. Whatever stays marked is prime. For a small
     fixed bound like 100 either is instant, but the sieve is the better answer for "all
-    primes up to n" and shows you know the classic. Mention the edge cases: 0 and 1 are
-    not prime, 2 is the only even prime.
+    primes up to n" and shows you know the classic. Mention the edge cases: 0 and 1 aren't prime, 2 is the only even prime.
   pseudocode: |
     # Trial division
     def is_prime(m):
@@ -45,13 +42,13 @@ answer:
     time: "Trial division O(n * sqrt(n)); sieve O(n log log n)"
     space: "O(1) for trial division; O(n) for the sieve's boolean array"
 hints:
-  - "For a single number, only test divisors up to sqrt(m) — a larger factor always pairs with a smaller one. Handle 0, 1, and 2 as special cases."
+  - "For a single number, only test divisors up to sqrt(m). A larger factor always pairs with a smaller one. Handle 0, 1, and 2 as special cases."
   - "For all primes up to n, the Sieve of Eratosthenes beats testing each number: mark multiples as composite."
   - "In the sieve you can start striking multiples of p at p*p (smaller multiples were already struck by smaller primes)."
 follow_ups:
   - "Why can you stop trial division at sqrt(m)?"
   - "Why does the sieve start crossing out at p*p rather than 2*p?"
-  - "How would you reduce the sieve's memory for very large n (segmented sieve, odds-only)?"
+  - "How would you reduce the sieve's memory for large n (segmented sieve, odds-only)?"
   - "How does trial division's O(n*sqrt(n)) compare to the sieve as n grows large?"
 sources:
   - key: gfg-sieve

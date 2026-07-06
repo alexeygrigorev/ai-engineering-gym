@@ -1,0 +1,164 @@
+id: document-processing-walkthrough
+category: ai-system-design
+type: walkthrough
+skill: scaling
+question: "Design a large-scale document-processing pipeline (e.g. extract structured data from payslips, IDs, and references)."
+difficulty: hard
+status: draft
+template_ref: sysdesign-rag-template
+source_refs: [igotanoffer, proptech-founder-1, proptech-founder-2]
+
+# My citations, researched for THIS walkthrough's reference answers.
+sources:
+  - key: aws-idp
+    title: "AWS — Guidance for Intelligent Document Processing on AWS"
+    url: "https://docs.aws.amazon.com/solutions/intelligent-document-processing-on-aws/"
+    supports: "event-driven serverless ingestion (S3/SES -> EventBridge -> Lambda), tracking records, validate against business rules with bounded retries then human review after 3 failures, new/unknown doc types go to human review, PII/PHI detection + redaction and encryption, async/batch to optimize cost"
+  - key: aws-textract-async
+    title: "AWS — Processing Documents Asynchronously (Amazon Textract)"
+    url: "https://docs.aws.amazon.com/textract/latest/dg/async.html"
+    supports: "sync ops for single-page near-real-time vs async ops for large multipage PDF/TIFF returning a JobId and publishing completion to SNS"
+  - key: aws-textract-quotas
+    title: "AWS — Modifying Default Quotas in Amazon Textract"
+    url: "https://docs.aws.amazon.com/textract/latest/dg/limits-quotas-explained.html"
+    supports: "per-region TPS/concurrency quotas cause LimitExceededException; queueing serverless architecture to smooth spiky traffic, retries with exponential backoff + jitter"
+  - key: aws-textract-bedrock
+    title: "AWS — Intelligent document processing with Textract, Bedrock, and LangChain"
+    url: "https://aws.amazon.com/blogs/machine-learning/intelligent-document-processing-with-amazon-textract-amazon-bedrock-and-langchain/"
+    supports: "OCR (Textract) then LLM phases: classification, extraction/summarization, normalization to a defined JSON output schema, correction"
+  - key: azure-confidence
+    title: "Azure — Interpret and improve model accuracy and confidence scores (Document Intelligence)"
+    url: "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/concept/accuracy-confidence?view=doc-intel-4.0.0"
+    supports: "per-field confidence 0-1 used to auto-accept vs flag for human review; combine field confidence with underlying OCR confidence; target accuracy near 100% for financial/medical"
+  - key: gcp-docai
+    title: "Google Cloud — Document AI overview"
+    url: "https://cloud.google.com/document-ai/docs/overview"
+    supports: "processor stages: Digitize (OCR), Classify (classifier/splitter), Extract (form/layout/custom), producing a structured Document object for downstream storage"
+  - key: igotanoffer
+    title: "IGotAnOffer — Generative AI System Design Interview"
+    url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
+    supports: "document-processing question framing (process user uploads like payslips/IDs/references); clarify-first, evaluation, PII, cost/latency, failure modes"
+
+scenario: |
+  Design a document-processing pipeline that ingests user-uploaded documents at scale
+  (e.g. bank payslips, ID documents, and reference letters — tens of thousands of uploads a
+  month, and growing), and extracts validated STRUCTURED data from them (income, name, ID
+  number, dates). Documents are heterogeneous (scans, photos, PDFs), extraction must be
+  accurate and auditable, low-confidence results need human review, and PII must be handled
+  compliantly. Answer each step OUT LOUD, then reveal the reference and self-rate.
+
+steps:
+  - phase: clarify
+    prompt: "What do you clarify first? Frame document types, accuracy bar, timing, and compliance."
+    reference: |
+      Clarify before designing. (1) Document types & variety: which docs (payslips, IDs,
+      references), which formats (clean PDF vs phone photo vs scan), and how much layout
+      variation? This drives OCR and extraction difficulty. (2) Fields to extract per type,
+      and the ACCURACY bar — extracting financial/ID data often needs near-100% correctness,
+      so a wrong field is costly. (3) Timing: is this REAL-TIME (user waits for a decision)
+      or can it be ASYNC/batch (process within minutes/hours)? Multipage scans favor async.
+      (4) Volume & growth: tens of thousands/month now, so design for spiky uploads. (5)
+      Compliance: these are PII/sensitive documents — encryption, redaction, retention,
+      access control are first-class. State assumptions and confirm. [igotanoffer, azure-confidence, aws-idp]
+  - phase: high-level
+    prompt: "Sketch the end-to-end pipeline from upload to validated structured record."
+    reference: |
+      An EVENT-DRIVEN, staged pipeline. Upload -> object store; the upload event triggers an
+      orchestrator that creates a TRACKING record (status, doc id) and runs stages: (1)
+      CLASSIFY the document type (payslip vs ID vs reference). (2) OCR / layout parse to text
+      + layout. (3) EXTRACT structured fields to a defined schema (LLM or specialized
+      extractor). (4) VALIDATE against business rules and confidence thresholds. (5) ROUTE:
+      high-confidence -> auto-accept and store; low-confidence or rule failures -> human
+      review queue. Decouple stages with QUEUES so spikes buffer and stages scale
+      independently, with retries and a dead-letter path. Cross-cutting: PII detection/
+      redaction, encryption, audit logging, and observability on extraction accuracy and
+      throughput. [aws-idp, gcp-docai, aws-textract-bedrock]
+  - phase: deep-dive
+    prompt: "OCR & extraction: how do you turn a messy scan into structured fields?"
+    reference: |
+      Two steps. First DIGITIZE: run OCR / layout parsing to recover text plus positional
+      layout (tables, key-value regions) — a managed OCR (Textract / Document AI) handles
+      the pixel-to-text problem across formats. Then EXTRACT: map the OCR output to a defined
+      output SCHEMA. A robust pattern is OCR -> LLM with the extracted text, running phases:
+      classify -> extract/summarize -> NORMALIZE into a strict JSON schema (typed key-value
+      pairs) -> correction pass. Using function-calling / a fixed JSON schema keeps output
+      machine-parseable. For high-variation docs an LLM generalizes better than brittle
+      templates; for stable, high-volume forms a specialized form parser may be cheaper. Keep
+      the source doc + bounding boxes for auditability. [aws-textract-bedrock, gcp-docai]
+  - phase: deep-dive
+    prompt: "Confidence & human-in-the-loop: how do you decide what to auto-accept vs send to a human?"
+    reference: |
+      Confidence-based ROUTING is the core control. Extractors return a per-FIELD confidence
+      (0-1); a 0.95 field is likely correct ~19/20 times. Combine the field confidence with
+      the underlying OCR confidence into a composite score, and set a threshold: above it,
+      auto-accept; below it (or if a business-rule check fails, e.g. income not a number,
+      expired ID, name mismatch across documents), route to a HUMAN REVIEW queue. For
+      financial/ID data, set the bar high (target accuracy near 100%). Add BOUNDED retries: on
+      failure, re-attempt (e.g. a troubleshooter retry), and after ~3 failures route to human
+      review; brand-new/unknown document types go to a human first. Reviewer corrections feed
+      back as labels. [azure-confidence, aws-idp]
+  - phase: deep-dive
+    prompt: "Scale & reliability: real-time vs batch, and how do you survive spikes and failures?"
+    reference: |
+      Split by latency need. SYNC (near-real-time) ops fit single-page docs where a user
+      waits; ASYNC ops fit large multipage PDFs/scans — submit a job, get a JobId, and get
+      notified (e.g. via SNS) on completion. Use async/batch wherever the use case tolerates
+      it, since it also OPTIMIZES COST. Managed OCR services have per-region TPS and
+      concurrency QUOTAS, so a burst of uploads will throw limit-exceeded errors — protect
+      with a QUEUEING architecture (SQS) to smooth spiky traffic, plus retries with
+      exponential backoff and jitter, IDEMPOTENCY on the tracking id (so a retried document
+      isn't processed twice), and a dead-letter queue for poison documents. Stages scale
+      independently behind the queues. [aws-textract-async, aws-textract-quotas, aws-idp]
+  - phase: deep-dive
+    prompt: "PII & compliance: how do you handle sensitive documents responsibly?"
+    reference: |
+      These documents ARE PII, so compliance is designed in, not bolted on. Detect and
+      REDACT PII/PHI (e.g. with a dedicated PII/medical entity detector) where downstream
+      consumers don't need raw values. Encrypt at rest (object store + KMS) and in transit,
+      enforce least-privilege IAM so only the right roles/services touch raw documents, and
+      process sensitive extraction in-memory where possible rather than persisting raw PII.
+      Set RETENTION and deletion policies, and keep an AUDIT log of who/what accessed each
+      document. Access control on the human-review queue too. [aws-idp]
+  - phase: tradeoffs
+    prompt: "How do you evaluate extraction quality and keep cost in check at scale?"
+    reference: |
+      Evaluate per field and per document type against a GOLDEN labeled set: field-level
+      accuracy / precision-recall, plus end-to-end auto-acceptance rate and the human-review
+      rate (your cost and throughput driver). Watch the reviewer OVERRIDE rate — it tells you
+      whether your confidence thresholds are calibrated. Cost levers: prefer async/BATCH
+      processing (cheaper, and non-blocking), cache OCR results so re-processing a document is
+      free, use a cheaper specialized parser for high-volume stable forms and reserve the LLM
+      for hard/variable docs, and only pay for the compute you consume (serverless scales to
+      zero between spikes). Trade-off: pushing thresholds down cuts errors but raises human-
+      review cost, so tune to the error-cost of the domain. [aws-idp, azure-confidence, igotanoffer]
+  - phase: tradeoffs
+    prompt: "What breaks at scale, how do you detect it, and how does it degrade gracefully?"
+    reference: |
+      Name failure modes AND detection. (1) OCR/extraction accuracy drift on a new document
+      format: monitor per-type accuracy and override rate; route unknown formats to humans and
+      retrain/adjust. (2) Quota / rate-limit throttling under upload spikes: monitor limit-
+      exceeded errors and queue depth; degrade by buffering in the queue and processing async
+      rather than failing uploads. (3) Poison documents (corrupt, huge, malicious): timeouts +
+      dead-letter queue + human triage. (4) Human-review backlog: monitor queue depth; raise
+      auto-accept thresholds only where safe. (5) PII leak / access violation: alert on
+      unauthorized access, audit continuously. (6) Duplicate processing: idempotency on the
+      tracking id. Close with the biggest risks (accuracy on high-stakes fields, PII handling)
+      and what you'd measure and improve first. [aws-textract-quotas, aws-idp, azure-confidence]
+
+diagram: |
+  graph TD
+    U[User uploads: payslips / IDs / references] --> S3[(Object store - encrypted)]
+    S3 --> EVT[Upload event -> orchestrator + tracking record]
+    EVT --> Q1[[Queue - buffer spikes]]
+    Q1 --> CLS[Classify document type]
+    CLS --> OCR[OCR / layout parse]
+    OCR --> PII[Detect + redact PII/PHI]
+    PII --> EXT[Extract fields to JSON schema - LLM or form parser]
+    EXT --> VAL{Confidence >= threshold AND business rules pass?}
+    VAL -->|yes| STORE[(Structured record - audited)]
+    VAL -->|no / retry exhausted| HQ[Human review queue]
+    HQ --> CORR[Reviewer correction]
+    CORR --> STORE
+    CORR --> LABELS[(Labels for improvement)]
+    DLQ[[Dead-letter queue - poison docs]] -.-> HQ
+    OBS[Observability: field accuracy, override rate, queue depth, throttle errors, cost] -.-> VAL

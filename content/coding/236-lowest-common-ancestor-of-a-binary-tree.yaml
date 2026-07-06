@@ -9,15 +9,15 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Think recursively about which subtree(s) the two target nodes fall into."
-  - "Recurse into both children, returning the node itself if it equals a target, and treat a node whose two children both report a find as the split point."
+  - "Recurse into both children, returning the node if it equals a target. Treat a node whose two children both report a find as the split point."
   - "Propagate whichever single non-null result bubbles up otherwise, giving O(n) time and O(h) space."
 status: draft
 answer:
   approach: >
-    Recurse. A node is the LCA if p and q lie in different subtrees beneath it,
-    or if the node itself is p or q. Return the node when it equals p or q;
-    otherwise recurse into both children - if both sides return non-null, this
-    node is the split point and thus the LCA; if only one side does, propagate
+    Recurse down the tree. A node is the LCA when p and q lie in different
+    subtrees beneath it, or when the node equals p or q. Return the node when it equals p or q.
+    Otherwise recurse into both children. If both sides return non-null, this
+    node is the split point and thus the LCA. If only one side does, propagate
     that result upward.
   pseudocode: |
     lca(node):

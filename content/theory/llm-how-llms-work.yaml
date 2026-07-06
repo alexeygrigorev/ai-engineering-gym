@@ -16,13 +16,13 @@ sources:
 
 answer:
   short: >
-    An LLM is a large neural network — almost always a transformer — trained to do
-    one thing: predict the next token given all the tokens before it. Text is split
-    into tokens (words or word-pieces), each token becomes a vector, and stacked
+    An LLM is a large neural network (almost always a transformer), trained to
+    predict the next token given all the tokens before it. Text is split
+    into tokens (words or word-pieces). Each token becomes a vector, and stacked
     self-attention layers let every position read from earlier positions to build up
     context. The final layer outputs a probability distribution over the whole
     vocabulary for the next token. Training is self-supervised: run over trillions of
-    tokens of text, and for each position penalize the model (cross-entropy loss)
+    tokens of text. For each position, penalize the model (cross-entropy loss)
     when it assigns low probability to the token that actually came next. Doing this
     at scale forces the model to internalize grammar, facts, style, and reasoning
     patterns. At inference the model is autoregressive: predict a token, append it,
@@ -30,20 +30,20 @@ answer:
     RLHF so they follow instructions instead of just continuing text.
   key_points:
     - "Core objective: predict the next token given the preceding context (autoregressive language modeling)"
-    - "Architecture is a transformer — self-attention lets each token attend to earlier tokens to build context"
+    - "Architecture is a transformer: self-attention lets each token attend to earlier tokens to build context"
     - "Text → tokens → embeddings → transformer layers → probability distribution over the vocabulary"
-    - "Training is self-supervised on huge corpora with cross-entropy loss; no manual labels needed"
+    - "Training is self-supervised on huge corpora with cross-entropy loss and needs no manual labels"
     - "Generation is iterative: sample/pick a token, append it, feed back in, repeat"
     - "Instruction tuning + RLHF turn a raw next-token predictor into a helpful assistant"
 
 follow_ups:
-  - "What is the difference between a base (pretrained) model and an instruction-tuned/chat model?"
+  - "What's the difference between a base (pretrained) model and an instruction-tuned/chat model?"
   - "If it just predicts the next token, how does it appear to reason?"
   - "How does sampling (temperature, top-p) change what token gets produced?"
   - "Why do LLMs hallucinate if they're trained to predict likely text?"
 
 hints:
-  - "Start from the single training objective — what is the model actually asked to output at each step?"
+  - "Start from the single training objective. What's the model actually asked to output at each step?"
   - "Think about the pipeline: how does raw text become something the network consumes, and what does the last layer emit?"
   - "It's an autoregressive next-token predictor built on transformer self-attention, trained self-supervised with cross-entropy, then aligned with instruction tuning/RLHF."
 

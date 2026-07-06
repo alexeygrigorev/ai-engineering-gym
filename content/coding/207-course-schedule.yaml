@@ -9,18 +9,18 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Model prerequisites as a directed graph and ask whether that graph contains a cycle."
-  - "Run DFS marking nodes as currently being visited versus fully finished; reaching a node still marked as being visited means you found a back edge."
+  - "Run DFS marking nodes as currently being visited versus fully finished. Reaching a node still marked as being visited means you found a back edge."
   - "Detecting any such cycle runs in O(V + E) time and means the schedule is infeasible."
 status: draft
 answer:
   approach: >
-    Courses and their prerequisites form a directed graph, and the schedule is
+    Courses and their prerequisites form a directed graph. The schedule is
     feasible if and only if the graph has no cycle. Run DFS marking each node
-    VISITING when entered and VISITED when finished; reaching a node still
-    marked VISITING means a back edge - a cycle - so it is infeasible.
+    VISITING when entered and VISITED when finished. Reaching a node still
+    marked VISITING means a back edge and thus a cycle, so it's infeasible.
     Translating the recursion to an explicit stack means pushing each node
-    twice: once to open it (mark VISITING) and once with a counter to close it
-    (mark VISITED).
+    twice. Push once to open it (mark VISITING), and once with a counter to
+    close it (mark VISITED).
   pseudocode: |
     build adjacency list: edge prereq -> course
     for each unvisited node: if not DFS(node): return false

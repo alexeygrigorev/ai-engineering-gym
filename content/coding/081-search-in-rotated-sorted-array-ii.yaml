@@ -8,7 +8,7 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "The array is still two sorted halves around a rotation point, like the version without duplicates, but duplicates can hide which half is actually sorted."
+  - "The array is still two sorted parts around a rotation point, like the version without duplicates, but duplicates can hide which part is actually sorted."
   - "When the boundary values are equal, shrink the search window from one side until they differ, then run the usual rotated binary search."
   - "This handles duplicates correctly but degrades to O(n) time in the worst case."
 status: draft
@@ -16,8 +16,8 @@ answer:
   approach: >
     Same as problem 33 (Search in Rotated Sorted Array), but the array may contain
     duplicates, which needs one adjustment. The trouble is when A[start] == A[end]: you
-    can't tell which half is sorted. Fix it by shrinking the window — move end left until
-    A[start] != A[end] — and then run the ordinary rotated binary search unchanged. The
+    can't tell which half is sorted. Fix it by shrinking the window. Move end left until
+    A[start] != A[end], then run the ordinary rotated binary search unchanged. The
     duplicate-skipping is what pushes the worst case to O(n).
   pseudocode: |
     search(A, t, start, end):

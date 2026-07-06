@@ -9,17 +9,17 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Split the problem into two separate steps: first decide which words belong on each line, then decide how to space the words on each line."
-  - "Greedily pack as many words as fit within max_width (counting single spaces) to form each line, then distribute leftover spaces as evenly as possible across the gaps for non-last lines, giving earlier gaps any extra space; the last line and single-word lines are left-justified with trailing padding."
+  - "Greedily pack as many words as fit within max_width (counting single spaces) to form each line, then distribute leftover spaces as evenly as possible across the gaps for non-last lines, giving earlier gaps any extra space. The last line and single-word lines are left-justified with trailing padding."
   - "This two-phase greedy packing plus careful gap arithmetic processes the text in O(total characters) time and space."
 status: draft
 answer:
   approach: >
     A greedy line-packing problem followed by careful spacing. First greedily group words:
     keep adding the next word to the current line while it still fits in max_width (counting
-    one space between words); when it doesn't fit, close the line and start a new group. Then
+    one space between words). When it doesn't fit, close the line and start a new group. Then
     render each group: for a normal (non-last) line with multiple words, distribute the
     leftover spaces as evenly as possible across the gaps, giving the earlier gaps the extra
-    space when it doesn't divide evenly; a single-word line (and the last line) is
+    space when it doesn't divide evenly. A single-word line (and the last line) is
     left-justified and padded with trailing spaces to max_width.
   pseudocode: |
     # group

@@ -8,17 +8,17 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "Picture each index as reachable from any earlier index whose jump range covers it, and think of the minimum jumps as a shortest path in this implicit graph."
-  - "Process indices level by level as in BFS, where each level corresponds to one additional jump, marking each index's distance the first time it becomes reachable."
+  - "Picture each index as reachable from any earlier index whose jump range covers it. Think of the minimum jumps as a shortest path in this implicit graph."
+  - "Process indices level by level as in BFS, where each level corresponds to one additional jump. Mark each index's distance the first time it becomes reachable."
   - "This BFS-by-levels (equivalently, greedily extending the current reach) gives the minimum jump count in O(n) time and O(n) space."
 status: draft
 answer:
   approach: >
     Treat indices as nodes: from index i you can reach any index up to i + nums[i], so
-    the minimum number of jumps to the end is the shortest path in this graph — a BFS by
-    levels. Each BFS level is one jump. Process indices in FIFO order, marking newly
-    reachable indices with their distance (parent distance + 1); the first time you can
-    reach or pass the last index, that distance + 1 is the answer. (Equivalently this is
+    the minimum number of jumps to the end is the shortest path in this graph. A BFS by
+    levels finds it, one jump per level. Process indices in FIFO order, marking
+    newly reachable indices with their distance (parent distance + 1). The first time you
+    can reach or pass the last index, that distance + 1 is the answer. (Equivalently this is
     the greedy "extend the current reach as far as possible, then take a jump" idea.)
   pseudocode: |
     dist = [-1]*n; dist[0] = 0

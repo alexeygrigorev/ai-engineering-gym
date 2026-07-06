@@ -16,7 +16,7 @@ ai_relevant: true
 hints:
   - "You need O(1) lookup by key together with O(1) reordering by recency, which no single structure provides alone."
   - "Combine a hash map from key to node with a doubly linked list ordered by recency, moving a node to the front on every access."
-  - "Use dummy head and tail sentinels to avoid null checks, and evict the node before the tail sentinel when over capacity, for true O(1) get and put."
+  - "Use dummy head and tail sentinels to avoid null checks. Evict the node before the tail sentinel when over capacity, for true O(1) get and put."
 status: draft
 source_refs: [devto-xai]
 sources:
@@ -35,8 +35,7 @@ answer:
     Combine a hash map with a doubly linked list. The hash map maps key -> node,
     giving O(1) lookup of any entry. The doubly linked list stores nodes in
     recency order: most-recently-used near the head, least-recently-used near the
-    tail. A doubly linked list (not singly) is required so any node can be unlinked
-    in O(1) — you have direct pointers to its neighbors. On every get and put, move
+    tail. A doubly linked list (not singly) is required so any node can be unlinked in O(1), because you have direct pointers to its neighbors. On every get and put, move
     the touched node to the head to mark it most-recently used. On put past
     capacity, evict the tail node (LRU) and delete its key from the map. Use dummy
     head and tail sentinel nodes so insertion and removal never need null checks.

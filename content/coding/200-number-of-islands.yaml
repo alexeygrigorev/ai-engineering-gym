@@ -10,14 +10,14 @@ ai_relevant: true
 hints:
   - "Think of each island as a connected component of land cells in the grid."
   - "Scan every cell, and when you find an unvisited land cell, flood-fill outward over its four neighbors marking all connected land visited."
-  - "Increment the island count once per flood-fill; each cell is visited only once, giving O(rows * cols) time."
+  - "Increment the island count once per flood-fill. Each cell is visited only once, giving O(rows * cols) time."
 status: draft
 answer:
   approach: >
     Count the connected components of '1' (land) cells in the grid. Scan every
-    cell; when an unvisited land cell is found, flood-fill from it (DFS or BFS
-    over its four-directional neighbors) marking all reachable land as visited,
-    and increment the island count. Each cell is visited once.
+    cell, and flood-fill from each unvisited land cell (DFS or BFS over its
+    four-directional neighbors), marking all reachable land as visited. Then
+    increment the island count. Each cell is visited once.
   pseudocode: |
     count = 0
     for each cell (i, j):
@@ -29,7 +29,7 @@ answer:
 follow_ups:
   - "Use union-find (disjoint set) instead of flood fill."
   - "Count islands as the grid is updated online (LeetCode 305)."
-  - "How do you avoid recursion-depth overflow on very large grids?"
+  - "How do you avoid recursion-depth overflow on large grids?"
 sources:
   - { title: "LeetCode - Number of Islands", url: "https://leetcode.com/problems/number-of-islands/", supports: "problem statement" }
   - { title: "Alexey's solution (200_number_islands.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/200_number_islands.cpp", supports: "reference implementation" }

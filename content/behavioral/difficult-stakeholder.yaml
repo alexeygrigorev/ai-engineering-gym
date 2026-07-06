@@ -18,10 +18,10 @@ sources:
     supports: "keep the Situation brief; make the outcome measurable"
 
 probes:
-  - "What made the stakeholder difficult — misaligned goals, unrealistic expectations, or a communication gap?"
+  - "What made the stakeholder difficult: misaligned goals, unrealistic expectations, or a communication gap?"
   - "How did you find out what they actually cared about?"
   - "What did you do specifically to rebuild trust or realign?"
-  - "Did you push back on anything? How did you frame it?"
+  - "Did you push back on anything, and how did you frame it?"
   - "How did you keep the working relationship healthy afterward?"
   - "What was the outcome, and what would you do differently?"
 
@@ -33,23 +33,23 @@ rubric:
   - "Situation names a concrete stakeholder and the specific friction (scope creep, shifting priorities, distrust of the AI approach)"
   - "Shows you sought to understand their underlying interest, not just their stated demand"
   - "Focuses on YOUR actions: how you communicated, set expectations, or negotiated trade-offs"
-  - "Stays professional and empathetic — no blaming the stakeholder"
+  - "Stays professional and empathetic, with no blaming the stakeholder"
   - "Result shows realignment or delivery, quantified where possible (scope agreed, launch met, NPS/trust restored)"
   - "Ends with a reflection on managing stakeholders proactively next time"
 
 example_structure: |
   # STAR SKELETON — NOT a real personal story. Fill with your own.
   S (Situation): A stakeholder (PM, exec, client) who was frustrated or misaligned
-     on your AI feature — e.g. expected accuracy the model could not yet deliver.
-  T (Task): What you owned — reset expectations while still delivering value.
-  A (Action): The concrete steps YOU took — booked a 1:1 to hear their concern,
+     on your AI feature, expecting accuracy the model couldn't yet deliver.
+  T (Task): What you owned: reset expectations while still delivering value.
+  A (Action): The concrete steps YOU took: booked a 1:1 to hear their concern,
      translated the technical limit into business terms, proposed a phased plan or
      a measurable success bar, agreed on it together.
   R (Result): The outcome, quantified if you can (scope agreed, feature shipped,
      relationship strengthened) plus one sentence on what you learned.
 
 hints:
-  - "Open by making the stakeholder sympathetic, not a villain — what pressure were they under?"
+  - "Open by making the stakeholder sympathetic, not a villain: what pressure were they under?"
   - "Spend most of your airtime on Action: the specific conversations and how you reframed the problem."
   - "Land a measurable Result and a one-line lesson about managing expectations earlier."
 

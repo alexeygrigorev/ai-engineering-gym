@@ -10,15 +10,15 @@ ai_relevant: false
 hints:
   - "The answer for an array of n elements must always lie between 1 and n+1, so only values in that range matter."
   - "Use a boolean array of size n to mark which values from 1 to n are actually present in the input."
-  - "One pass to mark, one pass to find the first unset slot gives O(n) time and O(n) space; think about how you could reuse the input array itself to get O(1) extra space."
+  - "One pass to mark, one pass to find the first unset slot gives O(n) time and O(n) space. Think about how you could reuse the input array to get O(1) extra space."
 status: draft
 answer:
   approach: >
     The answer is always in the range 1..n+1, so only values in that window matter.
     Mark which of those are present with a boolean array of size n: for each positive
     value v <= n, set used[v-1]. Then scan used from the left and return the first index
-    whose slot is unset (i+1); if all are set, the answer is n+1. (This uses O(n) extra
-    space; the classic O(1)-space variant permutes the array in place to put each value
+    whose slot is unset (i+1). If all are set, the answer is n+1. (This uses O(n) extra
+    space. The classic O(1)-space variant permutes the array in place to put each value
     v at index v-1, but the boolean-array version is the clearest.)
   pseudocode: |
     used = [false] * n
