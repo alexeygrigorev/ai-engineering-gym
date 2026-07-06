@@ -3,7 +3,8 @@ category: coding
 skill: implementation
 type: coding
 subtype: implementation
-question: >
+question: "Key-value store"
+description: |
   Build an in-memory key-value store. Level 1: SET, GET, DELETE. Level 2: add TTL so
   keys expire. Level 3: add persistence so state survives a restart. Each level builds
   on your previous code — design so you don't have to rewrite it.

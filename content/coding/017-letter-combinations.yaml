@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "17. Letter Combinations of a Phone Number"
+description: |
+  Given a string `digits` containing digits `2`-`9`, return all letter combinations
+  the number could spell, using the classic phone keypad mapping (`2` -> `abc`,
+  `3` -> `def`, ..., `9` -> `wxyz`). The order of the combinations doesn't matter.
+  An empty input returns an empty list. Example: `digits = "23"` ->
+  `["ad","ae","af","bd","be","bf","cd","ce","cf"]`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "23. Merge k Sorted Lists"
+description: |
+  Given an array of `k` linked lists, each already sorted in ascending order, merge
+  them into a single sorted linked list and return its head. Some lists may be empty.
+  Example: `lists = [[1,4,5],[1,3,4],[2,6]]` -> `[1,1,2,3,4,4,5,6]`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: true

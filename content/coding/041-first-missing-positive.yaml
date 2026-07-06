@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "41. First Missing Positive"
+description: |
+  Given an unsorted integer array `nums`, return the smallest positive integer
+  (starting from `1`) that does not appear in it. Values may be negative, zero, or
+  duplicated. Aim for `O(n)` time and `O(1)` extra space. Example:
+  `nums = [3,4,-1,1]` -> `2`; `nums = [1,2,0]` -> `3`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

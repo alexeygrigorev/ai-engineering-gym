@@ -3,8 +3,8 @@ category: coding
 skill: algorithms
 type: coding
 subtype: algorithm
-question: "LRU Cache with O(1) get and put."
-problem: >
+question: "LRU Cache"
+description: |
   Design a data structure for a Least Recently Used (LRU) cache with a fixed
   capacity. Support get(key) — return the value if present, else -1 — and
   put(key, value) — insert or update. Both operations must run in O(1) average

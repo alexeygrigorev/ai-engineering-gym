@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "56. Merge Intervals"
+description: |
+  Given an array of intervals where `intervals[i] = [start, end]`, merge all overlapping
+  intervals and return the resulting non-overlapping intervals covering the same ranges.
+  Example: `[[1,3],[2,6],[8,10],[15,18]]` -> `[[1,6],[8,10],[15,18]]`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

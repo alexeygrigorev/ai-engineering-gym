@@ -3,7 +3,8 @@ category: coding
 skill: ml-coding
 type: coding
 subtype: ml-coding
-question: >
+question: "K-means in NumPy"
+description: |
   Implement k-means clustering from scratch in NumPy (Lloyd's algorithm). Given a
   data matrix X and k, return cluster assignments and centroids.
 difficulty: medium

@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "16. 3Sum Closest"
+description: |
+  Given an integer array `nums` and an integer `target`, pick three elements whose sum
+  is as close to `target` as possible, and return that sum. Exactly one such closest
+  sum exists. Example: `nums = [-1,2,1,-4]`, `target = 1` -> `2` (from `-1 + 2 + 1`).
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

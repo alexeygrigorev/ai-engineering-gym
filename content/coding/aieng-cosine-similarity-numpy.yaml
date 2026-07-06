@@ -3,7 +3,8 @@ category: coding
 skill: ml-coding
 type: coding
 subtype: ml-coding
-question: >
+question: "Cosine similarity in NumPy"
+description: |
   Implement cosine similarity in NumPy. Start with two 1-D vectors, then generalize
   to computing the full pairwise similarity matrix between two batches of embeddings.
 difficulty: easy

@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "295. Find Median from Data Stream"
+description: |
+  Design a `MedianFinder` that supports two operations on a growing stream of
+  numbers: `addNum(x)` inserts `x`, and `findMedian()` returns the median of all
+  values seen so far. The median is the middle value when the count is odd, or the
+  average of the two middle values when it is even. Example: after adding `1` and
+  `2`, `findMedian()` -> `1.5`; after adding `3`, `findMedian()` -> `2`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

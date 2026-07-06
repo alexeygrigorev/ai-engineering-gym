@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "139. Word Break"
+description: |
+  Given a string `s` and a dictionary `wordDict`, return `true` if `s` can be segmented
+  into a sequence of one or more dictionary words. Words may be reused any number of
+  times. Example: `s = "leetcode"`, `wordDict = ["leet","code"]` -> `true`;
+  `s = "catsandog"`, `wordDict = ["cats","dog","sand","and","cat"]` -> `false`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

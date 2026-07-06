@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "211. Design Add and Search Words Data Structure"
+description: |
+  Design a `WordDictionary` supporting two operations: `addWord(word)` stores a
+  word, and `search(word)` returns `true` if any stored word matches. The search
+  string may contain the wildcard `.`, which matches any single letter. Example:
+  after adding `"bad"`, `"dad"`, `"mad"`, `search("b..")` -> `true` and
+  `search("pad")` -> `false`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

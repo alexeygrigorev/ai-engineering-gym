@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "479. Largest Palindrome Product"
+description: |
+  Given an integer `n`, find the largest integer palindrome that can be written as a
+  product of two `n`-digit numbers, and return it modulo `1337`. Example: `n = 2` ->
+  `987` (since `99 * 91 = 9009` is the largest such palindrome, and `9009 % 1337 = 987`).
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

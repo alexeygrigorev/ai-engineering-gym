@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "127. Word Ladder"
+description: |
+  Given `beginWord`, `endWord`, and a `wordList`, return the number of words in the
+  shortest transformation sequence from `beginWord` to `endWord` (counting both ends),
+  or `0` if none exists. Each step changes exactly one letter and every intermediate
+  word must be in `wordList`. Example: `beginWord = "hit"`, `endWord = "cog"`,
+  list `[hot,dot,dog,lot,log,cog]` -> `5`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

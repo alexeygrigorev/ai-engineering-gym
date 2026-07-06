@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "121. Best Time to Buy and Sell Stock"
+description: |
+  Given an array `prices` where `prices[i]` is a stock's price on day `i`, choose one
+  day to buy and a later day to sell to maximize profit. Return the maximum profit, or
+  `0` if no profitable transaction exists. Example: `prices = [7,1,5,3,6,4]` -> `5`
+  (buy at `1`, sell at `6`).
 difficulty: easy
 tags: [dsa]
 ai_relevant: true

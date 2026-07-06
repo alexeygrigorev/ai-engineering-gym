@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "126. Word Ladder II"
+description: |
+  Given `beginWord`, `endWord`, and a `wordList`, return all shortest transformation
+  sequences from `beginWord` to `endWord`. Each step changes exactly one letter, and
+  every intermediate word must be in `wordList`. Return each sequence as a list of
+  words; return `[]` if none exist. Example: `beginWord = "hit"`, `endWord = "cog"`,
+  list `[hot,dot,dog,lot,log,cog]` -> `[[hit,hot,dot,dog,cog], [hit,hot,lot,log,cog]]`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

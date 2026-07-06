@@ -3,7 +3,8 @@ category: coding
 skill: ml-coding
 type: coding
 subtype: ml-coding
-question: >
+question: "Softmax in NumPy"
+description: |
   Implement the softmax function from scratch in NumPy so it is numerically stable
   and works row-wise on a 2-D batch of logits.
 difficulty: easy

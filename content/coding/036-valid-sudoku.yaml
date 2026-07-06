@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "36. Valid Sudoku"
+description: |
+  Given a partially filled `9x9` Sudoku board (cells hold digits `1`-`9` or `.` for
+  empty), determine whether the current filled cells are valid: no digit repeats within
+  any row, any column, or any of the nine `3x3` sub-boxes. Only the filled cells are
+  checked; the board need not be solvable. Return `true` if valid, `false` otherwise.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

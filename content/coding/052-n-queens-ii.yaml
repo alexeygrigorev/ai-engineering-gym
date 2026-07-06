@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "52. N-Queens II"
+description: |
+  Given an integer `n`, return the number of distinct ways to place `n` queens on an
+  `n x n` chessboard so that no two attack each other (no shared row, column, or
+  diagonal). Only the count is required, not the boards. Example: `n = 4` -> `2`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

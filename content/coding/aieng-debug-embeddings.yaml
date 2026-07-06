@@ -3,7 +3,8 @@ category: coding
 skill: ml-coding
 type: coding
 subtype: ml-coding
-question: |
+question: "Debug an embeddings pipeline"
+description: |
   Debug this embeddings-handling snippet. It's supposed to embed a batch of query
   strings, compare each against a matrix of stored document embeddings, and return
   the best-matching document per query. It runs without crashing but returns wrong

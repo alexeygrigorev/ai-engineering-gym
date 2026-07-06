@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "6. Zigzag Conversion"
+description: |
+  A string `s` is written out in a zigzag pattern across a given number of rows
+  `numRows` (going down the rows, then diagonally up, repeatedly), then read off row
+  by row to produce a new string. Return that row-by-row reading. Example:
+  `s = "PAYPALISHIRING"`, `numRows = 3` -> `"PAHNAPLSIIGYIR"`. When `numRows == 1`
+  the string is returned unchanged.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

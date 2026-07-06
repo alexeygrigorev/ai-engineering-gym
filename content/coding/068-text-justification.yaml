@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "68. Text Justification"
+description: |
+  Given an array of `words` and an integer `maxWidth`, format the text so each line is
+  exactly `maxWidth` characters and fully (left and right) justified. Greedily pack as many
+  words per line as fit with at least one space between them, then distribute extra spaces
+  as evenly as possible, giving earlier gaps the surplus. The last line, and any line with
+  a single word, is left-justified with trailing spaces. Return the list of lines.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

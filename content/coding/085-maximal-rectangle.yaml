@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "85. Maximal Rectangle"
+description: |
+  Given a `rows x cols` binary matrix filled with `'0'` and `'1'` characters, find the
+  largest rectangle containing only `'1'`s and return its area. Example:
+  `[["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]`
+  -> `6`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

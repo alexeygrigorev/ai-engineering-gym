@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "102. Binary Tree Level Order Traversal"
+description: |
+  Given the `root` of a binary tree, return its level-order traversal: a list of
+  lists where each inner list holds the node values at one depth, read left to right,
+  ordered from the root level downward. Example: `[3,9,20,null,null,15,7]` ->
+  `[[3], [9,20], [15,7]]`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

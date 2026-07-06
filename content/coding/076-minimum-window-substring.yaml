@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "76. Minimum Window Substring"
+description: |
+  Given two strings `s` and `t`, return the shortest substring of `s` that contains every
+  character of `t` including duplicates (counting multiplicity). If no such window exists,
+  return the empty string `""`. The answer is guaranteed unique when it exists. Example:
+  `s = "ADOBECODEBANC"`, `t = "ABC"` -> `"BANC"`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

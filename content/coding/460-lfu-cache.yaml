@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "460. LFU Cache"
+description: |
+  Design a Least Frequently Used (LFU) cache with a fixed `capacity`. `get(key)`
+  returns the value if present (else -1), and `put(key, value)` inserts or updates.
+  When the cache is full, evict the key used the fewest times; break ties by
+  evicting the least recently used among them. Both `get` and `put` count as a use
+  and bump the key's frequency. Aim for `O(1)` average time per operation.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

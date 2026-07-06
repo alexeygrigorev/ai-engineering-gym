@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "10. Regular Expression Matching"
+description: |
+  Given an input string `s` and a pattern `p`, return whether `p` matches the entire
+  string `s`. In the pattern, `.` matches any single character and `*` matches zero or
+  more of the element immediately preceding it. The match must cover all of `s`, not
+  just a prefix. Example: `s = "aa"`, `p = "a*"` -> `true`; `s = "ab"`, `p = ".*"` ->
+  `true`; `s = "mississippi"`, `p = "mis*is*p*."` -> `false`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

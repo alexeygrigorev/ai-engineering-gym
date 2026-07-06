@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "98. Validate Binary Search Tree"
+description: |
+  Given the `root` of a binary tree, return `true` if it is a valid binary search
+  tree. Valid means every node's entire left subtree holds strictly smaller values,
+  its entire right subtree holds strictly larger values, and both subtrees are
+  themselves valid BSTs. Example: root `[2,1,3]` -> `true`; `[5,1,4,null,null,3,6]` -> `false`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

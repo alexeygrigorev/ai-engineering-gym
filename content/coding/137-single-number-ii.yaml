@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "137. Single Number II"
+description: |
+  Given an integer array `nums` where every element appears exactly three times except
+  for one that appears once, return the single element. Example:
+  `nums = [2,2,3,2]` -> `3`; `nums = [0,1,0,1,0,1,99]` -> `99`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

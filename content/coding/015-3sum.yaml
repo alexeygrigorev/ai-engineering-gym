@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "15. 3Sum"
+description: |
+  Given an integer array `nums`, return all unique triplets `[nums[i], nums[j],
+  nums[k]]` (distinct indices) that sum to `0`. The result must not contain duplicate
+  triplets. Example: `nums = [-1,0,1,2,-1,-4]` -> `[[-1,-1,2],[-1,0,1]]`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

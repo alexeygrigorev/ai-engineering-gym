@@ -72,6 +72,9 @@ class ContentBase(BaseModel):
     # (knowledge question / coding problem / rehearsal prompt). `walkthrough`
     # additionally uses `scenario` as its headline. See design.md §6 conventions.
     question: Optional[str] = None
+    # `question` is a SHORT title (used in lists); `description` is the full problem
+    # statement shown on the card (mainly for coding, e.g. the LeetCode prompt).
+    description: Optional[str] = None
     # progressive hints for the Anki-style recall flow: shown one at a time before
     # the answer is revealed ("think about X" → "now consider Y" → …).
     hints: list[str] = Field(default_factory=list)

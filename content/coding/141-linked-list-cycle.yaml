@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "141. Linked List Cycle"
+description: |
+  Given the `head` of a linked list, return `true` if the list contains a cycle (some
+  node's `next` points back to an earlier node so traversal never ends), otherwise
+  `false`. Aim for O(1) extra space.
 difficulty: easy
 tags: [dsa]
 ai_relevant: true

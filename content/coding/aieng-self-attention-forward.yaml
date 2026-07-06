@@ -3,7 +3,8 @@ category: coding
 skill: ml-coding
 type: coding
 subtype: ml-coding
-question: >
+question: "Self-attention forward pass"
+description: |
   Implement a single self-attention forward pass (scaled dot-product attention) in
   NumPy. Given an input sequence and the Q/K/V projection weights, return the
   attention output. Then note what changes for multi-head and for causal masking.

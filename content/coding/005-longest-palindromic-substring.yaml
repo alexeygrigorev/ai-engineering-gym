@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "5. Longest Palindromic Substring"
+description: |
+  Given a string `s`, return the longest contiguous substring of `s` that reads the
+  same forwards and backwards. If several have the same maximum length, any one is
+  acceptable. Example: `s = "babad"` -> `"bab"` (or `"aba"`); `s = "cbbd"` -> `"bb"`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

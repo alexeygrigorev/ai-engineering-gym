@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "48. Rotate Image"
+description: |
+  Given an `n x n` 2D matrix representing an image, rotate it by 90 degrees clockwise.
+  You must modify the matrix in place, without allocating another 2D array. Example:
+  `[[1,2,3],[4,5,6],[7,8,9]]` -> `[[7,4,1],[8,5,2],[9,6,3]]`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

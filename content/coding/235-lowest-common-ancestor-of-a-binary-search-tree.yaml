@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "235. Lowest Common Ancestor of a Binary Search Tree"
+description: |
+  Given the `root` of a binary search tree and two nodes `p` and `q` present in it,
+  return their lowest common ancestor: the deepest node that has both `p` and `q` as
+  descendants (a node may be a descendant of itself). Example: in a BST rooted at 6,
+  the LCA of `2` and `8` is `6`, and the LCA of `2` and `4` is `2`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

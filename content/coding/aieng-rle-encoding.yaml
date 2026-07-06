@@ -3,7 +3,8 @@ category: coding
 skill: algorithms
 type: coding
 subtype: algorithm
-question: >
+question: "Run-length encoding"
+description: |
   Implement run-length encoding (RLE): compress a string by replacing each run of
   identical consecutive characters with the character followed by its count (e.g.
   "aaabbc" -> "a3b2c1"). Also write the matching decoder.

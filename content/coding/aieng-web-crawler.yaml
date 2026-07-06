@@ -3,7 +3,8 @@ category: coding
 skill: implementation
 type: coding
 subtype: implementation
-question: >
+question: "Web crawler"
+description: |
   Implement a web crawler. Level 1: single-threaded — fetch a page, extract links,
   follow them, don't revisit. Level 2: add per-host rate limiting / politeness.
   Level 3: make it concurrent. Design each level so the next builds on it.

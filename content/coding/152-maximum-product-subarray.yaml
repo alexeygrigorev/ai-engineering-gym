@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "152. Maximum Product Subarray"
+description: |
+  Given an integer array `nums`, find the contiguous non-empty subarray with the
+  largest product and return that product. The array may contain negative numbers and
+  zeros. Example: `nums = [2,3,-2,4]` -> `6` (from `[2,3]`);
+  `nums = [-2,0,-1]` -> `0`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

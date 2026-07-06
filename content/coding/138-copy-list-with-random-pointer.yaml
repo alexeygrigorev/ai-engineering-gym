@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "138. Copy List with Random Pointer"
+description: |
+  Given a linked list where each node has a `next` pointer and a `random` pointer that
+  may point to any node in the list or be `null`, return a deep copy. Each node in the
+  copy must be a brand-new node with the same value, and its `next`/`random` must point
+  to nodes within the copied list (never the original).
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

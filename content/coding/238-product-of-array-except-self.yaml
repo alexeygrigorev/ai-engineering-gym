@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "238. Product of Array Except Self"
+description: |
+  Given an integer array `nums`, return an array `answer` where `answer[i]` equals
+  the product of every element of `nums` except `nums[i]`. Solve it without using
+  division and in `O(n)` time. Example: `nums = [1,2,3,4]` -> `[24,12,8,6]`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

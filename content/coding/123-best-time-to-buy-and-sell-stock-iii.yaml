@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "123. Best Time to Buy and Sell Stock III"
+description: |
+  Given an array `prices` where `prices[i]` is a stock's price on day `i`, find the
+  maximum profit achievable with at most two transactions. You must sell before buying
+  again (no overlapping trades). Return the best total profit, or `0` if none is
+  positive. Example: `prices = [3,3,5,0,0,3,1,4]` -> `6`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

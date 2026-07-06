@@ -3,7 +3,8 @@ category: coding
 skill: algorithms
 type: coding
 subtype: algorithm
-question: >
+question: "Reverse a linked list"
+description: |
   Reverse a singly linked list in place. This was reported in an AI-assisted coding
   round (Microsoft Applied AI/ML): you may use an LLM, but the interviewer modifies
   the constraints mid-problem and watches how you re-prompt and verify. Give the

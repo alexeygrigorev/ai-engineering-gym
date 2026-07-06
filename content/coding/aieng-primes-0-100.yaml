@@ -3,7 +3,8 @@ category: coding
 skill: algorithms
 type: coding
 subtype: algorithm
-question: >
+question: "Primes from 0 to 100"
+description: |
   Print all prime numbers between 0 and 100 (reported warm-up in a GenAI engineer
   interview). Explain your approach and its complexity, then generalize to primes up
   to n.

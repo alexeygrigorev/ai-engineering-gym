@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "207. Course Schedule"
+description: |
+  You must take `numCourses` courses labeled `0` to `numCourses - 1`. You are given
+  a list `prerequisites` where `[a, b]` means you must take course `b` before course
+  `a`. Return `true` if it is possible to finish all courses, `false` otherwise
+  (i.e., whether the dependency graph is free of cycles). Example:
+  `numCourses = 2`, `prerequisites = [[1,0],[0,1]]` -> `false`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

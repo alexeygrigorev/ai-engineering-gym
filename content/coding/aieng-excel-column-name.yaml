@@ -3,7 +3,8 @@ category: coding
 skill: algorithms
 type: coding
 subtype: algorithm
-question: >
+question: "Excel column name"
+description: |
   Given a positive integer, return its Excel column name (1 -> "A", 26 -> "Z",
   27 -> "AA", 702 -> "ZZ", 703 -> "AAA"). Reported in a Microsoft Applied AI/ML round.
 difficulty: medium

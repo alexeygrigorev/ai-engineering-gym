@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "20. Valid Parentheses"
+description: |
+  Given a string `s` containing only the characters `()[]{}`, determine whether it is
+  valid: every opening bracket is closed by the matching type of bracket, and brackets
+  are closed in the correct order. Example: `"()[]{}"` -> `true`; `"(]"` -> `false`;
+  `"([)]"` -> `false`; `"{[]}"` -> `true`.
 difficulty: easy
 tags: [dsa]
 ai_relevant: true

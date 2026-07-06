@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "25. Reverse Nodes in k-Group"
+description: |
+  Given the head of a linked list, reverse the nodes `k` at a time and return the
+  modified list. Process the list in consecutive groups of `k`; if the final group has
+  fewer than `k` nodes, leave it in its original order. Node values are not changed,
+  only the links. Example: `head = [1,2,3,4,5]`, `k = 2` -> `[2,1,4,3,5]`; with
+  `k = 3` -> `[3,2,1,4,5]`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

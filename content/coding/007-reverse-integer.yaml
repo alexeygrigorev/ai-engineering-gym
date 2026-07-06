@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "7. Reverse Integer"
+description: |
+  Given a signed 32-bit integer `x`, return `x` with its digits reversed, keeping the
+  sign. If the reversed value falls outside the 32-bit signed range
+  `[-2^31, 2^31 - 1]`, return `0`. Example: `x = 123` -> `321`; `x = -123` -> `-321`;
+  `x = 120` -> `21`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

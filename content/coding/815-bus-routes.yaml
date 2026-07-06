@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "815. Bus Routes"
+description: |
+  You are given `routes`, where `routes[i]` is the list of stops served by bus `i` on
+  a repeating loop, plus a `source` stop and a `target` stop. Starting at `source`,
+  return the fewest number of buses you must ride to reach `target`, or `-1` if it is
+  impossible. You may only travel between stops by boarding buses. Example:
+  `routes = [[1,2,7],[3,6,7]]`, `source = 1`, `target = 6` -> `2`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

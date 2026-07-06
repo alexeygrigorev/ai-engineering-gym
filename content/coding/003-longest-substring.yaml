@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "3. Longest Substring Without Repeating Characters"
+description: |
+  Given a string `s`, return the length of the longest contiguous substring that
+  contains no repeated characters. Example: for `s = "abcabcbb"` the answer is `3`
+  (the substring `"abc"`); for `s = "bbbbb"` it is `1`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

@@ -3,7 +3,8 @@ category: coding
 skill: ml-coding
 type: coding
 subtype: ml-coding
-question: >
+question: "Logistic regression in NumPy"
+description: |
   Implement logistic regression from scratch in NumPy. Train it with stochastic
   gradient descent, add L2 regularization, and stop early when validation loss
   stops improving. Expose fit(X, y) and predict_proba(X).

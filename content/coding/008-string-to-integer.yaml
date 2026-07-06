@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "8. String to Integer (atoi)"
+description: |
+  Implement `atoi`: convert a string `s` to a 32-bit signed integer. Skip leading
+  spaces, read an optional `+`/`-` sign, then consume consecutive digits, stopping at
+  the first non-digit character. Ignore any trailing characters. If no digits were
+  read, return `0`. Clamp the result to the 32-bit signed range `[-2^31, 2^31 - 1]`.
+  Example: `"   -42abc"` -> `-42`; `"4193 with words"` -> `4193`; `"words 99"` -> `0`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

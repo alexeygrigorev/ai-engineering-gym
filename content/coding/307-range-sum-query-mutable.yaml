@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "307. Range Sum Query - Mutable"
+description: |
+  Design a `NumArray` initialized from an integer array `nums` that supports two
+  operations, both efficiently under interleaving: `update(i, val)` sets `nums[i]` to
+  `val`, and `sumRange(l, r)` returns the sum of the inclusive range `nums[l..r]`.
+  Example: after `update(1, 2)`, `sumRange(0, 2)` returns the sum of the first three
+  (updated) elements.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

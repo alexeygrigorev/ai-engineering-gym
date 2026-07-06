@@ -3,7 +3,8 @@ category: coding
 skill: implementation
 type: coding
 subtype: implementation
-question: >
+question: "Credits expiry system"
+description: |
   Build a credits management system (reported at OpenAI). Customers are granted credits
   that expire at a given time. Level 1: add credits (amount, expiry) and charge a cost,
   spending soonest-to-expire first. Level 2: expire credits automatically once their

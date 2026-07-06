@@ -3,7 +3,8 @@ category: coding
 skill: implementation
 type: coding
 subtype: implementation
-question: >
+question: "In-memory database"
+description: |
   Design an in-memory SQL-like database (cf. LeetCode 2408, "Design SQL"). Support
   creating tables with a fixed number of columns, inserting rows with auto-increment
   ids, deleting rows by id, selecting a single cell, and exporting a table as CSV.

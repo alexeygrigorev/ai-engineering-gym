@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "69. Sqrt(x)"
+description: |
+  Given a non-negative integer `x`, return the integer square root of `x`, i.e. `sqrt(x)`
+  rounded down to the nearest integer. Do not use any built-in exponent/sqrt function.
+  Example: `x = 8` -> `2` (since `2.828...` truncates to `2`); `x = 4` -> `2`.
 difficulty: easy
 tags: [dsa]
 ai_relevant: false

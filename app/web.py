@@ -271,6 +271,16 @@ a {
     line-height: 1.4;
 }
 
+.qbody {
+    margin-top: 10px;
+    color: #c3c8d2;
+    font-size: 15px;
+}
+
+.qbody p {
+    margin: 6px 0;
+}
+
 .hint {
     background: #14202a;
     border: 1px solid #234a5a;
@@ -632,6 +642,8 @@ def recall_block(it, footer: str = "") -> str:
     """
     c = it.content
     q = display_question(c, it.id)
+    desc = c.get("description")
+    desc_html = f'<div class="qbody">{md(desc)}</div>' if desc else ""
     hints = c.get("hints") or []
     sources = render_sources(c)
     sources_block = (
@@ -642,6 +654,7 @@ def recall_block(it, footer: str = "") -> str:
     return f"""
 <div class="tagrow">{difficulty_tag(it)}<span class="pill">{esc(it.skill)}</span></div>
 <div class="question">{esc(q)}</div>
+{desc_html}
 <div id="hints"></div>
 <div class="actions">
   <button class="ghost" type="button" id="hintbtn" onclick="hint()">Hint</button>
@@ -759,6 +772,39 @@ def walkthrough_block(it, footer: str = "") -> str:
         '<p class="sub">Think it through out loud — reveal the reference for each step, then move on.</p>'
         + "".join(steps_html) + end + js
     )
+
+
+def template_block(it, footer: str = "") -> str:
+    """System-design answer template: a studyable framework (shown openly, not hidden)."""
+    c = it.content
+    title = c.get("title") or display_question(c, it.id)
+    parts = [
+        f'<div class="tagrow">{difficulty_tag(it)}<span class="pill">answer template</span></div>',
+        f'<div class="question">{esc(title)}</div>',
+        '<p class="sub">A reusable framework for answering this kind of system-design question — study it, then use it on the walkthroughs.</p>',
+    ]
+    fw = c.get("framework") or []
+    if fw:
+        parts.append('<div class="qt">Framework</div>')
+        for step in fw:
+            if isinstance(step, dict):
+                phase = esc(step.get("phase", ""))
+                dos = step.get("do") or []
+                parts.append(f'<div class="section-label">{phase}</div>' + (md_list(dos) if dos else ""))
+            else:
+                parts.append(md("- " + str(step)))
+    if c.get("key_patterns"):
+        parts.append('<div class="qt">Key patterns</div>' + md_list(c["key_patterns"]))
+    if c.get("skeleton_diagram"):
+        parts.append('<div class="qt">Skeleton architecture (mermaid)</div><pre>' + esc(c["skeleton_diagram"]) + "</pre>")
+    srcs = render_sources(c)
+    if srcs:
+        parts.append(
+            '<button class="ghost" type="button" onclick="toggleSources()">Sources</button>'
+            f'<div id="sources" style="display:none;margin-top:10px">{srcs}</div>'
+        )
+    parts.append(footer)
+    return "".join(parts)
 
 
 SERVICE_WORKER_JS = """
@@ -904,6 +950,16 @@ def build_router(store: Store, reviews) -> APIRouter:
 
         sub = request.query_params.get("sub")
 
+        # system design: no folders — surface the answer template, then a flat list of scenarios
+        if s["category"] == "ai-system-design":
+            templates = [i for i in items if i.type == "template"]
+            walks = [i for i in items if i.type != "template"]
+            body = head
+            for t in templates:
+                body += f'<a class="cta" href="{item_url(t)}">📋 {esc(t.content.get("title", "How to answer"))}</a>'
+            body += buttons(f"/practice/{key}") + "".join(row(i) for i in walks)
+            return page(s["title"], body)
+
         # a sub-category is selected -> its list + random/practice
         if sub:
             pool = practice_order([i for i in items if i.skill == sub])
@@ -947,7 +1003,12 @@ def build_router(store: Store, reviews) -> APIRouter:
             return page("Not found", '<a class="back" href="/">&larr; Home</a><p>Not found.</p>')
         q = display_question(it.content, it.id)
         footer = question_source(it) + review_controls(it.id, reviews.get(it.id))
-        render = walkthrough_block if it.type == "walkthrough" else recall_block
+        if it.type == "walkthrough":
+            render = walkthrough_block
+        elif it.type == "template":
+            render = template_block
+        else:
+            render = recall_block
         body = (
             '<a class="back" href="javascript:history.back()">&larr; Back</a>'
             f'<div class="card">{render(it, footer=footer)}</div>'
@@ -964,7 +1025,7 @@ def build_router(store: Store, reviews) -> APIRouter:
         s = STAGE_BY_KEY.get(key)
         if not s:
             return RedirectResponse("/", status_code=303)
-        pool = items_for(s["category"])
+        pool = [i for i in items_for(s["category"]) if i.type != "template"]
         if skill:  # optional sub-group filter (e.g. coding -> ml-coding)
             pool = [i for i in pool if i.skill == skill]
         if mode == "random":

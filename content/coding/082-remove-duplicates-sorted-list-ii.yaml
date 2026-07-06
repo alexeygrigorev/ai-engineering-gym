@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "82. Remove Duplicates from Sorted List II"
+description: |
+  Given the head of a sorted linked list, delete every node that has a duplicate value,
+  leaving only values that appear exactly once, and return the head of the modified list.
+  Example: `1 -> 2 -> 3 -> 3 -> 4 -> 4 -> 5` -> `1 -> 2 -> 5`;
+  `1 -> 1 -> 1 -> 2 -> 3` -> `2 -> 3`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

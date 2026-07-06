@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "234. Palindrome Linked List"
+description: |
+  Given the `head` of a singly linked list, return `true` if the sequence of values
+  reads the same forward and backward, `false` otherwise. Example:
+  `1 -> 2 -> 2 -> 1` -> `true`; `1 -> 2` -> `false`.
 difficulty: easy
 tags: [dsa]
 ai_relevant: false

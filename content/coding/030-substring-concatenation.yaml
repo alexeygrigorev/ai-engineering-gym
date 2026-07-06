@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "30. Substring with Concatenation of All Words"
+description: |
+  Given a string `s` and an array `words` of strings that all have the same length,
+  return the starting indices of every substring of `s` that is a concatenation of all
+  the words in `words` exactly once, in any order and with no characters in between.
+  Example: `s = "barfoothefoobarman"`, `words = ["foo","bar"]` -> `[0,9]` (`"barfoo"`
+  at index 0 and `"foobar"` at index 9).
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

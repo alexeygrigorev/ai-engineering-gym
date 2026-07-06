@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "297. Serialize and Deserialize Binary Tree"
+description: |
+  Design a codec for an arbitrary binary tree. Implement `serialize(root)` to encode
+  the tree into a single string, and `deserialize(data)` to rebuild the exact same
+  tree from that string. The encoding format is up to you; the only requirement is
+  that deserializing a serialized tree reproduces the original structure and node
+  values.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

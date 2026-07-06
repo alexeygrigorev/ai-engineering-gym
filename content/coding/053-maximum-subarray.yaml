@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "53. Maximum Subarray"
+description: |
+  Given an integer array `nums`, find the contiguous subarray (at least one element) with
+  the largest sum and return that sum. Example: `nums = [-2,1,-3,4,-1,2,1,-5,4]` -> `6`
+  (the subarray `[4,-1,2,1]`).
 difficulty: easy
 tags: [dsa]
 ai_relevant: true

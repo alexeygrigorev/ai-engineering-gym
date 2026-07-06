@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "45. Jump Game II"
+description: |
+  Given a 0-indexed array `nums` where `nums[i]` is the maximum forward jump length from
+  index `i`, return the minimum number of jumps needed to reach the last index. You start
+  at index `0`, and the input guarantees the end is always reachable. Example:
+  `nums = [2,3,1,1,4]` -> `2` (jump `0 -> 1 -> 4`).
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "200. Number of Islands"
+description: |
+  Given an `m x n` grid of `'1'` (land) and `'0'` (water) characters, return the number
+  of islands. An island is a group of land cells connected horizontally or vertically,
+  and the grid's edges are surrounded by water. Example: a grid whose only land forms
+  one connected blob -> `1`; three separate blobs -> `3`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: true

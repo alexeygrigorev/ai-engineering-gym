@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "240. Search a 2D Matrix II"
+description: |
+  Given an `m x n` integer `matrix` in which every row is sorted ascending left to
+  right and every column is sorted ascending top to bottom, and a `target` value,
+  return `true` if `target` appears in the matrix, `false` otherwise. Example:
+  searching for `5` in such a matrix -> `true`; searching for `20` -> `false`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

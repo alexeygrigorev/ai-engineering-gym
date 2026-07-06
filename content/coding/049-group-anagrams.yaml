@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "49. Group Anagrams"
+description: |
+  Given an array of strings `strs`, group together the strings that are anagrams of one
+  another (same letters rearranged) and return the groups in any order. Example:
+  `["eat","tea","tan","ate","nat","bat"]` -> `[["eat","tea","ate"],["tan","nat"],["bat"]]`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: true

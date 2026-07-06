@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "230. Kth Smallest Element in a BST"
+description: |
+  Given the `root` of a binary search tree and an integer `k` (1-indexed), return
+  the value of the `k`-th smallest element among all node values. Example: for a
+  BST containing `1, 2, 3, 4` with `k = 1` -> `1`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

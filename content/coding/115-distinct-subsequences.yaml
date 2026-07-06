@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "115. Distinct Subsequences"
+description: |
+  Given two strings `s` and `t`, return the number of distinct subsequences of `s`
+  that equal `t`. A subsequence keeps the original order but may drop characters.
+  Example: `s = "rabbbit"`, `t = "rabbit"` -> `3` (three different ways to pick the
+  matching characters).
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

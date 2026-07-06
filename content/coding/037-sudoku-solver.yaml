@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "37. Sudoku Solver"
+description: |
+  Given a `9x9` Sudoku board with some cells filled with digits `1`-`9` and the rest
+  marked `.` (empty), fill in every empty cell so the finished board is valid: each
+  row, each column, and each of the nine `3x3` sub-boxes contains the digits `1`-`9`
+  exactly once. A unique solution is guaranteed; modify the board in place.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

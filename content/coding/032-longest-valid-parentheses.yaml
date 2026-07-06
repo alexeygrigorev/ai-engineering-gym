@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "32. Longest Valid Parentheses"
+description: |
+  Given a string `s` containing only `(` and `)`, return the length of the longest
+  contiguous substring that is well-formed (properly matched) parentheses. Example:
+  `s = "(()"` -> `2` (the substring `"()"`); `s = ")()())"` -> `4` (the substring
+  `"()()"`); `s = ""` -> `0`.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

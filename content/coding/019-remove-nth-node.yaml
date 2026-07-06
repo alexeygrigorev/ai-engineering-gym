@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "19. Remove Nth Node From End of List"
+description: |
+  Given the head of a singly linked list, remove the `n`-th node counting from the end
+  of the list and return the head of the modified list (`n` is valid, i.e. at least 1
+  and at most the list length). Example: `head = [1,2,3,4,5]`, `n = 2` ->
+  `[1,2,3,5]`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

@@ -4,6 +4,12 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "81. Search in Rotated Sorted Array II"
+description: |
+  Given an integer array `nums` that was sorted in non-decreasing order (and may contain
+  duplicates) then rotated at some unknown pivot, plus a `target`, return `true` if
+  `target` is present and `false` otherwise. Try to keep the search close to `O(log n)`,
+  though duplicates can force `O(n)` in the worst case. Example:
+  `nums = [2,5,6,0,0,1,2]`, `target = 0` -> `true`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: false

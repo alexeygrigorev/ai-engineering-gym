@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "87. Scramble String"
+description: |
+  A scramble of a string is formed by recursively splitting it into two non-empty
+  substrings and optionally swapping the two halves at each node. Given two strings
+  `s1` and `s2` of equal length, return `true` if `s2` is a scramble of `s1`.
+  Example: `s1 = "great"`, `s2 = "rgeat"` -> `true` (swap the split `gr | eat`).
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

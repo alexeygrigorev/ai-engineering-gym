@@ -4,6 +4,10 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "51. N-Queens"
+description: |
+  Given an integer `n`, place `n` queens on an `n x n` chessboard so that no two attack
+  each other (no shared row, column, or diagonal). Return all distinct solutions; each
+  board is a list of `n` strings using `'Q'` for a queen and `'.'` for an empty cell.
 difficulty: hard
 tags: [dsa]
 ai_relevant: false

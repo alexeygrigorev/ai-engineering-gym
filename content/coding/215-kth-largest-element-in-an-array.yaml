@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "215. Kth Largest Element in an Array"
+description: |
+  Given an integer array `nums` and an integer `k`, return the `k`-th largest
+  element in the array. This is the element at sorted position `k` from the end,
+  not the `k`-th distinct value (duplicates count). Example:
+  `nums = [3,2,1,5,6,4]`, `k = 2` -> `5`.
 difficulty: medium
 tags: [dsa]
 ai_relevant: true

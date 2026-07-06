@@ -4,6 +4,11 @@ skill: algorithms
 type: coding
 subtype: algorithm
 question: "652. Find Duplicate Subtrees"
+description: |
+  Given the `root` of a binary tree, return one representative root node for each
+  group of duplicate subtrees. Two subtrees are duplicates when they have identical
+  structure and the same node values. For each set of duplicates, include only one
+  of their root nodes in the answer (order does not matter).
 difficulty: medium
 tags: [dsa]
 ai_relevant: false
