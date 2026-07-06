@@ -23,8 +23,11 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app.ingest import ingest_dir
 from app.models import RehearsalAnswer, SessionResult, Session, User
+from app.reviews import get_review_store
 from app.store import InMemoryStore, Store
 from app.web import AuthMiddleware, build_router
+
+review_store = get_review_store()
 
 DEFAULT_USER = "me"
 SESSION_SIZE = 10  # design.md §2: ~7–15 exercises
@@ -65,7 +68,7 @@ app.add_middleware(
 )
 
 # Phone-first web UI (interview-stage navigation).
-app.include_router(build_router(store))
+app.include_router(build_router(store, review_store))
 
 
 # --- request/response shapes ----------------------------------------------

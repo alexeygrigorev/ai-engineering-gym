@@ -37,6 +37,26 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: reviews-table-access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:Scan]
+                Resource: !GetAtt ReviewsTable.Arn
+
+  ReviewsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ai-engineering-gym-reviews
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: item_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: item_id
+          KeyType: HASH
 
   GymFunction:
     Type: AWS::Lambda::Function
@@ -57,6 +77,7 @@ Resources:
           INGEST_INCLUDE_DRAFTS: "true"
           GYM_PASSPHRASE: !Ref Passphrase
           SESSION_SECRET: !Ref SessionSecret
+          REVIEWS_TABLE: !Ref ReviewsTable
 
   HttpApi:
     Type: AWS::ApiGatewayV2::Api

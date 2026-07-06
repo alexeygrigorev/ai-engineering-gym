@@ -17,18 +17,25 @@ from __future__ import annotations
 import html
 import json
 import os
+import random
 import uuid
 from datetime import timedelta
 
 from fastapi import APIRouter, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
+from pydantic import BaseModel
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.models import Progress, Session, SessionResult, _now
 from app.store import Store
 
+
+class ReviewIn(BaseModel):
+    verdict: str = ""
+    comment: str = ""
+
 PASSPHRASE = os.environ.get("GYM_PASSPHRASE", "aislgym")
-PUBLIC_PATHS = {"/login", "/health", "/favicon.ico"}
+PUBLIC_PATHS = {"/login", "/health", "/favicon.ico", "/manifest.webmanifest", "/sw.js", "/icon.svg"}
 USER = "me"
 PRACTICE_SIZE = 15
 GRADES = {"again": 0, "hard": 1, "good": 2, "easy": 3}
@@ -380,6 +387,107 @@ form.login button {
     padding: 14px;
     margin: 6px 0 14px;
 }
+
+.cta.secondary {
+    background: #232733;
+    color: #e7e9ee;
+}
+
+/* content review controls */
+.review {
+    margin-top: 16px;
+    border-top: 1px solid #232733;
+    padding-top: 14px;
+}
+
+.rev-btns {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.revbtn {
+    flex: 1;
+    background: #232733;
+    color: #e7e9ee;
+}
+
+.revbtn.up.sel {
+    background: #234a30;
+    color: #8fd6a9;
+}
+
+.revbtn.down.sel {
+    background: #4a2530;
+    color: #f0908f;
+}
+
+.cmt {
+    width: 100%;
+    min-height: 64px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #232733;
+    background: #0b0d11;
+    color: #e7e9ee;
+    font: inherit;
+    resize: vertical;
+}
+
+.rev-status {
+    font-size: 13px;
+    color: #8fd6a9;
+    margin-top: 6px;
+    min-height: 16px;
+}
+"""
+
+
+GLOBAL_JS = """
+<script>
+// content review (thumbs up/down + comment), offline-queued
+function review(id, verdict){
+  const box=document.querySelector('.review[data-id="'+CSS.escape(id)+'"]');
+  if(!box) return;
+  if(verdict){ box.dataset.verdict=verdict;
+    box.querySelectorAll('.revbtn').forEach(b=>b.classList.remove('sel'));
+    const b=box.querySelector('.revbtn.'+verdict); if(b) b.classList.add('sel'); }
+  const ta=document.getElementById('cmt-'+id);
+  sendReview(id, box.dataset.verdict||'', ta?ta.value:'');
+}
+async function sendReview(id, verdict, comment){
+  const st=document.getElementById('revst-'+id);
+  try{
+    if(!navigator.onLine) throw 0;
+    const r=await fetch('/review/'+encodeURIComponent(id),{method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify({verdict,comment})});
+    if(!r.ok) throw 0;
+    if(st) st.textContent='Saved \\u2713';
+  }catch(e){ queueReview(id,{verdict,comment}); if(st) st.textContent='Saved offline \\u2014 will sync'; }
+}
+function queueReview(id,p){ const q=JSON.parse(localStorage.getItem('reviewQueue')||'{}');
+  q[id]=p; localStorage.setItem('reviewQueue',JSON.stringify(q)); }
+async function flushReviews(){ if(!navigator.onLine) return;
+  const q=JSON.parse(localStorage.getItem('reviewQueue')||'{}'); let ch=false;
+  for(const [id,p] of Object.entries(q)){ try{
+    const r=await fetch('/review/'+encodeURIComponent(id),{method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+    if(r.ok){ delete q[id]; ch=true; } }catch(e){} }
+  if(ch) localStorage.setItem('reviewQueue',JSON.stringify(q)); }
+window.addEventListener('online',flushReviews); window.addEventListener('load',flushReviews);
+// PWA service worker
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+// download all cards for offline use
+async function downloadOffline(){
+  const btn=document.getElementById('dlbtn'); if(btn) btn.textContent='Downloading\\u2026';
+  try{
+    const urls=await (await fetch('/offline-urls')).json();
+    const reg=await navigator.serviceWorker.ready;
+    reg.active.postMessage({type:'precache', urls});
+    if(btn) btn.textContent='Downloaded '+urls.length+' cards \\u2713';
+  }catch(e){ if(btn) btn.textContent='Download failed'; }
+}
+</script>
 """
 
 
@@ -387,8 +495,10 @@ def page(title: str, body: str) -> HTMLResponse:
     return HTMLResponse(
         "<!doctype html><html><head><meta charset=utf-8>"
         "<meta name=viewport content='width=device-width,initial-scale=1,maximum-scale=1'>"
+        "<meta name=theme-color content='#0f1115'>"
+        "<link rel=manifest href='/manifest.webmanifest'>"
         f"<title>{html.escape(title)}</title><style>{CSS}</style></head>"
-        f"<body><div class=wrap>{body}</div></body></html>"
+        f"<body><div class=wrap>{body}</div>{GLOBAL_JS}</body></html>"
     )
 
 
@@ -514,10 +624,66 @@ function toggleSources() {{
 """
 
 
+def review_controls(item_id: str, current) -> str:
+    """Thumbs up/down + comment controls, shown after the answer is revealed."""
+    cur = current or {}
+    v = cur.get("verdict", "")
+    comment = esc(cur.get("comment", ""))
+    up = " sel" if v == "up" else ""
+    down = " sel" if v == "down" else ""
+    iid = esc(item_id)
+    return (
+        f'<div class="review" data-id="{iid}" data-verdict="{esc(v)}">'
+        '<div class="qt">Review this card</div>'
+        '<div class="rev-btns">'
+        f"<button type=\"button\" class=\"revbtn up{up}\" onclick=\"review('{iid}','up')\">👍 Keep</button>"
+        f"<button type=\"button\" class=\"revbtn down{down}\" onclick=\"review('{iid}','down')\">👎 Cut</button>"
+        "</div>"
+        f'<textarea id="cmt-{iid}" class="cmt" placeholder="Comment (optional)">{comment}</textarea>'
+        f"<button type=\"button\" class=\"ghost\" onclick=\"review('{iid}',null)\">Save comment</button>"
+        f'<div class="rev-status" id="revst-{iid}"></div>'
+        "</div>"
+    )
+
+
+SERVICE_WORKER_JS = """
+const CACHE = 'gym-v1';
+self.addEventListener('install', e => { self.skipWaiting(); });
+self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+self.addEventListener('fetch', e => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if (url.origin !== location.origin) return;
+  e.respondWith((async () => {
+    try {
+      const res = await fetch(req);
+      if (res && res.ok) { const c = await caches.open(CACHE); c.put(req, res.clone()); }
+      return res;
+    } catch (err) {
+      const cached = await caches.match(req);
+      if (cached) return cached;
+      const home = await caches.match('/');
+      return home || new Response('offline', {status: 503, headers: {'Content-Type': 'text/plain'}});
+    }
+  })());
+});
+self.addEventListener('message', async e => {
+  if (e.data && e.data.type === 'precache') {
+    const c = await caches.open(CACHE);
+    await Promise.all((e.data.urls || []).map(u =>
+      fetch(u, {credentials: 'same-origin'}).then(r => { if (r.ok) c.put(u, r.clone()); }).catch(() => {})
+    ));
+    if (e.source && e.source.postMessage) e.source.postMessage({type: 'precache-done'});
+  }
+});
+"""
+
+
 # --- routes ----------------------------------------------------------------
 
 
-def build_router(store: Store) -> APIRouter:
+def build_router(store: Store, reviews) -> APIRouter:
     r = APIRouter()
 
     def items_for(category):
@@ -582,7 +748,10 @@ def build_router(store: Store) -> APIRouter:
             f'<header><h1>AISL Gym</h1><div class="pill">⭐ {xp} XP</div></header>'
             '<p class="sub">Pick an interview stage to train.</p>'
             + "".join(tiles)
-            + '<p class="sub" style="margin-top:20px"><a href="/logout">Log out</a></p>'
+            + '<button id="dlbtn" class="cta secondary" style="width:100%;margin-top:16px" '
+            'onclick="downloadOffline()">⬇ Download for offline</button>'
+            '<p class="sub" style="margin-top:16px">'
+            '<a href="/reviews">My reviews</a> &middot; <a href="/logout">Log out</a></p>'
         )
         return page("AISL Gym", body)
 
@@ -601,8 +770,6 @@ def build_router(store: Store) -> APIRouter:
         if not items:
             return page(s["title"], head + '<p class="sub">No questions yet — coming soon.</p>')
 
-        practice_btn = f'<a class="cta" href="/practice/{key}">Start practice ({min(len(items), PRACTICE_SIZE)} cards)</a>'
-
         def row(it):
             q = display_question(it.content, it.id)
             return (
@@ -610,28 +777,56 @@ def build_router(store: Store) -> APIRouter:
                 f"{difficulty_tag(it)}<span class=\"pill\">{esc(it.type)}</span></a>"
             )
 
-        # coding: split into named sub-groups by skill, each independently practiceable
+        def practice_buttons(link_base, n):
+            return (
+                f'<a class="cta" href="{link_base}&mode=random">🎲 Random question</a>'
+                if "?" in link_base
+                else f'<a class="cta" href="{link_base}?mode=random">🎲 Random question</a>'
+            ) + (
+                f'<a class="cta secondary" href="{link_base}">Practice due cards ({n})</a>'
+            )
+
+        # coding: drill into a sub-type (ML Coding / Implementation / Algorithms)
         if s["category"] == "coding":
             groups = [
-                ("ml-coding", "ML Coding", "Implement ML/AI primitives in NumPy"),
-                ("implementation", "Implementation Rounds", "Progressive build &amp; extend"),
-                ("algorithms", "Algorithms &amp; DSA", "LeetCode-style problem solving"),
+                ("ml-coding", "ML Coding", "💡", "Implement ML/AI primitives in NumPy"),
+                ("implementation", "Implementation Rounds", "🔧", "Progressive build &amp; extend systems"),
+                ("algorithms", "Algorithms &amp; DSA", "🧩", "LeetCode-style problem solving"),
             ]
-            body = head
-            for gskill, gname, gblurb in groups:
-                gitems = practice_order([i for i in items if i.skill == gskill])
-                if not gitems:
-                    continue
-                practice_n = min(len(gitems), PRACTICE_SIZE)
-                body += (
-                    f'<div class="section-label">{gname} · {len(gitems)}</div>'
-                    f'<p class="sub">{gblurb}</p>'
-                    f'<a class="cta" href="/practice/coding?skill={gskill}">Practice {gname} ({practice_n})</a>'
-                    + "".join(row(i) for i in gitems)
-                )
-            return page(s["title"], body)
+            sub = request.query_params.get("sub")
+            if not sub:
+                tiles = []
+                for gskill, gname, gemoji, gblurb in groups:
+                    n = len([i for i in items if i.skill == gskill])
+                    if not n:
+                        continue
+                    tiles.append(
+                        f'<a class="tile" href="/stage/coding?sub={gskill}"><div class="row">'
+                        f'<div class="emoji">{gemoji}</div>'
+                        f'<div><div class="t">{gname}</div><div class="b">{gblurb}</div></div>'
+                        f'<div class="count">{n} Q</div></div></a>'
+                    )
+                return page(s["title"], head + '<p class="sub">Pick a coding type.</p>' + "".join(tiles))
 
-        return page(s["title"], head + practice_btn + "".join(row(i) for i in items))
+            g = next((x for x in groups if x[0] == sub), None)
+            if not g:
+                return RedirectResponse("/stage/coding", status_code=303)
+            gskill, gname, gemoji, gblurb = g
+            gitems = practice_order([i for i in items if i.skill == gskill])
+            body = (
+                '<a class="back" href="/stage/coding">&larr; Coding</a>'
+                f"<header><h1>{gemoji} {gname}</h1></header>"
+                f'<p class="sub">{gblurb}</p>'
+                + practice_buttons(f"/practice/coding?skill={gskill}", min(len(gitems), PRACTICE_SIZE))
+                + "".join(row(i) for i in gitems)
+            )
+            return page(gname, body)
+
+        return page(
+            s["title"],
+            head + practice_buttons(f"/practice/{key}", min(len(items), PRACTICE_SIZE))
+            + "".join(row(i) for i in items),
+        )
 
     # -- browse a single item (study mode) --
     @r.get("/item/{item_id}", response_class=HTMLResponse)
@@ -640,22 +835,27 @@ def build_router(store: Store) -> APIRouter:
         if not it:
             return page("Not found", '<a class="back" href="/">&larr; Home</a><p>Not found.</p>')
         q = display_question(it.content, it.id)
+        footer = review_controls(it.id, reviews.get(it.id))
         body = (
             '<a class="back" href="javascript:history.back()">&larr; Back</a>'
-            f'<div class="card">{recall_block(it)}</div>'
+            f'<div class="card">{recall_block(it, footer=footer)}</div>'
         )
         return page(q, body)
 
     # -- practice: start a session --
     @r.get("/practice/{key}")
-    def practice_start(request: Request, key: str, skill: str = None):
+    def practice_start(request: Request, key: str, skill: str = None, mode: str = None):
         s = STAGE_BY_KEY.get(key)
         if not s:
             return RedirectResponse("/", status_code=303)
         pool = items_for(s["category"])
         if skill:  # optional sub-group filter (e.g. coding -> ml-coding)
             pool = [i for i in pool if i.skill == skill]
-        items = practice_order(pool)[:PRACTICE_SIZE]
+        if mode == "random":
+            random.shuffle(pool)
+            items = pool[:PRACTICE_SIZE]
+        else:  # spaced repetition: unseen first, then earliest due
+            items = practice_order(pool)[:PRACTICE_SIZE]
         if not items:
             return RedirectResponse(f"/stage/{key}", status_code=303)
         session = Session(
@@ -747,5 +947,65 @@ def build_router(store: Store) -> APIRouter:
             '<p class="sub"><a href="/">&larr; Home</a></p>'
         )
         return page("Done", body)
+
+    # -- content review (thumbs up/down + comment) --
+    @r.post("/review/{item_id}")
+    def review_post(item_id: str, body: ReviewIn):
+        reviews.put(item_id, body.verdict, body.comment)
+        return {"ok": True}
+
+    @r.get("/reviews", response_class=HTMLResponse)
+    def reviews_page(request: Request):
+        rows = []
+        for rec in reviews.all():
+            iid = rec.get("item_id", "")
+            it = store.get_item(iid)
+            q = display_question(it.content, iid) if it else iid
+            v = rec.get("verdict", "")
+            badge = "👍" if v == "up" else ("👎" if v == "down" else "•")
+            cmt = esc(rec.get("comment", ""))
+            rows.append(
+                f'<a class="q" href="/item/{esc(iid)}"><div class="qt">{badge} {esc(q)}</div>'
+                + (f'<div class="sub">{cmt}</div>' if cmt else "")
+                + "</a>"
+            )
+        body = (
+            '<a class="back" href="/">&larr; Home</a><header><h1>My reviews</h1></header>'
+            + ("".join(rows) or '<p class="sub">No reviews yet — 👍/👎 cards as you go.</p>')
+        )
+        return page("Reviews", body)
+
+    # -- PWA: manifest, service worker, icon, offline url list --
+    @r.get("/manifest.webmanifest")
+    def manifest():
+        return JSONResponse(
+            {
+                "name": "AISL Gym", "short_name": "Gym", "start_url": "/", "scope": "/",
+                "display": "standalone", "background_color": "#0f1115", "theme_color": "#0f1115",
+                "icons": [{"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}],
+            },
+            media_type="application/manifest+json",
+        )
+
+    @r.get("/icon.svg")
+    def icon():
+        svg = (
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
+            '<rect width="512" height="512" rx="96" fill="#3b6fe0"/>'
+            '<text x="50%" y="52%" font-size="300" text-anchor="middle" dominant-baseline="central"'
+            ' fill="#fff" font-family="sans-serif" font-weight="bold">G</text></svg>'
+        )
+        return Response(svg, media_type="image/svg+xml")
+
+    @r.get("/sw.js")
+    def service_worker():
+        return Response(SERVICE_WORKER_JS, media_type="application/javascript")
+
+    @r.get("/offline-urls")
+    def offline_urls():
+        urls = ["/"] + [f"/stage/{s['key']}" for s in STAGES]
+        urls += [f"/stage/coding?sub={sk}" for sk in ("ml-coding", "implementation", "algorithms")]
+        urls += [f"/item/{it.id}" for it in store.list_items()]
+        return JSONResponse(urls)
 
     return r
