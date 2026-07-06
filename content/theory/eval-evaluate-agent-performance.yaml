@@ -50,6 +50,11 @@ answer:
     - "Context adherence = outputs stay grounded in provided/retrieved context — the agent analog of RAG groundedness, catching closed-domain hallucinations"
     - "Track efficiency and cost as first-class (steps, latency, tokens/$ per run, convergence stability), plus error recovery and safety guardrails since agents take real actions"
 
+hints:
+  - "An agent is more than its final answer — think about levels of evaluation."
+  - "Consider outcome, each step, and the whole path; then add efficiency and safety."
+  - "Final-response (goal completion) + single-step (tool selection/arguments) + trajectory (LLM-judge over the trace); plus action advancement, context adherence, and steps/latency/cost."
+
 follow_ups:
   - "Your agent reaches the correct final answer but takes a wildly inefficient path — how do you catch and score that, and does it matter?"
   - "There are multiple valid trajectories for a task — how do you evaluate the path without over-fitting to one golden sequence?"

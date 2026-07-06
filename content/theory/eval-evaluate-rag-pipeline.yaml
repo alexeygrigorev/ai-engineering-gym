@@ -48,6 +48,11 @@ answer:
     - "Build a golden dataset of {question, ground-truth context/chunks, reference answer}; reference-based metrics need it, triad metrics don't"
     - "Do component eval (unit-test the retriever in isolation) AND end-to-end eval to catch both regressions and interaction effects"
 
+hints:
+  - "A RAG system has two stages — evaluate them separately so you know which one failed."
+  - "Name the metrics for each stage; recall the reference-free triad."
+  - "Retrieval: context precision/recall, recall@k, MRR, nDCG. Generation: faithfulness, answer relevance, correctness. The RAG triad (context relevance, groundedness, answer relevance) is reference-free."
+
 follow_ups:
   - "End-to-end answer quality is low but faithfulness is high — how do you diagnose whether it's retrieval or the question set?"
   - "How do you construct a golden dataset for RAG, and how do you handle questions with multiple valid supporting chunks?"

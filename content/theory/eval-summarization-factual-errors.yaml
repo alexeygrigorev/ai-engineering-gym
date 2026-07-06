@@ -48,6 +48,11 @@ answer:
     - "Constrain generation to the source: 'use only the provided text', add citations to source spans, lower temperature, add a post-hoc unsupported-claim filter"
     - "Handle long documents with chunking + hierarchical/map-reduce summarization, and keep human review for high-stakes cases"
 
+hints:
+  - "The property you care about is faithfulness of the summary to its source, not overlap with a reference."
+  - "Think about a design lever (extractive vs abstractive) plus purpose-built consistency metrics."
+  - "Prefer extractive/quote-constrained + citations; measure with NLI-based (SummaC, FactCC) and QA-based (QAGS) consistency; constrain to source, then human review."
+
 follow_ups:
   - "The summarizer must compress and paraphrase — how do you tell legitimate abstraction apart from a hallucinated fact when scoring faithfulness?"
   - "How do you evaluate faithfulness when the source exceeds the model's (or the judge's) context window?"

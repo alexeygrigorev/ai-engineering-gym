@@ -49,6 +49,11 @@ answer:
     - "Add citations/attribution: no supporting span = hallucination; wrong span = retrieval problem"
     - "Instrument each stage with tracing and use a labeled golden set to localize failures instead of debugging anecdotally"
 
+hints:
+  - "Two components could be at fault — which two, and how do you tell them apart?"
+  - "There's a quick controlled experiment that isolates one of them."
+  - "Inject known-good context (isolation test): correct now = retrieval fault, still wrong = generation fault; then use context recall/precision vs faithfulness, add citations, and trace on a golden set."
+
 follow_ups:
   - "Retrieval recall is fine but faithfulness is low — walk me through the prompt- and generation-side fixes you'd try, in order."
   - "How would you build the golden/eval set to attribute failures to retrieval vs generation, and what do you label?"

@@ -48,6 +48,11 @@ answer:
     - "Prompt/decoding controls: allow 'I don't know', restrict to provided context, extract verbatim quotes, lower temperature"
     - "Add an output-side verification pass and human-in-the-loop for high-stakes outputs; fine-tuning helps but never fully eliminates it — measure the residual rate"
 
+hints:
+  - "Start by defining it — faithfulness vs factuality, intrinsic vs extrinsic."
+  - "Separate detection from mitigation; detection is a portfolio of signals, not one tool."
+  - "Detect with LLM-judge/NLI entailment, self-consistency (SelfCheckGPT), log-prob uncertainty; mitigate with RAG grounding, citations, 'I don't know', low temperature, and a verification pass."
+
 follow_ups:
   - "How would you build an automated eval to measure hallucination rate before/after a mitigation, and what's your ground truth?"
   - "The LLM-as-judge is itself an LLM — how do you keep the judge from hallucinating, and calibrate it against human labels?"
