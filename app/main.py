@@ -57,7 +57,11 @@ app = FastAPI(title="AI Engineering Gym", version="0.1.0", lifespan=lifespan)
 # so it is added last (outermost) to populate request.session first.
 app.add_middleware(AuthMiddleware)
 app.add_middleware(
-    SessionMiddleware, secret_key=SESSION_SECRET, same_site="lax", https_only=False
+    SessionMiddleware,
+    secret_key=SESSION_SECRET,
+    same_site="lax",
+    https_only=False,
+    max_age=60 * 60 * 24 * 365,  # remember the login for a year (stable SESSION_SECRET)
 )
 
 # Phone-first web UI (interview-stage navigation).
