@@ -463,6 +463,57 @@ def render_sources(content: dict) -> str:
     return "".join(rows)
 
 
+def recall_block(it, footer: str = "") -> str:
+    """Anki recall card: question only, progressive hints, then reveal answer + sources.
+
+    Shared by the single-item browse view and the practice session. ``footer`` is
+    extra HTML (e.g. the rating form) shown inside the revealed answer.
+    """
+    c = it.content
+    q = display_question(c, it.id)
+    hints = c.get("hints") or []
+    sources = render_sources(c)
+    sources_block = (
+        '<button class="ghost" type="button" onclick="toggleSources()">Sources</button>'
+        f'<div id="sources" style="display:none;margin-top:10px">{sources}</div>'
+        if sources else ""
+    )
+    return f"""
+<div class="tagrow">{difficulty_tag(it)}<span class="pill">{esc(it.skill)}</span></div>
+<div class="question">{esc(q)}</div>
+<div id="hints"></div>
+<div class="actions">
+  <button class="ghost" type="button" id="hintbtn" onclick="hint()">Hint</button>
+  <button class="primary" type="button" onclick="reveal()">Reveal answer</button>
+</div>
+<div id="answer" class="answer" style="display:none">
+  {render_answer(c)}
+  {sources_block}
+  {footer}
+</div>
+<script>
+const HINTS = {json.dumps(hints)};
+let hi = 0;
+function hint() {{
+    if (hi < HINTS.length) {{
+        const d = document.createElement('div');
+        d.className = 'hint';
+        d.textContent = '💡 ' + HINTS[hi];
+        document.getElementById('hints').appendChild(d);
+        hi++;
+        if (hi >= HINTS.length) document.getElementById('hintbtn').disabled = true;
+    }}
+}}
+if (HINTS.length === 0) document.getElementById('hintbtn').disabled = true;
+function reveal() {{ document.getElementById('answer').style.display = 'block'; }}
+function toggleSources() {{
+    const s = document.getElementById('sources');
+    s.style.display = s.style.display === 'none' ? 'block' : 'none';
+}}
+</script>
+"""
+
+
 # --- routes ----------------------------------------------------------------
 
 
@@ -588,22 +639,10 @@ def build_router(store: Store) -> APIRouter:
         it = store.get_item(item_id)
         if not it:
             return page("Not found", '<a class="back" href="/">&larr; Home</a><p>Not found.</p>')
-        c = it.content
-        q = display_question(c, it.id)
-        sources = render_sources(c)
-        sources_block = (
-            '<button class="ghost" onclick="toggleSources()">Sources</button>'
-            f'<div id="sources" style="display:none;margin-top:10px">{sources}</div>'
-            '<script>function toggleSources(){var s=document.getElementById("sources");'
-            's.style.display=s.style.display==="none"?"block":"none";}</script>'
-            if sources else ""
-        )
+        q = display_question(it.content, it.id)
         body = (
             '<a class="back" href="javascript:history.back()">&larr; Back</a>'
-            f'<div class="tagrow">{difficulty_tag(it)}<span class="pill">{esc(it.type)}</span>'
-            f'<span class="pill">{esc(it.skill)}</span></div>'
-            f'<div class="question">{esc(q)}</div>'
-            f'<div class="answer">{render_answer(c)}{sources_block}</div>'
+            f'<div class="card">{recall_block(it)}</div>'
         )
         return page(q, body)
 
@@ -639,62 +678,21 @@ def build_router(store: Store) -> APIRouter:
             return RedirectResponse(f"/practice/s/{sid}/done", status_code=303)
 
         it = store.get_item(session.item_ids[session.cursor])
-        c = it.content
-        q = display_question(c, it.id)
-        hints = c.get("hints") or []
-        sources = render_sources(c)
+        q = display_question(it.content, it.id)
         pct = int(session.cursor / total * 100)
-
-        sources_block = (
-            '<button class="ghost" type="button" onclick="toggleSources()">Sources</button>'
-            f'<div id="sources" style="display:none;margin-top:10px">{sources}</div>'
-            if sources else ""
+        rating = (
+            f'<form method="post" action="/practice/s/{esc(sid)}/rate" class="rating">'
+            '<button class="again" name="grade" value="again">Again</button>'
+            '<button class="hard" name="grade" value="hard">Hard</button>'
+            '<button class="good" name="grade" value="good">Good</button>'
+            '<button class="easy" name="grade" value="easy">Easy</button></form>'
         )
-
-        body = f"""
-<a class="back" href="/stage/{esc(session.skill)}">&larr; Exit</a>
-<div class="progress"><span style="width:{pct}%"></span></div>
-<div class="card">
-  <div class="tagrow">{difficulty_tag(it)}<span class="pill">{esc(it.skill)}</span>
-    <span class="pill">{esc(session.cursor + 1)}/{esc(total)}</span></div>
-  <div class="question">{esc(q)}</div>
-  <div id="hints"></div>
-  <div class="actions">
-    <button class="ghost" type="button" id="hintbtn" onclick="hint()">Hint</button>
-    <button class="primary" type="button" onclick="reveal()">Reveal answer</button>
-  </div>
-  <div id="answer" class="answer" style="display:none">
-    {render_answer(c)}
-    {sources_block}
-    <form method="post" action="/practice/s/{esc(sid)}/rate" class="rating">
-      <button class="again" name="grade" value="again">Again</button>
-      <button class="hard" name="grade" value="hard">Hard</button>
-      <button class="good" name="grade" value="good">Good</button>
-      <button class="easy" name="grade" value="easy">Easy</button>
-    </form>
-  </div>
-</div>
-<script>
-const HINTS = {json.dumps(hints)};
-let hi = 0;
-function hint() {{
-    if (hi < HINTS.length) {{
-        const d = document.createElement('div');
-        d.className = 'hint';
-        d.textContent = '💡 ' + HINTS[hi];
-        document.getElementById('hints').appendChild(d);
-        hi++;
-        if (hi >= HINTS.length) document.getElementById('hintbtn').disabled = true;
-    }}
-}}
-if (HINTS.length === 0) document.getElementById('hintbtn').disabled = true;
-function reveal() {{ document.getElementById('answer').style.display = 'block'; }}
-function toggleSources() {{
-    const s = document.getElementById('sources');
-    s.style.display = s.style.display === 'none' ? 'block' : 'none';
-}}
-</script>
-"""
+        body = (
+            f'<a class="back" href="/stage/{esc(session.skill)}">&larr; Exit</a>'
+            f'<div class="progress"><span style="width:{pct}%"></span></div>'
+            f'<p class="sub">Card {session.cursor + 1} of {total}</p>'
+            f'<div class="card">{recall_block(it, footer=rating)}</div>'
+        )
         return page(q, body)
 
     # -- practice: rate current card, advance --
