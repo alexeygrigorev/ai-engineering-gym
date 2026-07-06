@@ -1,0 +1,31 @@
+id: leetcode-098-validate-binary-search-tree
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "98. Validate Binary Search Tree"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    An in-order traversal of a binary search tree yields values in strictly
+    increasing order. Traverse in-order collecting the values, then check that
+    every adjacent pair is strictly increasing; any equal-or-decreasing pair
+    means the tree is not a valid BST.
+  pseudocode: |
+    values = []
+    inorder(node):
+        if node is null: return
+        inorder(node.left); values.append(node.val); inorder(node.right)
+    inorder(root)
+    for i in 1..len(values)-1:
+        if values[i-1] >= values[i]: return false
+    return true
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Do it in O(h) space by tracking only the previously visited value during traversal."
+  - "Alternatively pass down (low, high) bounds to each node - how does that work?"
+  - "Handle duplicate values per the problem's chosen convention."
+sources:
+  - { title: "LeetCode - Validate Binary Search Tree", url: "https://leetcode.com/problems/validate-binary-search-tree/", supports: "problem statement" }
+  - { title: "Alexey's solution (098_validate_bst.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/098_validate_bst.cpp", supports: "reference implementation" }

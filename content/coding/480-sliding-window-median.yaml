@@ -1,0 +1,29 @@
+id: leetcode-480-sliding-window-median
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "480. Sliding Window Median"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Extend the two-heap median idea to a moving window by using two balanced
+    multisets - a max-side and a min-side - so elements can be removed as they
+    leave the window. Each slide removes the outgoing value from whichever side
+    holds it and inserts the incoming value, rebalances the two sides, and reads
+    the median off the boundary element(s).
+  pseudocode: |
+    left (max side) and right (min side) as ordered multisets, kept balanced
+    init with the first k elements; balance the two sizes
+    for each slide:
+        remove nums[i-k] from its side; add nums[i]; rebalance
+        median = right.min (odd k) or avg(left.max, right.min) (even k)
+  complexity: { time: "O(n log k)", space: "O(k)" }
+follow_ups:
+  - "Why do plain binary heaps fail here where removable multisets work?"
+  - "Use lazy deletion with two heaps and a removed-count map."
+  - "Guard against integer overflow when averaging two large window values."
+sources:
+  - { title: "LeetCode - Sliding Window Median", url: "https://leetcode.com/problems/sliding-window-median/", supports: "problem statement" }
+  - { title: "Alexey's solution (480_sliding_median.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/480_sliding_median.cpp", supports: "reference implementation" }

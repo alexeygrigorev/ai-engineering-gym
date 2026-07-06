@@ -1,0 +1,31 @@
+id: leetcode-204-count-primes
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "204. Count Primes"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Count primes below n with the Sieve of Eratosthenes. Mark all numbers prime
+    initially; walking the odd numbers upward, whenever one is still marked
+    prime, count it and strike out all of its multiples as composite. Striking
+    multiples is far cheaper than testing each number individually for
+    primality.
+  pseudocode: |
+    is_prime[2..n-1] = true
+    count = 1                       # account for 2
+    for i = 3, 5, 7, ... < n:
+        if not is_prime[i]: continue
+        count += 1
+        for j = 2i, 3i, ... < n: is_prime[j] = false
+    return count
+  complexity: { time: "O(n log log n)", space: "O(n)" }
+follow_ups:
+  - "Why can you start striking multiples from i*i rather than 2*i?"
+  - "Reduce memory with a segmented sieve."
+  - "Compare against trial-division primality testing per number."
+sources:
+  - { title: "LeetCode - Count Primes", url: "https://leetcode.com/problems/count-primes/", supports: "problem statement" }
+  - { title: "Alexey's solution (204_count_primes.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/204_count_primes.cpp", supports: "reference implementation" }

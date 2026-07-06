@@ -1,0 +1,28 @@
+id: leetcode-056-merge-intervals
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "56. Merge Intervals"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Sort the intervals by start. Walk them in order, keeping a result list seeded with
+    the first interval. For each next interval, if its start is within the current last
+    result interval (start <= last.end) the two overlap, so extend last.end to the larger
+    of the two ends; otherwise there's a gap, so append it as a new interval. Sorting
+    guarantees any interval that could merge with the current one comes right after it.
+  pseudocode: |
+    sort intervals by start
+    result = [intervals[0]]
+    for iv in intervals[1:]:
+        if iv.start <= result.last.end:
+            result.last.end = max(result.last.end, iv.end)
+        else:
+            result.append(iv)
+    return result
+  complexity: { time: "O(n log n)", space: "O(n)" }
+sources:
+  - { title: "LeetCode — Merge Intervals", url: "https://leetcode.com/problems/merge-intervals/", supports: "problem statement" }
+  - { title: "Alexey's solution (056_merge_intervals.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/056_merge_intervals.cpp", supports: "reference implementation" }

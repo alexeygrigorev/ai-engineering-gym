@@ -1,0 +1,24 @@
+id: leetcode-036-valid-sudoku
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "36. Valid Sudoku"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Just check the three constraints independently: no digit repeats in any row, any
+    column, or any 3x3 box. For each of the nine rows scan its cells with a seen-array
+    of size 9 and fail on a repeat; do the same for each column; then for each of the
+    nine boxes scan its 3x3 cells with a fresh seen-array. Empty cells ('.') are
+    skipped. If none of the checks finds a duplicate, the board is valid.
+  pseudocode: |
+    for each row:      used = [false]*9; for each cell d: if used[d] return false; used[d]=true
+    for each col:      used = [false]*9; for each cell d: if used[d] return false; used[d]=true
+    for each 3x3 box:  used = [false]*9; for each cell d: if used[d] return false; used[d]=true
+    return true
+  complexity: { time: "O(1) — fixed 9x9 board (O(n^2) for an n x n board)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — Valid Sudoku", url: "https://leetcode.com/problems/valid-sudoku/", supports: "problem statement" }
+  - { title: "Alexey's solution (036_valid_sudoku.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/036_valid_sudoku.cpp", supports: "reference implementation" }

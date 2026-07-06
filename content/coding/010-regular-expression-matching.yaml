@@ -1,0 +1,38 @@
+id: leetcode-010-regular-expression-matching
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "10. Regular Expression Matching"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Solve it with recursion on match(s, p), where '.' matches any single character and
+    '*' matches zero or more of the preceding element. If both s and p are empty,
+    return true. If s is empty but p is not, it only matches when the next pattern
+    element is starred (skip it: match("", p[2:])). When the second pattern char is
+    '*' the current element is optional — handle the '.' case and the specific-char
+    case: consume as many matching characters from s as possible and try continuing
+    with p[2:], and also try the zero-match branch. Otherwise, if the first characters
+    match ('.' or equal), recurse on match(s[1:], p[1:]). Otherwise return false.
+  pseudocode: |
+    match(s, p):
+        if p empty:                return s empty
+        if s empty:
+            return len(p) >= 2 and p[1]=='*' and match(s, p[2:])
+        starred = len(p) > 1 and p[1] == '*'
+        if starred:
+            # zero occurrences
+            if match(s, p[2:]): return true
+            # one-or-more: first char must match
+            if p[0]=='.' or p[0]==s[0]:
+                return match(s[1:], p)
+            return false
+        if p[0]=='.' or p[0]==s[0]:
+            return match(s[1:], p[1:])
+        return false
+  complexity: { time: "exponential without memoization (O(n*m) with a DP table)", space: "O(n + m) recursion (O(n*m) memoized)" }
+sources:
+  - { title: "LeetCode — Regular Expression Matching", url: "https://leetcode.com/problems/regular-expression-matching/", supports: "problem statement" }
+  - { title: "Alexey's solution (010_regexp.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/010_regexp.cpp", supports: "reference implementation" }

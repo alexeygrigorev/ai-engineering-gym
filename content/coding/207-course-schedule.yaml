@@ -1,0 +1,38 @@
+id: leetcode-207-course-schedule
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "207. Course Schedule"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Courses and their prerequisites form a directed graph, and the schedule is
+    feasible if and only if the graph has no cycle. Run DFS marking each node
+    VISITING when entered and VISITED when finished; reaching a node still
+    marked VISITING means a back edge - a cycle - so it is infeasible.
+    Translating the recursion to an explicit stack means pushing each node
+    twice: once to open it (mark VISITING) and once with a counter to close it
+    (mark VISITED).
+  pseudocode: |
+    build adjacency list: edge prereq -> course
+    for each unvisited node: if not DFS(node): return false
+
+    DFS(start):
+        stack = [(start, 0)]
+        while stack:
+            (n, cnt) = pop
+            if cnt == 0 and status[n] == VISITING: return false     # cycle
+            if cnt > 0: status[n] = VISITED; continue
+            status[n] = VISITING; push (n, 1)
+            for m in graph[n]: if status[m] != VISITED: push (m, 0)
+        return true
+  complexity: { time: "O(V + E)", space: "O(V + E)" }
+follow_ups:
+  - "Return a valid course ordering, not just yes/no (LeetCode 210)."
+  - "Solve it with Kahn's algorithm using in-degrees and a queue."
+  - "How does the two-push counter emulate the recursive call stack?"
+sources:
+  - { title: "LeetCode - Course Schedule", url: "https://leetcode.com/problems/course-schedule/", supports: "problem statement" }
+  - { title: "Alexey's solution (207_course_schedule.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/207_course_schedule.cpp", supports: "reference implementation" }

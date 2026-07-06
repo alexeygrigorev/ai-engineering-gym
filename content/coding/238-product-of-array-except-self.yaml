@@ -1,0 +1,30 @@
+id: leetcode-238-product-of-array-except-self
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "238. Product of Array Except Self"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    For each index the answer is the product of everything to its left times
+    everything to its right. Compute prefix products in a left-to-right pass and
+    suffix products in a right-to-left pass, multiplying them per index - no
+    division needed. The one-pass version fills both directions at once, keeping
+    only the output array plus two running scalars.
+  pseudocode: |
+    out = array of 1s
+    prefix = 1
+    for i = 1..n-1: prefix *= nums[i-1]; out[i] *= prefix
+    suffix = 1
+    for i = n-2..0: suffix *= nums[i+1]; out[i] *= suffix
+    return out
+  complexity: { time: "O(n)", space: "O(1) extra (output array aside)" }
+follow_ups:
+  - "Why is division disallowed, and how would a single zero break it?"
+  - "Handle one or more zeros in the array explicitly."
+  - "Prove the output array alone suffices for O(1) extra space."
+sources:
+  - { title: "LeetCode - Product of Array Except Self", url: "https://leetcode.com/problems/product-of-array-except-self/", supports: "problem statement" }
+  - { title: "Alexey's solution (238_self_product.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/238_self_product.cpp", supports: "reference implementation" }

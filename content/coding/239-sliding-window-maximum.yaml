@@ -1,0 +1,29 @@
+id: leetcode-239-sliding-window-maximum
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "239. Sliding Window Maximum"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Report the maximum of each size-k window. This solution keeps the window in
+    an ordered multiset (a balanced tree of value -> count): sliding one step
+    removes the outgoing element and inserts the incoming one, and the current
+    maximum is the largest key, so each step is O(log k). The optimal O(n)
+    method keeps a monotonic decreasing deque of indices.
+  pseudocode: |
+    window = ordered multiset
+    insert the first k elements; record the largest key
+    for i = k..n-1:
+        remove nums[i-k]; insert nums[i]
+        record the largest key as this window's maximum
+  complexity: { time: "O(n log k)", space: "O(k)" }
+follow_ups:
+  - "Achieve O(n) with a monotonic decreasing deque of indices."
+  - "Also maintain the sliding-window minimum simultaneously."
+  - "How does the deque discard elements that can never be the max?"
+sources:
+  - { title: "LeetCode - Sliding Window Maximum", url: "https://leetcode.com/problems/sliding-window-maximum/", supports: "problem statement" }
+  - { title: "Alexey's solution (239_sliding_max.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/239_sliding_max.cpp", supports: "reference implementation" }

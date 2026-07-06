@@ -1,0 +1,32 @@
+id: leetcode-127-word-ladder
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "127. Word Ladder"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Shortest transformation length only. Build the same wildcard-pattern graph,
+    where words that differ by one letter share a bucket. Then run bidirectional
+    BFS from both beginWord and endWord, expanding the two frontiers
+    alternately; when they meet, the shortest ladder length is the sum of the
+    two distances. Searching from both ends keeps each frontier small and cuts
+    the explored space dramatically versus one-directional BFS.
+  pseudocode: |
+    build wildcard groups -> graph of neighbors
+    frontier1 from begin (dist1), frontier2 from end (dist2)
+    while both frontiers non-empty:
+        expand one frontier by a single BFS step
+        if a newly reached node already sits in the other frontier:
+            return dist1[node] + dist2[node] + boundary offset
+    return 0 if the frontiers never meet
+  complexity: { time: "O(N * L^2)", space: "O(N * L)" }
+follow_ups:
+  - "Why is bidirectional BFS asymptotically better here?"
+  - "Return the actual ladder rather than its length (LeetCode 126)."
+  - "How does the wildcard index beat pairwise word comparisons?"
+sources:
+  - { title: "LeetCode - Word Ladder", url: "https://leetcode.com/problems/word-ladder/", supports: "problem statement" }
+  - { title: "Alexey's solution (127_word_ladder.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/127_word_ladder.cpp", supports: "reference implementation" }

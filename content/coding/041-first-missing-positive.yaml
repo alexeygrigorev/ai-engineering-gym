@@ -1,0 +1,29 @@
+id: leetcode-041-first-missing-positive
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "41. First Missing Positive"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    The answer is always in the range 1..n+1, so only values in that window matter.
+    Mark which of those are present with a boolean array of size n: for each positive
+    value v <= n, set used[v-1]. Then scan used from the left and return the first index
+    whose slot is unset (i+1); if all are set, the answer is n+1. (This uses O(n) extra
+    space; the classic O(1)-space variant permutes the array in place to put each value
+    v at index v-1, but the boolean-array version is the clearest.)
+  pseudocode: |
+    used = [false] * n
+    for v in nums:
+        if 1 <= v <= n: used[v-1] = true
+    for i in 0..n-1:
+        if not used[i]: return i + 1
+    return n + 1
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "How would you do it in O(1) extra space by rearranging the array in place?"
+sources:
+  - { title: "LeetCode — First Missing Positive", url: "https://leetcode.com/problems/first-missing-positive/", supports: "problem statement" }
+  - { title: "Alexey's solution (041_first_missing_positive.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/041_first_missing_positive.cpp", supports: "reference implementation" }

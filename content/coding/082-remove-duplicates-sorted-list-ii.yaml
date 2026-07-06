@@ -1,0 +1,28 @@
+id: leetcode-082-remove-duplicates-sorted-list-ii
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "82. Remove Duplicates from Sorted List II"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Because the list is sorted, any duplicated value forms a contiguous run, and here we
+    must drop such runs entirely (leaving only values that appear exactly once). Process
+    recursively: if the head's value repeats into the next node, skip the whole run of that
+    value and recurse on the first node past it. Otherwise the head is unique — keep it and
+    recurse on the rest, linking it to the cleaned tail.
+  pseudocode: |
+    dedup(head):
+        if head is null or head.next is null: return head
+        if head.val == head.next.val:
+            v = head.val
+            skip all nodes equal to v -> node
+            return dedup(node)              # drop the whole run
+        head.next = dedup(head.next)        # head is unique, keep it
+        return head
+  complexity: { time: "O(n)", space: "O(n) recursion (O(1) if written iteratively)" }
+sources:
+  - { title: "LeetCode — Remove Duplicates from Sorted List II", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/", supports: "problem statement" }
+  - { title: "Alexey's solution (082_remove_duplicates_sorted_list_2.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/082_remove_duplicates_sorted_list_2.cpp", supports: "reference implementation" }

@@ -1,0 +1,38 @@
+# Controlled skill vocabulary (design.md §6 conventions).
+# Every content item's `skill` must be one of these, grouped by interview stage
+# (category). Ingest can validate against this list; keep it in sync as content grows.
+
+theory:
+  - rag
+  - agents
+  - evaluation
+  - llm-practice
+  - ml-fundamentals
+
+coding:
+  - algorithms
+  - implementation
+  - ml-coding
+
+ai-system-design:
+  - rag
+  - chatbot
+  - agentic
+  - scaling
+  - serving
+
+project-deep-dive:
+  - faq-assistant
+  - dataops
+  - olx
+
+behavioral:
+  - conflict
+  - failure
+  - leadership
+  - ambiguity
+  - teamwork
+  - ownership
+
+home-assignments:
+  - take-home

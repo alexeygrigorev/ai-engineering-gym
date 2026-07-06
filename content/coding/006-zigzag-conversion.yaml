@@ -1,0 +1,31 @@
+id: leetcode-006-zigzag-conversion
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "6. Zigzag Conversion"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Simulate walking the zigzag instead of building a 2D grid. Keep one string buffer
+    per row. Walk the characters, appending to row 0, 1, 2, ... down to the last row,
+    then bounce back up to row 1, and repeat. Each character just gets appended to the
+    buffer of its current row. At the end, concatenate the row buffers top to bottom.
+    The single-row case is returned unchanged.
+  pseudocode: |
+    if numRows == 1: return s
+    rows = array of numRows empty strings
+    row = 0
+    pos = 0
+    while pos < len(s):
+        while row < numRows and pos < len(s):     # go down
+            rows[row] += s[pos]; row++; pos++
+        row -= 2                                   # bounce
+        while row > 0 and pos < len(s):            # go up diagonally
+            rows[row] += s[pos]; row--; pos++
+    return concat(rows)
+  complexity: { time: "O(n)", space: "O(n)" }
+sources:
+  - { title: "LeetCode — Zigzag Conversion", url: "https://leetcode.com/problems/zigzag-conversion/", supports: "problem statement" }
+  - { title: "Alexey's solution (006_zigzag_conversion.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/006_zigzag_conversion.cpp", supports: "reference implementation" }

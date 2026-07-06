@@ -1,0 +1,30 @@
+id: leetcode-081-search-in-rotated-sorted-array-ii
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "81. Search in Rotated Sorted Array II"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Same as problem 33 (Search in Rotated Sorted Array), but the array may contain
+    duplicates, which needs one adjustment. The trouble is when A[start] == A[end]: you
+    can't tell which half is sorted. Fix it by shrinking the window — move end left until
+    A[start] != A[end] — and then run the ordinary rotated binary search unchanged. The
+    duplicate-skipping is what pushes the worst case to O(n).
+  pseudocode: |
+    search(A, t, start, end):
+        while A[start] == A[end] and end >= start: end--
+        if start > end: return false
+        m = start + (end - start) / 2
+        if t in {A[start], A[m], A[end]}: return true
+        if A[start] <= t and t < A[m]: return search(A, t, start, m-1)   # left sorted
+        if A[m] < t and t <= A[end]:   return search(A, t, m+1, end)     # right sorted
+        if A[m] > A[end]:              return search(A, t, m+1, end)     # pivot right
+        if A[m] < A[start]:            return search(A, t, start, m-1)   # pivot left
+        return false
+  complexity: { time: "O(log n) average, O(n) worst case with many duplicates", space: "O(log n) recursion" }
+sources:
+  - { title: "LeetCode — Search in Rotated Sorted Array II", url: "https://leetcode.com/problems/search-in-rotated-sorted-array-ii/", supports: "problem statement" }
+  - { title: "Alexey's solution (081_search_in_rotated_sorted_array_2.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/081_search_in_rotated_sorted_array_2.cpp", supports: "reference implementation" }

@@ -1,0 +1,29 @@
+id: leetcode-008-string-to-integer
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "8. String to Integer (atoi)"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    A careful state walk over the characters. First skip leading spaces and read an
+    optional +/- sign. Then consume digits, building the result as result * 10 + digit,
+    stopping at the first non-digit. The tricky part is 32-bit overflow: after each
+    multiply-and-add, detect that the accumulation wrapped and clamp to INT_MAX or
+    INT_MIN according to the sign. Anything that isn't a valid prefix yields 0.
+  pseudocode: |
+    skip leading spaces
+    read optional '+' / '-' -> sign
+    result = 0
+    while next char c is a digit:
+        d = c - '0'
+        result = result * 10 + d
+        if overflow detected:
+            return sign > 0 ? INT_MAX : INT_MIN
+    return sign * result
+  complexity: { time: "O(n)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — String to Integer (atoi)", url: "https://leetcode.com/problems/string-to-integer-atoi/", supports: "problem statement" }
+  - { title: "Alexey's solution (008_string_to_integer.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/008_string_to_integer.cpp", supports: "reference implementation" }

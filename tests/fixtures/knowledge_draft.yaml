@@ -1,0 +1,13 @@
+id: rag-draft-item
+category: theory
+skill: rag
+type: knowledge
+question: "A draft item that ingest must skip."
+difficulty: 1
+status: draft
+answer:
+  short: "This is still being researched and reviewed."
+  key_points:
+    - "not yet approved"
+exercises:
+  - kind: explain

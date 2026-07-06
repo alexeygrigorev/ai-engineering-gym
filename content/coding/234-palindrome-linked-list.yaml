@@ -1,0 +1,27 @@
+id: leetcode-234-palindrome-linked-list
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "234. Palindrome Linked List"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    Build a reversed copy of the list, then walk the original and the reversed
+    copy in lockstep comparing values; if every value matches, the list is a
+    palindrome. The O(1)-space variant instead finds the middle, reverses the
+    second half in place, and compares the two halves.
+  pseudocode: |
+    reversed = a new list with the nodes copied in reverse order
+    walk original and reversed together:
+        if any pair of values differs: return false
+    return true
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Do it in O(1) space by reversing the second half in place."
+  - "Restore the original list after an in-place reversal."
+  - "Use fast/slow pointers to locate the midpoint."
+sources:
+  - { title: "LeetCode - Palindrome Linked List", url: "https://leetcode.com/problems/palindrome-linked-list/", supports: "problem statement" }
+  - { title: "Alexey's solution (234_palindrome_list.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/234_palindrome_list.cpp", supports: "reference implementation" }

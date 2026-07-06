@@ -1,0 +1,32 @@
+id: leetcode-230-kth-smallest-element-in-a-bst
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "230. Kth Smallest Element in a BST"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    An in-order traversal of a BST visits values in ascending order, so the k-th
+    node visited is the k-th smallest. Traverse in-order with a counter and stop
+    as soon as the counter reaches k, returning that node's value without
+    visiting the rest of the tree.
+  pseudocode: |
+    count = 0; answer = null
+    inorder(node):
+        if node is null or answer is found: return
+        inorder(node.left)
+        count += 1
+        if count == k: answer = node.val; return
+        inorder(node.right)
+    inorder(root)
+    return answer
+  complexity: { time: "O(h + k)", space: "O(h)" }
+follow_ups:
+  - "Augment each node with its subtree size for O(h) queries under frequent modification."
+  - "Find the k-th largest element instead."
+  - "Why does in-order traversal produce sorted order for a BST?"
+sources:
+  - { title: "LeetCode - Kth Smallest Element in a BST", url: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/", supports: "problem statement" }
+  - { title: "Alexey's solution (203_kth_bst_element.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/203_kth_bst_element.cpp", supports: "reference implementation" }

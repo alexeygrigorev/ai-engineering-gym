@@ -1,0 +1,26 @@
+id: leetcode-001-two-sum
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "1. Two Sum"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    Scan the array once, keeping a hash map from value seen so far to its index.
+    For each element a, the complement we need is b = target - a. If b is already
+    in the map, we've found the pair and return the two indices. Otherwise store a
+    with its index and continue. This trades O(n) extra space for a single linear
+    pass instead of the O(n^2) brute-force double loop.
+  pseudocode: |
+    index = {}                      # value -> position
+    for i, a in enumerate(nums):
+        b = target - a
+        if b in index:
+            return [index[b], i]
+        index[a] = i
+  complexity: { time: "O(n)", space: "O(n)" }
+sources:
+  - { title: "LeetCode — Two Sum", url: "https://leetcode.com/problems/two-sum/", supports: "problem statement" }
+  - { title: "Alexey's solution (001_two_sum.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/001_two_sum.cpp", supports: "reference implementation" }

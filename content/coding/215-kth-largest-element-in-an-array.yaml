@@ -1,0 +1,31 @@
+id: leetcode-215-kth-largest-element-in-an-array
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "215. Kth Largest Element in an Array"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Quickselect. The k-th largest element sits at index n-k in sorted order;
+    partition the array (Hoare partition) around a pivot and recurse only into
+    the side that contains that target index, ignoring the other half. This
+    averages O(n); a random shuffle first guards against adversarial worst-case
+    inputs.
+  pseudocode: |
+    target = n - k
+    select(lo, hi):
+        if lo >= hi: return
+        p = partition(a, lo, hi)
+        if target <= p: select(lo, p)
+        else: select(p+1, hi)
+    shuffle(a); select(0, n-1); return a[target]
+  complexity: { time: "O(n) average, O(n^2) worst", space: "O(1)" }
+follow_ups:
+  - "Use a size-k min-heap for a streaming O(n log k) alternative."
+  - "How does median-of-medians give worst-case linear time?"
+  - "Why does shuffling protect Hoare partition from sorted-input blowup?"
+sources:
+  - { title: "LeetCode - Kth Largest Element in an Array", url: "https://leetcode.com/problems/kth-largest-element-in-an-array/", supports: "problem statement" }
+  - { title: "Alexey's solution (215_kth_largest.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/215_kth_largest.cpp", supports: "reference implementation" }

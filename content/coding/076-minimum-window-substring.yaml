@@ -1,0 +1,34 @@
+id: leetcode-076-minimum-window-substring
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "76. Minimum Window Substring"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Sliding window with character counts. Count how many of each character t requires and
+    track total_count, the number of still-needed characters. Expand the right edge over s,
+    decrementing counts and total_count whenever the added character was actually needed.
+    Whenever total_count hits 0 the window covers t, so try to shrink from the left: record
+    the window if it's the smallest so far, then remove the left character (bumping its count
+    and total_count back if it was required) and advance left. Continue until the right edge
+    reaches the end; the best recorded window is the answer.
+  pseudocode: |
+    need = count of each char in t
+    total = len(t)
+    left = 0; best = none
+    for right in 0..len(s)-1:
+        if need[s[right]] > 0: total--
+        need[s[right]]--
+        while total == 0:                 # window valid, shrink
+            update best with [left, right]
+            need[s[left]]++
+            if need[s[left]] > 0: total++
+            left++
+    return best window or ""
+  complexity: { time: "O(n + m)", space: "O(alphabet)" }
+sources:
+  - { title: "LeetCode — Minimum Window Substring", url: "https://leetcode.com/problems/minimum-window-substring/", supports: "problem statement" }
+  - { title: "Alexey's solution (076_min_window_substring.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/076_min_window_substring.cpp", supports: "reference implementation" }

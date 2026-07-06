@@ -1,0 +1,17 @@
+id: sysdesign-rag-template
+category: ai-system-design
+type: template
+title: "RAG / Document Q&A system design template"
+status: approved
+synthesized_from:
+  - { title: "IGotAnOffer — GenAI system design", url: "https://example.com/igotanoffer" }
+  - { title: "Chip Huyen — GenAI platform", url: "https://example.com/chip" }
+framework:
+  - "Frame: users, scale, latency, quality bar, guardrails"
+  - "High-level: ingest/index path + query/generate path"
+  - "Deep-dive: chunking, retrieval, reranking, grounding, eval"
+  - "Trade-offs: cost, freshness, hallucination, caching, model tiering"
+skeleton_diagram: |
+  graph LR
+    Frame --> HighLevel --> DeepDive --> Tradeoffs
+generates: [walkthrough]

@@ -1,0 +1,16 @@
+id: behavioral-teammate-conflict
+category: behavioral
+skill: behavioral
+type: rehearsal
+difficulty: 2
+status: approved
+prompt: "Tell me about a time you had a conflict with a teammate."
+probes:
+  - "What would you do differently?"
+scaffold: { format: STAR, slots: [Situation, Task, Action, Result] }
+rubric:
+  - "situation is concrete"
+  - "your specific action, not the team's"
+  - "result is quantified"
+example: |
+  "S: ...  T: ...  A: ...  R: ..."

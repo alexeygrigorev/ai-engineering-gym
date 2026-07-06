@@ -1,0 +1,31 @@
+id: leetcode-152-maximum-product-subarray
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "152. Maximum Product Subarray"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    A DP that tracks both the running maximum and running minimum product ending
+    at each index. Because multiplying by a negative flips largest and smallest,
+    the current minimum can suddenly become the maximum. At each step: cur_max =
+    max(A[i], min_prev*A[i], max_prev*A[i]) and cur_min = min of the same three.
+    The answer is the largest cur_max seen over all indices.
+  pseudocode: |
+    max_prev = min_prev = answer = nums[0]
+    for x in nums[1:]:
+        candidates = [x, x*max_prev, x*min_prev]
+        cur_max = max(candidates); cur_min = min(candidates)
+        answer = max(answer, cur_max)
+        max_prev, min_prev = cur_max, cur_min
+    return answer
+  complexity: { time: "O(n)", space: "O(1)" }
+follow_ups:
+  - "Why must you carry the running minimum, not just the maximum?"
+  - "How do zeros in the array reset the running products?"
+  - "Contrast this with maximum subarray sum (LeetCode 53)."
+sources:
+  - { title: "LeetCode - Maximum Product Subarray", url: "https://leetcode.com/problems/maximum-product-subarray/", supports: "problem statement" }
+  - { title: "Alexey's solution (152_maximum_product_subarray.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/152_maximum_product_subarray.cpp", supports: "reference implementation" }

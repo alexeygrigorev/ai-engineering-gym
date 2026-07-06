@@ -1,0 +1,33 @@
+id: leetcode-025-reverse-nodes-in-k-group
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "25. Reverse Nodes in k-Group"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Walk the list group by group. For each group of k nodes, first check there are k
+    nodes left by advancing to the group end; if fewer than k remain, leave that tail
+    as-is and stop. Otherwise remember the node after the group, reverse the k nodes in
+    place, and wire the previous group's tail to the new head (the old group end) while
+    the old group start becomes the new tail. Continue from the saved next node. A dummy
+    head simplifies stitching the first group.
+  pseudocode: |
+    dummy -> head; prev = dummy
+    group_start = head
+    while group_start:
+        group_end = advance k-1 from group_start (null if < k remain)
+        if group_end is null:
+            prev.next = group_start; break
+        next = group_end.next
+        reverse nodes from group_start to group_end
+        prev.next = group_end        # reversed head
+        prev = group_start           # reversed tail
+        group_start = next
+    return dummy.next
+  complexity: { time: "O(n)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — Reverse Nodes in k-Group", url: "https://leetcode.com/problems/reverse-nodes-in-k-group/", supports: "problem statement" }
+  - { title: "Alexey's solution (025_reverse_kgroup.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/025_reverse_kgroup.cpp", supports: "reference implementation" }

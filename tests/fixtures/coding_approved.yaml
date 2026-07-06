@@ -1,0 +1,15 @@
+id: coding-lru-cache
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+difficulty: 3
+status: approved
+question: "LRU Cache with O(1) get and put."
+answer:
+  approach: "Hash map for O(1) lookup + doubly linked list for O(1) recency updates."
+  pseudocode: |
+    get(k): if k in map -> move node to head, return val; else -1
+    put(k,v): upsert; move to head; if over capacity -> evict tail
+  complexity: { time: "O(1) per op", space: "O(capacity)" }
+follow_ups: ["How would you make it thread-safe?"]

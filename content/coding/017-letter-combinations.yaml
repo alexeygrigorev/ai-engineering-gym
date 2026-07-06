@@ -1,0 +1,26 @@
+id: leetcode-017-letter-combinations
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "17. Letter Combinations of a Phone Number"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Backtracking over the digits. Map each digit to its phone-keypad letters. Recurse
+    one digit at a time, carrying a prefix built so far; for the current digit try each
+    of its letters, appending it to the prefix and recursing on the remaining digits.
+    When there are no digits left, the prefix is a complete combination — emit it.
+    Empty input yields no combinations.
+  pseudocode: |
+    pad = {'2':"abc", '3':"def", ..., '9':"wxyz"}
+    generate(prefix, digits):
+        if digits empty:
+            output prefix; return
+        for ch in pad[digits[0]]:
+            generate(prefix + ch, digits[1:])
+  complexity: { time: "O(4^n) combinations for n digits", space: "O(n) recursion depth" }
+sources:
+  - { title: "LeetCode — Letter Combinations of a Phone Number", url: "https://leetcode.com/problems/letter-combinations-of-a-phone-number/", supports: "problem statement" }
+  - { title: "Alexey's solution (017_letter_combination.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/017_letter_combination.cpp", supports: "reference implementation" }

@@ -1,0 +1,114 @@
+id: sysdesign-rag-template
+category: ai-system-design
+type: template
+skill: ai-system-design
+title: "RAG / Document Q&A system design template"
+difficulty: hard
+status: draft
+source_refs: [igotanoffer, bhavishya-pandit, reddit-eightfold-ai, interviewnode, chip-huyen-platform]
+
+# The many real answers this template was synthesized from. Every framework
+# bullet and skeleton-diagram node traces back to one or more of these.
+synthesized_from:
+  - title: "IGotAnOffer — Generative AI System Design Interview"
+    url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
+    supports: "5-step answer structure (frame / high-level / deep-dive / trade-offs / conclude), time allocation, deep-dive checklist, common mistakes"
+  - title: "Chip Huyen — Building a Generative AI Platform"
+    url: "https://huyenchip.com/2024/07/25/genai-platform.html"
+    supports: "layered platform build-up: context enhancement (RAG), guardrails, model router+gateway, caching (prompt/exact/semantic), orchestration, observability"
+  - title: "InterviewNode — GenAI System Design Interview Patterns"
+    url: "https://www.interviewnode.com/post/generative-ai-system-design-interview-patterns-you-should-know"
+    supports: "four repeatable patterns (RAG, feedback, hallucination mitigation, scalability/cost); 'RAG questions aren't about search, they're about control'"
+  - title: "ByteByteGo — How Perplexity Built an AI Google"
+    url: "https://blog.bytebytego.com/p/how-perplexity-built-an-ai-google"
+    supports: "five-stage RAG pipeline, hybrid dense+sparse retrieval, model-agnostic routing, inline citations grounded strictly in retrieved context"
+  - title: "Slack Engineering — How We Built Slack AI to be Secure and Private"
+    url: "https://slack.engineering/how-we-built-slack-ai-to-be-secure-and-private/"
+    supports: "stateless RAG (context per-request, no retention), RAG over fine-tuning for privacy, enforce requesting user's ACLs at retrieval time"
+  - title: "Uber — GenAI Gateway"
+    url: "https://www.uber.com/blog/genai-gateway/"
+    supports: "unified model gateway pattern: multi-vendor access, PII redaction/un-redaction, auth, audit logs, cost metrics"
+  - title: "Doctolib — Building an Agentic AI System for Healthcare Support"
+    url: "https://medium.com/doctolib/building-an-agentic-ai-system-for-healthcare-support-a-journey-into-practical-ai-implementation-0afd28d716e6"
+    supports: "least-privilege tool access, human-in-the-loop before sensitive write actions, per-request user-permission propagation, achievement/latency evals"
+  - title: "Pinecone — Rerankers and Two-Stage Retrieval"
+    url: "https://www.pinecone.io/learn/series/rag/rerankers/"
+    supports: "two-stage retrieval (bi-encoder retrieve many, cross-encoder rerank down); LLM recall degrades as context grows, so maximize retrieval recall then minimize tokens sent"
+  - title: "BigDataBoutique / Milvus — HNSW vs IVF vector index tradeoffs"
+    url: "https://bigdataboutique.com/blog/hnsw-vs-ivfflat-how-to-choose-the-right-vector-index"
+    supports: "ANN choice: HNSW best recall/latency in-RAM; IVF / IVF-PQ once index outgrows RAM; brute force infeasible at millions of vectors"
+
+# The reusable structure a candidate uses to drive ANY RAG-style answer.
+# This is the study artifact: learn the framework, not one canned answer.
+framework:
+  - phase: "Frame the problem (5-10 min)"
+    do:
+      - "Identify users and use cases: who queries, over what corpus, what is a 'good' answer."
+      - "Pin down scale: corpus size (docs/chunks), QPS, growth, freshness needs (batch vs real-time updates)."
+      - "Set the quality bar and non-functional targets: accuracy/grounding expectation, p95 latency, cost/query budget."
+      - "Surface guardrails up front: privacy/PII, access control, prompt injection, what the system must NOT do."
+      - "State assumptions out loud and confirm them before designing. Don't jump to a solution first (the #1 mistake)."
+  - phase: "High-level architecture (10-15 min)"
+    do:
+      - "Draw the two paths explicitly. INGEST/INDEX path (offline): load -> parse -> chunk -> embed -> upsert to vector index (+ metadata store)."
+      - "QUERY/GENERATE path (online): query -> (optional) rewrite -> embed -> ANN retrieve top-k -> rerank -> assemble grounded prompt -> LLM generate -> answer WITH citations."
+      - "Name the cross-cutting layers: API gateway/auth, model gateway/router, cache, guardrails (input+output), observability/eval."
+      - "Narrate the data flow as a guided tour ('prompt in -> context build -> model call -> post-process -> logs'), not a parts list."
+  - phase: "Deep-dive components (20-30 min)"
+    do:
+      - "Chunking & embeddings: chunk size/overlap, semantic vs fixed-window chunking, embedding model choice, store metadata for filtering/citations."
+      - "Retrieval: hybrid search = sparse/lexical (BM25) for exact terms + dense/vector for semantics; ANN index choice (HNSW in-RAM vs IVF/IVF-PQ at scale); metadata filters + ACL enforcement at query time."
+      - "Reranking: retrieve many (high recall) then cross-encoder rerank down to a few (protect the context window); retrieval recall up, tokens-to-LLM down."
+      - "Grounding & citations: generate strictly from retrieved context, attach inline citations/provenance; handle empty/low-confidence retrieval (abstain, ask to clarify, or fall back)."
+      - "Evaluation: offline golden sets + adversarial/red-team; online A/B + feedback signals; RAG-specific metrics (context relevance/precision, groundedness/faithfulness, answer quality) with LLM-as-judge (and its limits)."
+      - "Guardrails: input (PII/jailbreak detection, ACL/scope checks) and output (toxicity, hallucination/faithfulness check, sensitive-data leak, format)."
+      - "Serving concerns: model gateway (multi-vendor, fallback, token/cost accounting), streaming responses, prompt/token budgeting."
+  - phase: "Trade-offs, failure modes, scale (10-15 min)"
+    do:
+      - "Retrieval recall vs latency vs cost: bigger k / reranking / larger model improve quality but cost tokens and time."
+      - "Caching for cost+latency: prompt cache (shared prefixes), exact cache (identical requests), semantic cache (similar queries — flag its false-match risk)."
+      - "Model tiering / routing: cheap small model for easy queries, premium model for hard ones; classifier decides."
+      - "Freshness vs cost: how index updates propagate; stale-index detection; batch vs streaming ingestion."
+      - "Failure modes to name AND detect: hallucination on empty retrieval, stale/missing docs, cost blowup, prompt injection, context overflow; describe graceful degradation."
+  - phase: "Conclude (last min)"
+    do:
+      - "Summarize the design, restate the biggest risks, and outline the next iteration (what you'd measure and improve first)."
+
+# Cross-cutting patterns worth naming in almost any RAG answer (from synthesis).
+key_patterns:
+  - "Grounding over trust: never treat the LLM as the source of truth — ground every answer in retrieval and cite sources. [interviewnode, slack, bytebytego-perplexity]"
+  - "Stateless RAG: pass all needed context per request so the model retains nothing — a privacy win and a product win (answers grounded in your corpus, not the open web). [slack]"
+  - "Least privilege + ACLs at query time: retrieve only what the requesting user may see; propagate the user's own permissions, gate write actions behind human approval. [slack, doctolib]"
+  - "Two-stage retrieval: cheap recall-oriented retrieval, then expensive precision reranking. [pinecone]"
+  - "Model gateway/router: one interface over many providers with fallback, PII redaction, cost/latency accounting. [chip-huyen, uber]"
+  - "Multi-layer caching + model tiering to bend the cost/latency curve without more GPUs. [chip-huyen, interviewnode]"
+  - "Evaluation is not optional: golden sets, LLM-as-judge, online feedback loop — skipping it reads as not production-ready. [igotanoffer, interviewnode]"
+
+# Skeleton architecture. Concrete walkthroughs flesh this out per scenario.
+skeleton_diagram: |
+  graph LR
+    subgraph Ingest [Ingest / Index path - offline]
+      D[Documents] --> P[Parse / clean]
+      P --> C[Chunk]
+      C --> EM[Embed]
+      EM --> IDX[(Vector index + metadata)]
+    end
+    subgraph Query [Query / Generate path - online]
+      U[User query] --> GW[API gateway / auth]
+      GW --> IG[Input guardrails + PII]
+      IG --> QR[Query rewrite]
+      QR --> QE[Embed query]
+      QE --> RET[Hybrid ANN retrieve top-k]
+      RET --> RR[Rerank]
+      RR --> PB[Build grounded prompt]
+      PB --> MG[Model gateway / router]
+      MG --> LLM[LLM generate]
+      LLM --> OG[Output guardrails]
+      OG --> A[Answer + citations]
+    end
+    IDX --> RET
+    CACHE[(Cache: prompt / exact / semantic)] --- MG
+    OBS[Observability + eval + feedback] -.-> RET
+    OBS -.-> LLM
+
+generates: [walkthrough]

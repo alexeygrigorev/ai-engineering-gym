@@ -1,0 +1,26 @@
+id: sysdesign-rag-docqa
+category: ai-system-design
+skill: system-design
+type: walkthrough
+difficulty: 3
+status: approved
+template_ref: sysdesign-rag-template
+scenario: "Design a Document Q&A / RAG system for 10M+ articles."
+steps:
+  - phase: clarify
+    prompt: "What questions do you ask to frame the problem? (users, scale, latency, quality bar)"
+    reference: "Clarify: who queries, QPS, freshness needs, accuracy bar, guardrails."
+  - phase: high-level
+    prompt: "Sketch the high-level architecture end to end."
+    reference: "Ingest → chunk → embed → index; query → embed → ANN retrieve → rerank → augment → generate → cite."
+  - phase: deep-dive
+    prompt: "Which retrieval index for 10M vectors at low latency, and why?"
+    reference: "ANN (HNSW/IVF); brute force too slow at 10M; trade a little recall for latency."
+  - phase: tradeoffs
+    prompt: "What breaks at scale and how do you detect it?"
+    reference: "Cost blowup, stale index, hallucination on empty retrieval; monitor + eval."
+diagram: |
+  graph LR
+    Q[Query] --> E[Embed] --> R[ANN Retrieve] --> RR[Rerank] --> G[LLM Generate] --> A[Answer + citations]
+    D[Docs] --> C[Chunk] --> EM[Embed] --> IDX[(Vector Index)]
+    IDX --> R

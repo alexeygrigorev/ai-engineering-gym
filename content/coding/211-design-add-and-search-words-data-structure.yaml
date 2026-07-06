@@ -1,0 +1,30 @@
+id: leetcode-211-design-add-and-search-words-data-structure
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "211. Design Add and Search Words Data Structure"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Store words in a trie (26-way children plus a flag marking word ends).
+    addWord walks and creates nodes letter by letter. search walks the trie too,
+    but on a '.' wildcard it recurses into every child and succeeds if any
+    branch matches the rest of the pattern.
+  pseudocode: |
+    node: children[26], is_word
+    add(word): descend creating nodes; mark the last node is_word
+    search(node, pattern):
+        for each char c in pattern:
+            if c == '.': return any child matches search(child, rest of pattern)
+            else: node = node.children[c]; if null return false
+        return node.is_word
+  complexity: { time: "add O(L); search O(L) typical, up to O(26^d) with d wildcards", space: "O(total characters stored)" }
+follow_ups:
+  - "Bound the worst-case wildcard search cost with many dots."
+  - "Compress the trie into a radix/Patricia tree to save memory."
+  - "Support deletion of words."
+sources:
+  - { title: "LeetCode - Design Add and Search Words Data Structure", url: "https://leetcode.com/problems/design-add-and-search-words-data-structure/", supports: "problem statement" }
+  - { title: "Alexey's solution (211_word_dictionary.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/211_word_dictionary.cpp", supports: "reference implementation" }

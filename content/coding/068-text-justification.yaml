@@ -1,0 +1,32 @@
+id: leetcode-068-text-justification
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "68. Text Justification"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    A greedy line-packing problem followed by careful spacing. First greedily group words:
+    keep adding the next word to the current line while it still fits in max_width (counting
+    one space between words); when it doesn't fit, close the line and start a new group. Then
+    render each group: for a normal (non-last) line with multiple words, distribute the
+    leftover spaces as evenly as possible across the gaps, giving the earlier gaps the extra
+    space when it doesn't divide evenly; a single-word line (and the last line) is
+    left-justified and padded with trailing spaces to max_width.
+  pseudocode: |
+    # group
+    groups = greedily pack words so each fits in max_width (with single spaces)
+    # render
+    for each group except the last:
+        if one word: left-justify + pad trailing spaces
+        else:
+            gaps = words - 1
+            base, extra = divmod(max_width - total_word_len, gaps)
+            give each gap `base` spaces, first `extra` gaps one more
+    last line: join with single spaces, pad trailing to max_width
+  complexity: { time: "O(total characters)", space: "O(total characters)" }
+sources:
+  - { title: "LeetCode — Text Justification", url: "https://leetcode.com/problems/text-justification/", supports: "problem statement" }
+  - { title: "Alexey's solution (068_text_justification.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/068_text_justification.cpp", supports: "reference implementation" }

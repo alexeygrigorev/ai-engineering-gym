@@ -1,0 +1,37 @@
+id: leetcode-015-3sum
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "15. 3Sum"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Sort the array, then fix each element a in turn and reduce to a two-sum on the
+    remaining suffix using two pointers. Fast-forward a past any value equal to the
+    previous one to avoid duplicate triplets. With target = -a, put b at the element
+    after a and c at the rightmost element: if a + b == target, record (a, b, c) and
+    move both pointers inward, skipping over repeated values on each side; if the sum
+    is too small move b right, if too big move c left. (An alternative is to count
+    every element in a hash and reason about how many times each distinct value
+    appears, using a set to dedupe.)
+  pseudocode: |
+    sort(nums)
+    for i in 0..n-3:
+        if i > 0 and nums[i] == nums[i-1]: continue   # skip dup a
+        target = -nums[i]
+        j = i+1; k = n-1
+        while j < k:
+            s = nums[j] + nums[k]
+            if s == target:
+                output (nums[i], nums[j], nums[k])
+                while j < k and nums[j] == nums[j+1]: j++
+                while j < k and nums[k] == nums[k-1]: k--
+                j++; k--
+            elif s < target: j++
+            else:            k--
+  complexity: { time: "O(n^2)", space: "O(1) beyond the output (excluding sort)" }
+sources:
+  - { title: "LeetCode — 3Sum", url: "https://leetcode.com/problems/3sum/", supports: "problem statement" }
+  - { title: "Alexey's solution (015_three_sum.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/015_three_sum.cpp", supports: "reference implementation" }

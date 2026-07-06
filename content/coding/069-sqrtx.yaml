@@ -1,0 +1,28 @@
+id: leetcode-069-sqrtx
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "69. Sqrt(x)"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    Binary search for the square root. The root of x lies in [1, x]; repeatedly take the
+    midpoint g and compare g*g against x, moving the low bound up when g*g is too small and
+    the high bound down when it's too big, until the guess is close enough. Since the
+    problem wants the integer part, round the converged guess down (with a small epsilon to
+    decide whether to round the boundary case). Bracketing on a monotonic function is the
+    key idea. (0 and 1 are returned directly.)
+  pseudocode: |
+    if x <= 1: return x
+    lo = 1; hi = x
+    loop:
+        g = (lo + hi) / 2
+        if |g*g - x| small enough: break
+        if g*g < x: lo = g else hi = g
+    return floor(g)     # integer part
+  complexity: { time: "O(log x)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — Sqrt(x)", url: "https://leetcode.com/problems/sqrtx/", supports: "problem statement" }
+  - { title: "Alexey's solution (069_sqrt.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/069_sqrt.cpp", supports: "reference implementation" }

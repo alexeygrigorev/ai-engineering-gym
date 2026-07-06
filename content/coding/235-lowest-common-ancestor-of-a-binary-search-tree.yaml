@@ -1,0 +1,29 @@
+id: leetcode-235-lowest-common-ancestor-of-a-binary-search-tree
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "235. Lowest Common Ancestor of a Binary Search Tree"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Use the BST ordering. Starting at the root, if both p and q are smaller than
+    the current node go left, if both are larger go right; the first node where
+    they split - or that equals one of them - is the lowest common ancestor. His
+    implementation realizes this by tracing the root-to-p and root-to-q paths
+    and returning their last common node.
+  pseudocode: |
+    node = root
+    loop:
+        if p.val < node.val and q.val < node.val: node = node.left
+        elif p.val > node.val and q.val > node.val: node = node.right
+        else: return node        # split point, or node equals p or q
+  complexity: { time: "O(h)", space: "O(1)" }
+follow_ups:
+  - "Solve the general (non-BST) tree version (LeetCode 236)."
+  - "Why is the first split point guaranteed to be the LCA?"
+  - "Handle the case where one node is an ancestor of the other."
+sources:
+  - { title: "LeetCode - Lowest Common Ancestor of a Binary Search Tree", url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/", supports: "problem statement" }
+  - { title: "Alexey's solution (235_common_ancestor_bst.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/235_common_ancestor_bst.cpp", supports: "reference implementation" }

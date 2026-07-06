@@ -1,0 +1,29 @@
+id: leetcode-206-reverse-linked-list
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "206. Reverse Linked List"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    Reverse the pointers in a single pass. Walk the list keeping a prev pointer;
+    for each node, save its next, point the node back to prev, then advance prev
+    and the cursor. When the cursor runs off the end, prev is the new head.
+  pseudocode: |
+    prev = null; node = head
+    while node:
+        next = node.next
+        node.next = prev
+        prev = node
+        node = next
+    return prev
+  complexity: { time: "O(n)", space: "O(1)" }
+follow_ups:
+  - "Write the recursive version and state its stack cost."
+  - "Reverse only nodes m..n in place (LeetCode 92)."
+  - "Reverse the list in groups of k (LeetCode 25)."
+sources:
+  - { title: "LeetCode - Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/", supports: "problem statement" }
+  - { title: "Alexey's solution (206_reserve_list.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/206_reserve_list.cpp", supports: "reference implementation" }

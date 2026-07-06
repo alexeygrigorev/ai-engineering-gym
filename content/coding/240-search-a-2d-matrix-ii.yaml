@@ -1,0 +1,29 @@
+id: leetcode-240-search-a-2d-matrix-ii
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "240. Search a 2D Matrix II"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Each row and each column is sorted ascending. This solution skips leading
+    rows whose last element is below the target and trailing rows whose first
+    element is above it, then binary-searches each remaining candidate row. The
+    elegant O(m+n) alternative starts at the top-right corner and moves left on
+    a too-big value or down on a too-small one.
+  pseudocode: |
+    trim: advance the top row while its last value < target
+          retreat the bottom row while its first value > target
+    for each row in [top .. bottom]:
+        if binary_search(row, target): return true
+    return false
+  complexity: { time: "O(m log n) (top-right staircase alternative is O(m+n))", space: "O(1)" }
+follow_ups:
+  - "Implement the O(m+n) top-right staircase walk."
+  - "Why does the staircase walk never need to backtrack?"
+  - "Extend it to count how many cells equal the target."
+sources:
+  - { title: "LeetCode - Search a 2D Matrix II", url: "https://leetcode.com/problems/search-a-2d-matrix-ii/", supports: "problem statement" }
+  - { title: "Alexey's solution (240_search_2d_matrix_2.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/240_search_2d_matrix_2.cpp", supports: "reference implementation" }

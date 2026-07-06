@@ -1,0 +1,33 @@
+id: leetcode-102-binary-tree-level-order-traversal
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "102. Binary Tree Level Order Traversal"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Group node values by depth. Do a DFS carrying the current level; the first
+    time a level is seen, start a new bucket, and append each node's value to
+    its level's bucket. Visiting the left child before the right keeps left-to-
+    right order within each level. A BFS that processes the queue one level at a
+    time is the equivalent iterative approach.
+  pseudocode: |
+    result = []
+    dfs(node, level):
+        if node is null: return
+        if level == len(result): result.append([])
+        dfs(node.left, level+1)
+        result[level].append(node.val)
+        dfs(node.right, level+1)
+    dfs(root, 0)
+    return result
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Do it iteratively with a queue, one level per outer loop."
+  - "Return the levels bottom-up (LeetCode 107)."
+  - "Return a zigzag level order (LeetCode 103)."
+sources:
+  - { title: "LeetCode - Binary Tree Level Order Traversal", url: "https://leetcode.com/problems/binary-tree-level-order-traversal/", supports: "problem statement" }
+  - { title: "Alexey's solution (102_tree_level_traversal.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/102_tree_level_traversal.cpp", supports: "reference implementation" }

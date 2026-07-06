@@ -1,0 +1,31 @@
+id: leetcode-479-largest-palindrome-product
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "479. Largest Palindrome Product"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Find the largest palindrome that is a product of two n-digit numbers,
+    returned modulo 1337. Search factor pairs from the top of the n-digit range
+    downward, pruning pairs whose last digits cannot make the product end in 9,
+    skipping factors ending in 5, and returning the first product that reads as
+    a palindrome. The bounded ordered search reaches the largest palindrome
+    quickly.
+  pseudocode: |
+    max = 10^n - 1; min = 10^(n-1)
+    for k from max down to min:
+        for i from k up to max:
+            if the last digits can't yield a product ending in 9: skip
+            cand = i * k
+            if is_palindrome(cand): return cand % 1337
+  complexity: { time: "O((10^n)^2) worst case, heavily pruned in practice", space: "O(number of digits)" }
+follow_ups:
+  - "Build palindromes top-down and test factorability instead of scanning products."
+  - "Why can the largest such product be forced to end in the digit 9?"
+  - "Handle the special small-n edge cases."
+sources:
+  - { title: "LeetCode - Largest Palindrome Product", url: "https://leetcode.com/problems/largest-palindrome-product/", supports: "problem statement" }
+  - { title: "Alexey's solution (479_palindrome_product.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/479_palindrome_product.cpp", supports: "reference implementation" }

@@ -1,0 +1,27 @@
+id: leetcode-051-n-queens
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "51. N-Queens"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Backtracking row by row. Since each row holds exactly one queen, place a queen in
+    some free column of the current row, mark all cells it attacks (its column, and both
+    diagonals) as taken, and recurse to the next row on a copy of that attack mask. When
+    every free column in a row has been tried, backtrack. Reaching row n means all queens
+    are placed — reconstruct the board from the mask and record it as a solution.
+  pseudocode: |
+    solve(row, mask, solutions):
+        if row == n:
+            solutions.add(board from mask); return
+        for c in 0..n-1:
+            if mask[row][c] is empty:
+                copy = mask with queen at (row,c) and its attacks marked
+                solve(row+1, copy, solutions)
+  complexity: { time: "exponential (bounded by n! placements)", space: "O(n^2) per board mask plus recursion" }
+sources:
+  - { title: "LeetCode — N-Queens", url: "https://leetcode.com/problems/n-queens/", supports: "problem statement" }
+  - { title: "Alexey's solution (051_nqueens.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/051_nqueens.cpp", supports: "reference implementation" }

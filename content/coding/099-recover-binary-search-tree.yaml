@@ -1,0 +1,28 @@
+id: leetcode-099-recover-binary-search-tree
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "99. Recover Binary Search Tree"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Two nodes of a BST were swapped, so an in-order traversal is sorted except
+    at the swap points. Collect the nodes in-order, scan left-to-right for the
+    first place the order breaks (the larger misplaced node) and scan right-to-
+    left for the last break (the smaller misplaced node), then swap those two
+    nodes' values to restore the tree.
+  pseudocode: |
+    nodes = inorder(root)                    # list of nodes
+    left  = first i where nodes[i].val > nodes[i+1].val
+    right = last  i where nodes[i].val < nodes[i-1].val
+    swap nodes[left].val and nodes[right].val
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Achieve O(1) extra space with Morris in-order traversal."
+  - "Why are two separate scans (from each end) needed?"
+  - "What changes when the two swapped nodes are adjacent in-order?"
+sources:
+  - { title: "LeetCode - Recover Binary Search Tree", url: "https://leetcode.com/problems/recover-binary-search-tree/", supports: "problem statement" }
+  - { title: "Alexey's solution (099_recover_bst.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/099_recover_bst.cpp", supports: "reference implementation" }

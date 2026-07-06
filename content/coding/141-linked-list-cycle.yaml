@@ -1,0 +1,29 @@
+id: leetcode-141-linked-list-cycle
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "141. Linked List Cycle"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    Floyd's tortoise-and-hare. Advance a slow pointer one step and a fast
+    pointer two steps at a time; if a cycle exists the fast pointer laps around
+    and meets the slow one, otherwise fast reaches the end (null). Uses constant
+    extra space.
+  pseudocode: |
+    slow = head; fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast: return true
+    return false
+  complexity: { time: "O(n)", space: "O(1)" }
+follow_ups:
+  - "Return the node where the cycle begins (LeetCode 142)."
+  - "Compute the length of the cycle."
+  - "Why do the two pointers provably meet inside the loop?"
+sources:
+  - { title: "LeetCode - Linked List Cycle", url: "https://leetcode.com/problems/linked-list-cycle/", supports: "problem statement" }
+  - { title: "Alexey's solution (141_list_cycle.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/141_list_cycle.cpp", supports: "reference implementation" }

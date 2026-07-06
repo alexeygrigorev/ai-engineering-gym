@@ -1,0 +1,30 @@
+id: leetcode-236-lowest-common-ancestor-of-a-binary-tree
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "236. Lowest Common Ancestor of a Binary Tree"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Recurse. A node is the LCA if p and q lie in different subtrees beneath it,
+    or if the node itself is p or q. Return the node when it equals p or q;
+    otherwise recurse into both children - if both sides return non-null, this
+    node is the split point and thus the LCA; if only one side does, propagate
+    that result upward.
+  pseudocode: |
+    lca(node):
+        if node is null or node == p or node == q: return node
+        left  = lca(node.left)
+        right = lca(node.right)
+        if left and right: return node        # p and q split here
+        return left or right                  # whichever side found something
+  complexity: { time: "O(n)", space: "O(h)" }
+follow_ups:
+  - "Solve it faster with BST ordering when the tree is a BST (LeetCode 235)."
+  - "Adapt it to return null if either p or q is absent."
+  - "Find the LCA using parent pointers instead of recursion."
+sources:
+  - { title: "LeetCode - Lowest Common Ancestor of a Binary Tree", url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/", supports: "problem statement" }
+  - { title: "Alexey's solution (236_common_ancestor.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/236_common_ancestor.cpp", supports: "reference implementation" }

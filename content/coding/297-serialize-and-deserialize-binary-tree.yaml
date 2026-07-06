@@ -1,0 +1,34 @@
+id: leetcode-297-serialize-and-deserialize-binary-tree
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "297. Serialize and Deserialize Binary Tree"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Serialize with a recursive preorder that writes each node's value plus its
+    two subtrees in parentheses, using a marker (such as 'x') for null children,
+    which fully captures the structure. Deserialize by parsing that string left
+    to right with a position cursor, rebuilding each node and then its left and
+    right subtrees recursively.
+  pseudocode: |
+    serialize(node):
+        if node is null: emit "x"; return
+        emit node.val, "(", serialize(left), ",", serialize(right), ")"
+    deserialize(s):
+        parse(pos):
+            if s[pos] == 'x': pos++; return null
+            read number val; expect '('
+            node.left  = parse(pos); expect ','
+            node.right = parse(pos); expect ')'
+            return node
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Use level-order (BFS) serialization instead of preorder."
+  - "Serialize a BST more compactly using its ordering (LeetCode 449)."
+  - "Handle negative and multi-digit values in the parser."
+sources:
+  - { title: "LeetCode - Serialize and Deserialize Binary Tree", url: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/", supports: "problem statement" }
+  - { title: "Alexey's solution (297_binary_tree_codec.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/297_binary_tree_codec.cpp", supports: "reference implementation" }

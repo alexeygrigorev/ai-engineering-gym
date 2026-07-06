@@ -1,0 +1,30 @@
+id: leetcode-123-best-time-to-buy-and-sell-stock-iii
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "123. Best Time to Buy and Sell Stock III"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    At most two transactions. Split the timeline at every index into a left and
+    a right part, solve the single-transaction problem (problem 121)
+    independently on each side, and take the split that maximizes the sum of the
+    two best profits. This split approach is O(n^2). The optimal refinement is
+    an O(n) DP that carries four running states - best first buy, first sell,
+    second buy, second sell.
+  pseudocode: |
+    best121(a, lo, hi): one-pass max single-transaction profit within a[lo:hi]
+    answer = best121(prices, 0, n)
+    for i in 2..n-1:
+        answer = max(answer, best121(prices, 0, i) + best121(prices, i, n))
+    return answer
+  complexity: { time: "O(n^2)", space: "O(1)" }
+follow_ups:
+  - "Reduce to O(n) using precomputed left[i] and right[i] best-profit arrays."
+  - "Generalize to at most k transactions (LeetCode 188)."
+  - "Track the four-state DP: buy1, sell1, buy2, sell2."
+sources:
+  - { title: "LeetCode - Best Time to Buy and Sell Stock III", url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/", supports: "problem statement" }
+  - { title: "Alexey's solution (123_best_time_buy_stock_3.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/123_best_time_buy_stock_3.cpp", supports: "reference implementation" }

@@ -1,0 +1,31 @@
+id: leetcode-003-longest-substring
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "3. Longest Substring Without Repeating Characters"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Keep two things as you scan: start, the index where the current substring (the
+    one ending at i) begins, and a map char -> the index where that char was seen
+    previously (-1 if not seen). To advance to i+1: let c = str[i+1] and m = map[c],
+    where we saw c last. If m is before the current start, start stays put. Otherwise
+    move start to m+1 — that is, if c was seen after the current start, jump start to
+    just after that previous occurrence. Record the char's new position and track the
+    max length i - start + 1 along the way.
+  pseudocode: |
+    seen = {}                       # char -> last index, default -1
+    start = 0
+    best = 0
+    for i, c in enumerate(s):
+        if seen[c] + 1 > start:
+            start = seen[c] + 1     # jump past previous occurrence
+        seen[c] = i
+        best = max(best, i - start + 1)
+    return best
+  complexity: { time: "O(n)", space: "O(1) for a fixed alphabet (O(k) in general)" }
+sources:
+  - { title: "LeetCode — Longest Substring Without Repeating Characters", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", supports: "problem statement" }
+  - { title: "Alexey's solution (003_longest_substring.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/003_longest_substring.cpp", supports: "reference implementation" }

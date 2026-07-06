@@ -1,0 +1,27 @@
+id: leetcode-002-add-two-numbers
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "2. Add Two Numbers"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    The digits are stored least-significant first, so add them the way you add by
+    hand in school: walk both lists in lockstep, add the two current digits plus the
+    incoming carry, keep the units digit in a new node and pass the carry (0 or 1)
+    forward. When both lists are exhausted, emit one final node if a carry remains.
+    Treat a missing node as the digit 0 so lists of different lengths just work.
+  pseudocode: |
+    add(l1, l2, carry):
+        if l1 is null and l2 is null:
+            return new Node(carry) if carry > 0 else null
+        sum = val(l1) + val(l2) + carry        # val(null) = 0
+        node = new Node(sum % 10)
+        node.next = add(next(l1), next(l2), sum / 10)
+        return node
+  complexity: { time: "O(max(n, m))", space: "O(max(n, m))" }
+sources:
+  - { title: "LeetCode — Add Two Numbers", url: "https://leetcode.com/problems/add-two-numbers/", supports: "problem statement" }
+  - { title: "Alexey's solution (002_add_two_numbers.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/002_add_two_numbers.cpp", supports: "reference implementation" }

@@ -1,0 +1,28 @@
+id: leetcode-137-single-number-ii
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "137. Single Number II"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Every element appears three times except one. Count occurrences in a hash
+    map, deleting a key as soon as its count reaches three; the single key left
+    is the answer. The O(1)-space trick instead sums each bit position modulo 3
+    across all numbers.
+  pseudocode: |
+    count = {}
+    for x in nums:
+        count[x] += 1
+        if count[x] == 3: delete count[x]
+    return the only remaining key
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Solve it in O(1) extra space with bit counting modulo 3."
+  - "Generalize to elements appearing k times except one."
+  - "What changes if two numbers appear once (LeetCode 260)?"
+sources:
+  - { title: "LeetCode - Single Number II", url: "https://leetcode.com/problems/single-number-ii/", supports: "problem statement" }
+  - { title: "Alexey's solution (137_single_number_2.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/137_single_number_2.cpp", supports: "reference implementation" }

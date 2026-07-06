@@ -1,0 +1,31 @@
+id: leetcode-199-binary-tree-right-side-view
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "199. Binary Tree Right Side View"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    The right-side view is the last node encountered at each depth. Traverse the
+    tree collecting values per level (as in level-order), then take the last
+    value of each level - the rightmost node visible from the right.
+  pseudocode: |
+    levels = []
+    dfs(node, depth):
+        if node is null: return
+        if depth == len(levels): levels.append([])
+        dfs(node.left, depth+1)
+        levels[depth].append(node.val)
+        dfs(node.right, depth+1)
+    dfs(root, 0)
+    return [level.last for level in levels]
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Do it with BFS, taking the last node dequeued per level."
+  - "Return the left-side view instead."
+  - "Reach O(h) space by visiting the right child first and recording the first node per depth."
+sources:
+  - { title: "LeetCode - Binary Tree Right Side View", url: "https://leetcode.com/problems/binary-tree-right-side-view/", supports: "problem statement" }
+  - { title: "Alexey's solution (199_bst_right_side_view.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/199_bst_right_side_view.cpp", supports: "reference implementation" }

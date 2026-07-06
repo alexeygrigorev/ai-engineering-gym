@@ -1,0 +1,32 @@
+id: leetcode-295-find-median-from-data-stream
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "295. Find Median from Data Stream"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Keep the stream split into two halves: a max-heap holding the smaller half
+    and a min-heap holding the larger half, kept balanced in size. On each
+    insert, push into one heap and rebalance so the two sizes differ by at most
+    one; the median is then the top of the larger heap (odd count) or the
+    average of the two tops (even count). Both heaps expose the boundary
+    elements around the median in O(1), with O(log n) inserts.
+  pseudocode: |
+    add(x):
+        push x into right_min heap
+        move right_min.top into left_max heap
+        if left_max is larger than right_min: move left_max.top back to right_min
+    median():
+        if the heaps are equal size: return (left_max.top + right_min.top) / 2
+        else: return the top of the larger heap
+  complexity: { time: "O(log n) per add, O(1) per median", space: "O(n)" }
+follow_ups:
+  - "How would a fixed integer range let you use a simpler structure?"
+  - "Support removing an element to get a sliding-window median (LeetCode 480)."
+  - "Why keep the two heaps within one element of each other?"
+sources:
+  - { title: "LeetCode - Find Median from Data Stream", url: "https://leetcode.com/problems/find-median-from-data-stream/", supports: "problem statement" }
+  - { title: "Alexey's solution (295_median.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/295_median.cpp", supports: "reference implementation" }

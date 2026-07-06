@@ -1,0 +1,28 @@
+id: leetcode-020-valid-parentheses
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "20. Valid Parentheses"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    Use a stack. Push every opening bracket. On a closing bracket, the stack must be
+    non-empty and its top must be the matching opener — pop it and check the pair
+    matches; if the stack is empty or the pair is wrong, the string is invalid. After
+    scanning everything, the string is valid only if the stack is empty (no unclosed
+    openers).
+  pseudocode: |
+    stack = []
+    for c in s:
+        if c in "([{":
+            stack.push(c)
+        else if c in ")]}":
+            if stack empty: return false
+            if not matches(stack.pop(), c): return false
+    return stack is empty
+  complexity: { time: "O(n)", space: "O(n)" }
+sources:
+  - { title: "LeetCode — Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/", supports: "problem statement" }
+  - { title: "Alexey's solution (020_valid_parentheses.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/020_valid_parentheses.cpp", supports: "reference implementation" }

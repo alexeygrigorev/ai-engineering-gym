@@ -1,0 +1,37 @@
+id: leetcode-030-substring-concatenation
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "30. Substring with Concatenation of All Words"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    All words have the same length, and we want every start index where some permutation
+    of all the words appears back to back. Precompute, for each position i in s, which
+    words match starting at i (a small candidate list per position). Also count how many
+    times each distinct word must be used. Then, for each viable start (one whose total
+    span fits), try to consume the words greedily with backtracking: at the current
+    position pick an unused matching word, decrement its remaining count, jump forward by
+    its length, and recurse until all words are consumed; undo on failure. Record starts
+    that succeed.
+  pseudocode: |
+    L = word length; total = number of words
+    counts = required count per distinct word
+    matches[i] = list of words that equal s[i : i+L]
+    for start in 0 .. len(s) - total*L:
+        if can_consume(start, matches, counts_copy, total):
+            output start
+
+    can_consume(pos, matches, counts, remaining):
+        if remaining == 0: return true
+        for w in matches[pos] with counts[w] > 0:
+            counts[w]--
+            if can_consume(pos + L, matches, counts, remaining - 1): return true
+            counts[w]++
+        return false
+  complexity: { time: "roughly O(n * total) in the good cases; backtracking worst case is higher", space: "O(n + total)" }
+sources:
+  - { title: "LeetCode — Substring with Concatenation of All Words", url: "https://leetcode.com/problems/substring-with-concatenation-of-all-words/", supports: "problem statement" }
+  - { title: "Alexey's solution (030_substring_concat.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/030_substring_concat.cpp", supports: "reference implementation" }

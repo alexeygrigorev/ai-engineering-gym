@@ -1,0 +1,40 @@
+id: leetcode-085-maximal-rectangle
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "85. Maximal Rectangle"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    The clean solution builds on histograms row by row and uses DP with three helper
+    arrays. For each cell keep: heights[i][j] — how many consecutive 1s are stacked above
+    (and including) cell (i,j); left[i][j] — the leftmost column the all-1s bar at (i,j)
+    can extend to; and right[i][j] — the rightmost such column. heights updates trivially
+    from the row above. For left, sweep the row left to right maintaining left_start (reset
+    to j+1 on a 0); on a 1, left = max(left-from-row-above, left_start). right is symmetric
+    sweeping right to left with right_end. The rectangle area at each cell is
+    heights * (right - left + 1); take the max over all cells. (Alternatively, run the
+    histogram solution from problem 84 on the height array of each row, or grow rectangles
+    with DFS.)
+  pseudocode: |
+    for each row:
+        for each col:                    # heights
+            height[col] = matrix[r][c]=='1' ? height[col]+1 : 0
+        left_start = 0                    # left bounds, sweep left->right
+        for col 0..m-1:
+            if '1': left[col] = max(left[col], left_start)
+            else:   left[col] = 0; left_start = col+1
+        right_end = m-1                   # right bounds, sweep right->left
+        for col m-1..0:
+            if '1': right[col] = min(right[col], right_end)
+            else:   right[col] = m-1; right_end = col-1
+        for each col with '1':
+            area = height[col] * (right[col] - left[col] + 1)
+            best = max(best, area)
+    return best
+  complexity: { time: "O(rows * cols)", space: "O(cols)" }
+sources:
+  - { title: "LeetCode — Maximal Rectangle", url: "https://leetcode.com/problems/maximal-rectangle/", supports: "problem statement" }
+  - { title: "Alexey's solution (085_maximal_rectangle.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/085_maximal_rectangle.cpp", supports: "reference implementation" }

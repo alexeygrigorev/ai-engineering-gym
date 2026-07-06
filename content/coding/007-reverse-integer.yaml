@@ -1,0 +1,30 @@
+id: leetcode-007-reverse-integer
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "7. Reverse Integer"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Pull digits off the number one at a time with mod/divide by 10 and rebuild the
+    reversed value, multiplying the accumulator by 10 and adding each digit. Handle
+    the sign separately by working on the absolute value. The one subtlety is 32-bit
+    overflow: after each step check that dividing the accumulator back by the current
+    power of ten still yields the digit you added; if it doesn't, the value overflowed
+    and you return 0.
+  pseudocode: |
+    sign = sign(x); x = abs(x)
+    digits = []
+    while x != 0: digits.push(x % 10); x /= 10
+    result = 0; pow = 1
+    for d in digits (most significant first):
+        result += pow * d
+        if result / pow != d: return 0     # overflow
+        pow *= 10
+    return sign * result
+  complexity: { time: "O(log10(x)) — number of digits", space: "O(log10(x))" }
+sources:
+  - { title: "LeetCode — Reverse Integer", url: "https://leetcode.com/problems/reverse-integer/", supports: "problem statement" }
+  - { title: "Alexey's solution (007_reverse_digits.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/007_reverse_digits.cpp", supports: "reference implementation" }

@@ -1,0 +1,37 @@
+id: leetcode-032-longest-valid-parentheses
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "32. Longest Valid Parentheses"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Match parentheses with a stack of indices, then measure runs. Scan left to right:
+    push the index of each '(' ; on a ')', if the stack is non-empty, pop the matching
+    '(' index and record that it closes at the current position (end_ptr[open] = i).
+    This gives, for every opening bracket that is part of a valid pair, where its pair
+    ends. Then sweep the string: whenever a position has a recorded end, chain forward
+    through consecutive matched segments to accumulate the length of a contiguous valid
+    run, keeping the maximum.
+  pseudocode: |
+    end_ptr = array of -1
+    stack = []
+    for i, c in s:
+        if c == '(': stack.push(i)
+        else if stack not empty:
+            open = stack.pop(); end_ptr[open] = i
+    best = 0; i = 0
+    while i < n:
+        length = 0
+        while end_ptr[i] != -1:
+            length += end_ptr[i] - i + 1
+            i = end_ptr[i] + 1
+        best = max(best, length)
+        i++
+    return best
+  complexity: { time: "O(n)", space: "O(n)" }
+sources:
+  - { title: "LeetCode — Longest Valid Parentheses", url: "https://leetcode.com/problems/longest-valid-parentheses/", supports: "problem statement" }
+  - { title: "Alexey's solution (032_longest_valid_parentheses.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/032_longest_valid_parentheses.cpp", supports: "reference implementation" }

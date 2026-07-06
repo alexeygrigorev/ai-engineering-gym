@@ -1,0 +1,30 @@
+id: leetcode-347-top-k-frequent-elements
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "347. Top K Frequent Elements"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Count occurrences in a hash map, then bucket elements by frequency into an
+    array indexed by count (the maximum possible count is n). Walk the buckets
+    from highest frequency down, collecting elements until k are gathered -
+    linear time, avoiding a full sort or a heap.
+  pseudocode: |
+    count = frequency map of nums
+    buckets[f] = list of elements whose frequency is f   # index 0..n
+    result = []
+    for f from n down to 1:
+        for el in buckets[f]:
+            result.append(el)
+            if len(result) == k: return result
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Use a size-k heap for O(n log k) with less memory."
+  - "Break ties deterministically among elements of equal frequency."
+  - "Apply the same bucket idea to sort characters by frequency (LeetCode 451)."
+sources:
+  - { title: "LeetCode - Top K Frequent Elements", url: "https://leetcode.com/problems/top-k-frequent-elements/", supports: "problem statement" }
+  - { title: "Alexey's solution (347_top_k_frequent.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/347_top_k_frequent.cpp", supports: "reference implementation" }

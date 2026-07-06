@@ -1,0 +1,33 @@
+id: leetcode-037-sudoku-solver
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "37. Sudoku Solver"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Backtracking with constraint propagation and a most-constrained-cell heuristic.
+    For each empty cell, precompute its candidate digits (those not already used in its
+    row, column, or box) and the list of "peer" empty cells that share a unit with it.
+    Then solve recursively: always pick the empty cell with the fewest remaining
+    candidates (fail fast). Try each candidate — place it, remove it from all peers'
+    candidate sets, and recurse; if a peer would be left with zero candidates, prune
+    that branch immediately. On failure, restore the digit and the peers' candidates
+    and try the next. When no empty cells remain, the board is solved.
+  pseudocode: |
+    build candidate sets and peer lists for all empty cells
+    solve():
+        c = empty cell with fewest candidates
+        if none: return true          # solved
+        for d in c.candidates:
+            if placing d leaves some peer with 0 candidates: continue
+            place d; remove d from peers' candidates
+            if solve(): return true
+            undo: restore d and peers' candidates
+        return false
+  complexity: { time: "exponential worst case (constraint pruning makes it fast in practice)", space: "O(1) for the fixed 9x9 board plus recursion" }
+sources:
+  - { title: "LeetCode — Sudoku Solver", url: "https://leetcode.com/problems/sudoku-solver/", supports: "problem statement" }
+  - { title: "Alexey's solution (037_sudoku.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/037_sudoku.cpp", supports: "reference implementation" }

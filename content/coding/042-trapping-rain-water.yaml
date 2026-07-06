@@ -1,0 +1,31 @@
+id: leetcode-042-trapping-rain-water
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "42. Trapping Rain Water"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Water above a bar is bounded by the tallest bar to its left and the tallest to its
+    right; the trapped amount at that bar is min(left_max, right_max) - height. Sweep
+    from both ends toward the global maximum: from the left, track the running left_max
+    and add left_max - height wherever the current bar is lower; symmetrically from the
+    right with right_max. The two sweeps meet at the tallest bar, which correctly bounds
+    both sides, so every position is counted once in a single O(n) pass with O(1) space.
+  pseudocode: |
+    m = index/height of global max
+    left_max = h[0]
+    for left from 0 while h[left] < m:
+        if h[left] <= left_max: water += left_max - h[left]
+        else:                   left_max = h[left]
+    right_max = h[last]
+    for right from last while h[right] < m:
+        if h[right] <= right_max: water += right_max - h[right]
+        else:                     right_max = h[right]
+    return water
+  complexity: { time: "O(n)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — Trapping Rain Water", url: "https://leetcode.com/problems/trapping-rain-water/", supports: "problem statement" }
+  - { title: "Alexey's solution (042_trapping_water.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/042_trapping_water.cpp", supports: "reference implementation" }

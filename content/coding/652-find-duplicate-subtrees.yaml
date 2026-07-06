@@ -1,0 +1,32 @@
+id: leetcode-652-find-duplicate-subtrees
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "652. Find Duplicate Subtrees"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Two subtrees are duplicates if and only if they have identical structure and
+    values. Give each subtree a canonical signature - a serialization (or a
+    bottom-up hash) of its value plus its children's signatures - and group
+    nodes by signature; any group with more than one node marks a duplicate, and
+    one representative per such group is reported.
+  pseudocode: |
+    signatures = map signature -> list of nodes
+    sign(node):
+        if node is null: return "x"
+        s = node.val + "(" + sign(left) + "," + sign(right) + ")"
+        signatures[s].append(node)
+        return s
+    sign(root)
+    return [group[0] for group in signatures if len(group) > 1]
+  complexity: { time: "O(n^2) with string signatures (O(n) with assigned ids)", space: "O(n^2) / O(n)" }
+follow_ups:
+  - "Replace string signatures with assigned integer ids to reach O(n)."
+  - "Why can naive string serialization cost O(n^2) in total?"
+  - "Guard against hash collisions if you hash subtrees."
+sources:
+  - { title: "LeetCode - Find Duplicate Subtrees", url: "https://leetcode.com/problems/find-duplicate-subtrees/", supports: "problem statement" }
+  - { title: "Alexey's solution (652_duplicate_subtrees.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/652_duplicate_subtrees.cpp", supports: "reference implementation" }

@@ -1,0 +1,35 @@
+id: leetcode-115-distinct-subsequences
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "115. Distinct Subsequences"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Count how many distinct subsequences of s equal t. Fill a table dp[i][j]
+    holding the number of times t[:i] occurs in s[:j]. The first row is all ones
+    (an empty target is always matched once) and the first column below it is
+    zero. If the characters differ, s[j] can't help, so dp[i][j] = dp[i][j-1]
+    (same count as without s[j]). If they match, dp[i][j] = dp[i][j-1] +
+    dp[i-1][j-1]: the ways that ignore s[j] plus the ways where s[j] completes
+    the current target character.
+  pseudocode: |
+    dp[0][*] = 1                 # empty t matched once
+    dp[i>0][0] = 0               # empty s can't contain non-empty t
+    for i in 1..len(t):
+        for j in 1..len(s):
+            if t[i-1] == s[j-1]:
+                dp[i][j] = dp[i][j-1] + dp[i-1][j-1]
+            else:
+                dp[i][j] = dp[i][j-1]
+    return dp[len(t)][len(s)]
+  complexity: { time: "O(n*m)", space: "O(n*m)" }
+follow_ups:
+  - "Reduce to O(m) memory with a rolling row over s."
+  - "Explain the match case dp[i][j-1] + dp[i-1][j-1] with a small example."
+  - "How would counts overflow, and how do you guard against it?"
+sources:
+  - { title: "LeetCode - Distinct Subsequences", url: "https://leetcode.com/problems/distinct-subsequences/", supports: "problem statement" }
+  - { title: "Alexey's solution (115_distinct_subsequences.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/115_distinct_subsequences.cpp", supports: "reference implementation" }

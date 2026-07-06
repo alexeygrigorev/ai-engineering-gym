@@ -1,0 +1,27 @@
+id: leetcode-307-range-sum-query-mutable
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "307. Range Sum Query - Mutable"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Support point updates and range-sum queries efficiently by backing the array
+    with a segment tree, where each node stores the sum of a subrange. Building
+    is O(n); an update fixes the O(log n) nodes on the path from a leaf to the
+    root; a range query combines O(log n) node sums. A Fenwick (binary indexed)
+    tree is the compact alternative.
+  pseudocode: |
+    build a segment tree over nums (each node = sum of its range)
+    update(i, val): set leaf i, then propagate corrected sums up to the root
+    sumRange(l, r): combine the O(log n) tree segments that cover [l, r]
+  complexity: { time: "build O(n), update and query O(log n)", space: "O(n)" }
+follow_ups:
+  - "Implement the same with a Fenwick (binary indexed) tree."
+  - "Support range updates as well, using lazy propagation."
+  - "Why is a plain prefix-sum array poor when values change often?"
+sources:
+  - { title: "LeetCode - Range Sum Query - Mutable", url: "https://leetcode.com/problems/range-sum-query-mutable/", supports: "problem statement" }
+  - { title: "Alexey's solution (307_range_sum_query.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/307_range_sum_query.cpp", supports: "reference implementation" }

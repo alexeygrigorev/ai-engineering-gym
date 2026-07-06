@@ -1,0 +1,31 @@
+id: leetcode-016-3sum-closest
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "16. 3Sum Closest"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Same shape as 3Sum: sort the array, fix each element a, and sweep the rest with two
+    pointers. For every triplet track the sum whose absolute distance to the target is
+    smallest so far. If the current sum exceeds the target move the right pointer left,
+    otherwise move the left pointer right; an exact hit (distance 0) returns immediately.
+  pseudocode: |
+    sort(nums)
+    best = infinity distance
+    for i in 0..n-3:
+        j = i+1; k = n-1
+        while j < k:
+            sum = nums[i] + nums[j] + nums[k]
+            if abs(sum - target) < best_distance:
+                best = sum
+            if sum == target: return sum
+            if sum > target:  k--
+            else:             j++
+    return best
+  complexity: { time: "O(n^2)", space: "O(1) (excluding sort)" }
+sources:
+  - { title: "LeetCode — 3Sum Closest", url: "https://leetcode.com/problems/3sum-closest/", supports: "problem statement" }
+  - { title: "Alexey's solution (016_three_sum_closest.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/016_three_sum_closest.cpp", supports: "reference implementation" }

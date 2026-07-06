@@ -1,0 +1,30 @@
+id: leetcode-057-insert-interval
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "57. Insert Interval"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    The existing intervals are already sorted and non-overlapping, so process them in one
+    pass around the new interval. Copy over every interval that ends before the new one
+    starts. Then merge the new interval with any it overlaps by extending its end while
+    the next interval's start is within reach. Finally copy the remaining intervals that
+    come entirely after. This inserts and merges in a single linear scan.
+  pseudocode: |
+    result = []
+    i = 0
+    while intervals[i].start < new.start:
+        result.append(intervals[i]); i++
+    # place / merge new interval with the last copied one if they overlap
+    merge new into result (extend ends as needed)
+    while i < len and result.last.end >= intervals[i].start:
+        result.last.end = max(result.last.end, intervals[i].end); i++
+    append the rest of intervals
+    return result
+  complexity: { time: "O(n)", space: "O(n)" }
+sources:
+  - { title: "LeetCode — Insert Interval", url: "https://leetcode.com/problems/insert-interval/", supports: "problem statement" }
+  - { title: "Alexey's solution (057_insert_interval.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/057_insert_interval.cpp", supports: "reference implementation" }

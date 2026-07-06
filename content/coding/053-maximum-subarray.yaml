@@ -1,0 +1,26 @@
+id: leetcode-053-maximum-subarray
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "53. Maximum Subarray"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    A DP problem (Kadane's algorithm). Keep sum[i], the maximum sum of a subarray ending
+    at i (not necessarily starting at 0). To extend: if sum[i] + arr[i+1] > arr[i+1] then
+    sum[i+1] = sum[i] + arr[i+1], otherwise sum[i+1] = arr[i+1]. In other words, if the
+    running sum has gone negative it can only hurt, so reset to the new element; otherwise
+    keep accumulating. The answer is the max over all sum[i].
+  pseudocode: |
+    current = nums[0]
+    best = nums[0]
+    for i in 1..n-1:
+        current = max(nums[i], current + nums[i])
+        best = max(best, current)
+    return best
+  complexity: { time: "O(n)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — Maximum Subarray", url: "https://leetcode.com/problems/maximum-subarray/", supports: "problem statement" }
+  - { title: "Alexey's solution (053_maximum_subarray.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/053_maximum_subarray.cpp", supports: "reference implementation" }

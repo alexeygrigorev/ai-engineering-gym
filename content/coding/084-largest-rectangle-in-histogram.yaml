@@ -1,0 +1,35 @@
+id: leetcode-084-largest-rectangle-in-histogram
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "84. Largest Rectangle in Histogram"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Solve it with a monotonic stack. The idea mirrors the naive approach — for each bar
+    consider how far a rectangle of its height extends left through bars that are at least
+    as tall — but the stack finds those boundaries efficiently. Scan the bars keeping a
+    stack of indices with non-decreasing heights: if the current bar is taller than (or
+    equal to) the top, push it. Otherwise pop the top bar j; its height is hist[j] (the
+    tallest currently on the stack and taller than the current bar), and its rectangle's
+    width runs from the bar after the new stack top up to i-1 (width = i - 1 - stack.top,
+    or i if the stack is empty). Compute that area and keep the max. Drain the stack the
+    same way at the end. (A divide-and-conquer variant recurses on the min-height index,
+    found fast with a segment tree.)
+  pseudocode: |
+    stack = []; i = 0; best = 0
+    while i < n:
+        if stack empty or hist[i] >= hist[stack.top]:
+            stack.push(i); i++
+        else:
+            j = stack.pop(); h = hist[j]
+            w = (stack empty) ? i : i - 1 - stack.top
+            best = max(best, h * w)
+    # drain remaining bars with the same width rule
+    return best
+  complexity: { time: "O(n)", space: "O(n)" }
+sources:
+  - { title: "LeetCode — Largest Rectangle in Histogram", url: "https://leetcode.com/problems/largest-rectangle-in-histogram/", supports: "problem statement" }
+  - { title: "Alexey's solution (084_max_hist_rectangle.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/084_max_hist_rectangle.cpp", supports: "reference implementation" }

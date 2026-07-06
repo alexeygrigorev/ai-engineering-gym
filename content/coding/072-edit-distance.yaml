@@ -1,0 +1,30 @@
+id: leetcode-072-edit-distance
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "72. Edit Distance"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    A DP problem (Levenshtein distance). Keep a table distance[i][j] = the edit distance
+    between the first i characters of s1 and the first j characters of s2. Each cell is the
+    minimum of three moves: substitution — distance[i-1][j-1], plus 1 unless s1[i] == s2[j]
+    (in which case the characters already line up for free); deletion — distance[i-1][j] + 1;
+    and insertion — distance[i][j-1] + 1. Initialize the first row/column to 0,1,2,...
+    (turning an empty string into a prefix costs one edit per character). The answer is
+    distance[n1][n2].
+  pseudocode: |
+    dp[0][j] = j ; dp[i][0] = i
+    for i in 1..n1:
+        for j in 1..n2:
+            subst = dp[i-1][j-1] + (0 if s1[i-1]==s2[j-1] else 1)
+            delete = dp[i-1][j] + 1
+            insert = dp[i][j-1] + 1
+            dp[i][j] = min(subst, delete, insert)
+    return dp[n1][n2]
+  complexity: { time: "O(n1 * n2)", space: "O(n1 * n2)" }
+sources:
+  - { title: "LeetCode — Edit Distance", url: "https://leetcode.com/problems/edit-distance/", supports: "problem statement" }
+  - { title: "Alexey's solution (072_edit_distance.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/072_edit_distance.cpp", supports: "reference implementation" }

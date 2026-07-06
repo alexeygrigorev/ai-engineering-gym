@@ -1,0 +1,33 @@
+id: rag-what-is-rag
+category: theory
+skill: rag
+type: knowledge
+question: "What's RAG? Explain the complete process."
+difficulty: 2
+status: approved
+source_refs: [reddit-ai-eng-questions, khushal-kumar]
+sources:
+  - { title: "RAG explained", url: "https://example.com/rag", supports: "definition of RAG" }
+answer:
+  short: "RAG retrieves relevant context from a store and feeds it to the LLM so it answers from your data."
+  key_points:
+    - "retrieval pulls external context; weights unchanged"
+    - "chunk → embed → index → retrieve top-k → augment → generate"
+follow_ups:
+  - "How do you handle it when nothing relevant is retrieved?"
+exercises:
+  - kind: mcq
+    stem: "What does the retrieval step do?"
+    options:
+      - { text: "Fetches relevant context from a store", correct: true }
+      - { text: "Fine-tunes the model on your data" }
+      - { text: "Compresses the prompt" }
+    explain: "Retrieval pulls context; no weights change."
+  - kind: order
+    prompt: "Order the RAG pipeline"
+    steps: ["Chunk & embed docs", "Store in index", "Embed query", "Retrieve top-k", "Augment prompt", "Generate"]
+  - kind: fill
+    template: "{0} search finds exact tokens; {1} search finds meaning."
+    blanks: ["Keyword", "Vector"]
+    chips: ["Keyword", "Vector", "Fuzzy", "Graph"]
+  - kind: explain

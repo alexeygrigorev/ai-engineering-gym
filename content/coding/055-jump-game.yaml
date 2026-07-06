@@ -1,0 +1,24 @@
+id: leetcode-055-jump-game
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "55. Jump Game"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Greedy single pass tracking the farthest index reachable so far. Walk left to right,
+    but only through positions you can actually reach (i <= max_index). At each i update
+    max_index = max(max_index, i + nums[i]). If you can reach the last index, return true;
+    if the loop stalls because i outran max_index, return false.
+  pseudocode: |
+    max_index = 0
+    for i in 0..n-1:
+        if i > max_index: return false      # can't reach here
+        max_index = max(max_index, i + nums[i])
+    return max_index >= n - 1
+  complexity: { time: "O(n)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — Jump Game", url: "https://leetcode.com/problems/jump-game/", supports: "problem statement" }
+  - { title: "Alexey's solution (055_jump_game.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/055_jump_game.cpp", supports: "reference implementation" }

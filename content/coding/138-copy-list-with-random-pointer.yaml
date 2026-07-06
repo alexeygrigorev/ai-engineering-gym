@@ -1,0 +1,30 @@
+id: leetcode-138-copy-list-with-random-pointer
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "138. Copy List with Random Pointer"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Deep-copy a list whose nodes carry an extra random pointer. Keep a hash map
+    from each original node to its clone. A first pass creates every clone and
+    records the mapping; a second pass wires each clone's next and random by
+    looking up the clone of the original's next and random. The map resolves
+    random pointers that may point anywhere in the list.
+  pseudocode: |
+    map = {}
+    for node in list: map[node] = new Node(node.val)
+    for node in list:
+        map[node].next   = map[node.next]
+        map[node].random = map[node.random]
+    return map[head]
+  complexity: { time: "O(n)", space: "O(n)" }
+follow_ups:
+  - "Do it with O(1) extra space by interleaving cloned nodes between originals."
+  - "How would a recursive clone-and-memoize version look?"
+  - "Handle random pointers that are null or self-referential."
+sources:
+  - { title: "LeetCode - Copy List with Random Pointer", url: "https://leetcode.com/problems/copy-list-with-random-pointer/", supports: "problem statement" }
+  - { title: "Alexey's solution (138_copy_list_random_pointer.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/138_copy_list_random_pointer.cpp", supports: "reference implementation" }

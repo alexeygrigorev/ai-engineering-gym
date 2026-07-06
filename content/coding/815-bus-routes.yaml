@@ -1,0 +1,30 @@
+id: leetcode-815-bus-routes
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "815. Bus Routes"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Model routes as a graph over buses, not over stops. Build an inverted index
+    stop -> buses, then connect two buses whenever they share a stop; add
+    artificial start and end nodes linked to the buses that serve S and T. A BFS
+    from the start node gives the fewest buses (edges) needed to reach T, since
+    each edge crossed is one bus change.
+  pseudocode: |
+    index[stop] = list of buses serving it
+    for each stop served by >= 2 buses: connect all those buses pairwise
+    start node -> buses at S; buses at T -> end node
+    BFS from start to end
+    answer = (path length in nodes) - 2      # exclude the two artificial nodes
+    return -1 if T is unreachable
+  complexity: { time: "O(sum of route lengths + B^2) worst case for graph build", space: "O(B^2)" }
+follow_ups:
+  - "Why build the graph over buses rather than over stops?"
+  - "How do the two artificial nodes simplify the BFS?"
+  - "Bound the graph size when many buses share the same stops."
+sources:
+  - { title: "LeetCode - Bus Routes", url: "https://leetcode.com/problems/bus-routes/", supports: "problem statement" }
+  - { title: "Alexey's solution (815_bus_routes.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/815_bus_routes.cpp", supports: "reference implementation" }

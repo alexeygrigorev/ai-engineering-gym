@@ -1,0 +1,26 @@
+id: leetcode-019-remove-nth-node
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "19. Remove Nth Node From End of List"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Two passes over the singly linked list. First walk to the end to learn its length
+    L. The node to delete from the front is at position L - n. If that equals the head
+    (L == n), just return head.next. Otherwise walk to the node right before the target
+    (L - n - 1 steps) and splice it out by pointing its next past the target. A one-pass
+    variant uses two pointers spaced n apart, but the length approach is simplest.
+  pseudocode: |
+    L = length(head)
+    if L == n: return head.next
+    node = head
+    advance node by (L - n - 1) steps
+    node.next = node.next.next
+    return head
+  complexity: { time: "O(L)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — Remove Nth Node From End of List", url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", supports: "problem statement" }
+  - { title: "Alexey's solution (019_remove_nth_node.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/019_remove_nth_node.cpp", supports: "reference implementation" }

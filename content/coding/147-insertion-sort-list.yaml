@@ -1,0 +1,30 @@
+id: leetcode-147-insertion-sort-list
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "147. Insertion Sort List"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Sort a linked list by repeatedly selecting the minimum. Scan the unsorted
+    remainder to find the minimum node, unlink it, and place it at the front of
+    the growing sorted result - a selection sort over the list. Classic
+    insertion sort instead walks the sorted prefix to find each node's insertion
+    point.
+  pseudocode: |
+    sorted = empty
+    while list not empty:
+        find node with the minimum value (track its predecessor)
+        unlink it from the list
+        attach it into the sorted portion in order
+    return sorted
+  complexity: { time: "O(n^2)", space: "O(1)" }
+follow_ups:
+  - "Implement true insertion sort with a dummy head and per-node insertion."
+  - "When would you prefer merge sort on a list (LeetCode 148)?"
+  - "Is the selection variant stable - does it preserve equal-key order?"
+sources:
+  - { title: "LeetCode - Insertion Sort List", url: "https://leetcode.com/problems/insertion-sort-list/", supports: "problem statement" }
+  - { title: "Alexey's solution (147_insertion_sort_list.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/147_insertion_sort_list.cpp", supports: "reference implementation" }

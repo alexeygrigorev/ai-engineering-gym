@@ -1,0 +1,29 @@
+id: leetcode-148-sort-list
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "148. Sort List"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Merge sort on a linked list, which needs no random access. Find the middle
+    with slow/fast pointers and split into two halves, recursively sort each
+    half, then merge the two sorted lists by splicing nodes in order. This gives
+    O(n log n) time with O(log n) recursion depth.
+  pseudocode: |
+    sort(head):
+        if head is null or a single node: return head
+        mid = split the list in half via slow/fast pointers
+        left = sort(first half); right = sort(second half)
+        return merge(left, right)
+    merge(a, b): repeatedly attach the smaller head, then append the leftover tail
+  complexity: { time: "O(n log n)", space: "O(log n)" }
+follow_ups:
+  - "Make it bottom-up (iterative) for O(1) extra space."
+  - "Why is merge sort preferred over quicksort for linked lists?"
+  - "How does merging two linked lists differ from merging arrays?"
+sources:
+  - { title: "LeetCode - Sort List", url: "https://leetcode.com/problems/sort-list/", supports: "problem statement" }
+  - { title: "Alexey's solution (148_sort_list.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/148_sort_list.cpp", supports: "reference implementation" }

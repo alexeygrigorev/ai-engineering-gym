@@ -1,0 +1,37 @@
+id: leetcode-004-median-of-two-sorted-arrays
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "4. Median of Two Sorted Arrays"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    The median is the k-th smallest element of the combined arrays (or the average
+    of the two middle ones for even total length), so reduce the problem to "find the
+    k-th smallest across two sorted arrays" and solve that with binary search instead
+    of merging. Compare the m-th elements of each array where m = k/2: whichever side
+    is smaller cannot contain the k-th element in its first m entries, so discard that
+    prefix and shrink k accordingly. Recurse until k reaches 1 or one array is empty.
+    This gets to O(log(n+m)) rather than the O(n+m) merge.
+  pseudocode: |
+    kth(a, b, k):
+        if a is empty: return b[k-1]
+        if b is empty: return a[k-1]
+        if k == 1:     return min(a[0], b[0])
+        m  = k / 2
+        ia = min(len(a), m); ib = min(len(b), m)
+        if a[ia-1] < b[ib-1]:
+            return kth(a[ia:], b, k - ia)   # drop a's prefix
+        else:
+            return kth(a, b[ib:], k - ib)   # drop b's prefix
+
+    findMedian(a, b):
+        total = len(a) + len(b)
+        if total is odd:  return kth(a, b, total/2 + 1)
+        else:             return (kth(a, b, total/2) + kth(a, b, total/2 + 1)) / 2
+  complexity: { time: "O(log(n + m))", space: "O(log(n + m)) recursion" }
+sources:
+  - { title: "LeetCode — Median of Two Sorted Arrays", url: "https://leetcode.com/problems/median-of-two-sorted-arrays/", supports: "problem statement" }
+  - { title: "Alexey's solution (004_median_of_2_sorted_arrays.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/004_median_of_2_sorted_arrays.cpp", supports: "reference implementation" }

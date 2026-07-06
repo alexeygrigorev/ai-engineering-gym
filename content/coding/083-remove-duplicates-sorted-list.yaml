@@ -1,0 +1,28 @@
+id: leetcode-083-remove-duplicates-sorted-list
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "83. Remove Duplicates from Sorted List"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    The list is sorted, so equal values are adjacent; keep the first occurrence of each
+    value and drop the rest. Walk with a prev pointer at the last kept node: if the current
+    node equals prev's value, unlink it (prev.next = node.next); otherwise advance prev to
+    the current node. One linear pass, in place.
+  pseudocode: |
+    prev = head
+    node = head.next
+    while node:
+        if node.val == prev.val:
+            prev.next = node.next        # skip duplicate
+        else:
+            prev = node
+        node = node.next
+    return head
+  complexity: { time: "O(n)", space: "O(1)" }
+sources:
+  - { title: "LeetCode — Remove Duplicates from Sorted List", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-list/", supports: "problem statement" }
+  - { title: "Alexey's solution (083_remove_duplicates_sorted_list.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/083_remove_duplicates_sorted_list.cpp", supports: "reference implementation" }

@@ -1,0 +1,29 @@
+id: leetcode-160-intersection-of-two-linked-lists
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "160. Intersection of Two Linked Lists"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    Two lists that intersect share the same tail from the intersection node
+    onward. Measure both lengths (and confirm they end at the same last node,
+    otherwise there is no intersection). Advance the longer list's pointer by
+    the length difference so both pointers are equidistant from the end, then
+    move them together; they meet at the intersection node.
+  pseudocode: |
+    len1, len2 = lengths of A and B
+    if last node of A != last node of B: return null
+    advance the longer head by |len1 - len2|
+    move both pointers together until they are equal
+    return that node
+  complexity: { time: "O(n+m)", space: "O(1)" }
+follow_ups:
+  - "Solve it without computing lengths using the two-pointer swap trick."
+  - "Detect intersection when the lists might also contain cycles."
+  - "Why does aligning by the length difference guarantee they meet?"
+sources:
+  - { title: "LeetCode - Intersection of Two Linked Lists", url: "https://leetcode.com/problems/intersection-of-two-linked-lists/", supports: "problem statement" }
+  - { title: "Alexey's solution (160_intersection_of_two_lists.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/160_intersection_of_two_lists.cpp", supports: "reference implementation" }

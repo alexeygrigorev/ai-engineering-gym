@@ -1,0 +1,29 @@
+id: leetcode-023-merge-k-sorted-lists
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "23. Merge k Sorted Lists"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Use a min-heap keyed on node value. Seed it with the head of every non-empty list.
+    Repeatedly pop the smallest node, append it to the output tail, and if that node
+    has a successor push the successor back into the heap. Because the heap always
+    holds at most k nodes, each of the N total nodes is inserted and extracted once at
+    O(log k) cost. (The naive alternative scans all k heads on every step for O(Nk).)
+  pseudocode: |
+    heap = min-heap by node.val
+    for list in lists:
+        if list: heap.push(list)
+    dummy = new Node; tail = dummy
+    while heap not empty:
+        node = heap.pop()
+        if node.next: heap.push(node.next)
+        tail.next = node; tail = node
+    return dummy.next
+  complexity: { time: "O(N log k) for N total nodes across k lists", space: "O(k)" }
+sources:
+  - { title: "LeetCode — Merge k Sorted Lists", url: "https://leetcode.com/problems/merge-k-sorted-lists/", supports: "problem statement" }
+  - { title: "Alexey's solution (023_merge_k_sorted_lists.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/023_merge_k_sorted_lists.cpp", supports: "reference implementation" }

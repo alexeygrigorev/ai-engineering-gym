@@ -1,0 +1,26 @@
+id: leetcode-052-n-queens-ii
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "52. N-Queens II"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Identical backtracking to N-Queens, but we only need the count of solutions, not the
+    boards. Place one queen per row in a free column, mark its column and diagonals as
+    attacked, recurse on a copy of the mask, and when row n is reached increment a
+    counter instead of reconstructing a board.
+  pseudocode: |
+    solve(row, mask, count):
+        if row == n:
+            count += 1; return
+        for c in 0..n-1:
+            if mask[row][c] is empty:
+                copy = mask with queen at (row,c) and its attacks marked
+                solve(row+1, copy, count)
+  complexity: { time: "exponential (bounded by n! placements)", space: "O(n^2) per mask plus recursion" }
+sources:
+  - { title: "LeetCode — N-Queens II", url: "https://leetcode.com/problems/n-queens-ii/", supports: "problem statement" }
+  - { title: "Alexey's solution (052_nqueens2.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/052_nqueens2.cpp", supports: "reference implementation" }

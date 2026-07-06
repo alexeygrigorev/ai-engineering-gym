@@ -1,0 +1,33 @@
+id: leetcode-139-word-break
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "139. Word Break"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Decide whether s can be segmented into a sequence of dictionary words. From
+    a start index, try each dictionary word that matches at that position and
+    recurse on the remainder; memoize start positions already known to fail so
+    each index is explored once. Bucketing dictionary words by their first
+    letter prunes the candidates checked at each step.
+  pseudocode: |
+    memo = set of start indices known to fail
+    solve(start):
+        if start == len(s): return true
+        if start in memo: return false
+        for word in dict_by_first_letter[s[start]]:
+            if s starts with word at 'start' and solve(start + len(word)):
+                return true
+        add start to memo; return false
+    return solve(0)
+  complexity: { time: "O(n^2) (times word length for matching)", space: "O(n)" }
+follow_ups:
+  - "Return all segmentations (LeetCode 140) and explain why that can blow up."
+  - "Rewrite it as bottom-up DP over prefix lengths."
+  - "Use a trie to match candidate words faster."
+sources:
+  - { title: "LeetCode - Word Break", url: "https://leetcode.com/problems/word-break/", supports: "problem statement" }
+  - { title: "Alexey's solution (139_word_break.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/139_word_break.cpp", supports: "reference implementation" }

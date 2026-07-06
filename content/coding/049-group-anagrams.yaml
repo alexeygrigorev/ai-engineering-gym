@@ -1,0 +1,24 @@
+id: leetcode-049-group-anagrams
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "49. Group Anagrams"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Two words are anagrams exactly when their sorted letters are identical, so use the
+    sorted string as a canonical key. Walk the input, sort each word to get its key, and
+    append the original word to a hash map bucket under that key. The map's values are
+    the anagram groups.
+  pseudocode: |
+    groups = {}                     # sorted-key -> list of words
+    for w in strings:
+        key = sorted(w)
+        groups[key].append(w)
+    return groups.values()
+  complexity: { time: "O(N * k log k) for N words of max length k", space: "O(N * k)" }
+sources:
+  - { title: "LeetCode — Group Anagrams", url: "https://leetcode.com/problems/group-anagrams/", supports: "problem statement" }
+  - { title: "Alexey's solution (049_group_anagram.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/049_group_anagram.cpp", supports: "reference implementation" }

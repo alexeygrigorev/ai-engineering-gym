@@ -1,0 +1,77 @@
+id: rag-what-is-rag
+category: theory
+skill: rag
+type: knowledge
+question: "What's RAG? Explain the complete process."
+difficulty: medium
+status: draft
+source_refs: [khushal-kumar, reddit-ai-eng-questions, reddit-genai-consulting]
+sources:
+  - title: "Databricks — What is Retrieval Augmented Generation (RAG)?"
+    url: "https://www.databricks.com/blog/what-is-retrieval-augmented-generation"
+    supports: "definition of RAG and the chunk/index/retrieve/augment/generate pipeline"
+  - title: "NVIDIA — RAG 101: Demystifying Retrieval-Augmented Generation Pipelines"
+    url: "https://developer.nvidia.com/blog/rag-101-demystifying-retrieval-augmented-generation-pipelines/"
+    supports: "ingestion vs. query paths; retrieval/augmentation/generation stages"
+  - title: "AWS — What is RAG (Retrieval-Augmented Generation)?"
+    url: "https://aws.amazon.com/what-is/retrieval-augmented-generation/"
+    supports: "RAG grounds an LLM in external data without retraining the model"
+
+answer:
+  short: >
+    RAG (Retrieval-Augmented Generation) makes an LLM answer from your own data
+    instead of only its frozen training weights. Offline, you chunk your documents,
+    embed each chunk into a vector, and store those vectors in an index. At query
+    time you embed the user's question, retrieve the top-k most similar chunks, paste
+    that context into the prompt, and let the LLM generate a grounded answer — often
+    with citations. The model's weights never change; you're changing what's in the
+    context window. This reduces hallucinations and lets you serve fresh,
+    domain-specific knowledge.
+  key_points:
+    - "Retrieval augments the prompt with external context; the model's weights are unchanged (not fine-tuning)"
+    - "Offline/ingestion path: chunk documents, embed chunks, store vectors in an index"
+    - "Online/query path: embed the query, retrieve top-k similar chunks, augment the prompt, generate"
+    - "Grounding the answer in retrieved context reduces hallucination and enables source citations"
+    - "Lets the LLM use fresh and private/domain data without retraining"
+
+follow_ups:
+  - "How do you handle it when nothing relevant is retrieved?"
+  - "How do you chunk documents, and why does chunk size matter?"
+  - "When would you fine-tune instead of (or in addition to) using RAG?"
+  - "How do you evaluate a RAG pipeline's retrieval and generation quality?"
+
+exercises:
+  - kind: mcq
+    stem: "How does RAG change the language model itself?"
+    options:
+      - { text: "It doesn't — RAG adds retrieved context to the prompt; the weights are unchanged", correct: true }
+      - { text: "It fine-tunes the model on your documents at query time" }
+      - { text: "It retrains the base model nightly on retrieved chunks" }
+      - { text: "It replaces the model's tokenizer with your vocabulary" }
+    explain: "RAG augments the prompt with retrieved context. No weights change — that's what distinguishes it from fine-tuning."
+
+  - kind: mcq
+    stem: "What is the main benefit of grounding generation in retrieved context?"
+    options:
+      - { text: "Reduces hallucination and lets the model cite sources", correct: true }
+      - { text: "Guarantees the model never makes a mistake" }
+      - { text: "Removes the need for a language model entirely" }
+      - { text: "Makes the model smaller on disk" }
+    explain: "Grounding answers in retrieved passages reduces hallucination and enables source attribution; it doesn't make the model perfect or unnecessary."
+
+  - kind: order
+    prompt: "Order the RAG pipeline from raw documents to a grounded answer"
+    steps:
+      - "Chunk & embed docs"
+      - "Store vectors in an index"
+      - "Embed the user query"
+      - "Retrieve top-k chunks"
+      - "Augment the prompt"
+      - "Generate the answer"
+
+  - kind: fill
+    template: "{0} search finds exact tokens; {1} search finds meaning via embeddings."
+    blanks: ["Keyword", "Vector"]
+    chips: ["Keyword", "Vector", "Fuzzy", "Graph"]
+
+  - kind: explain

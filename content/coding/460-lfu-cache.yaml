@@ -1,0 +1,29 @@
+id: leetcode-460-lfu-cache
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "460. LFU Cache"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Evict the least-frequently-used entry, breaking ties by least-recently-used.
+    This design keeps a hash map key -> node plus an ordered set of nodes sorted
+    by (frequency, last-use timestamp); get and put bump a node's frequency and
+    timestamp by removing and reinserting it, and eviction removes the set's
+    first (smallest) node - O(log n) per operation. The O(1) design instead
+    chains a doubly linked list per frequency bucket.
+  pseudocode: |
+    nodes: key -> node(freq, last_used, value)
+    sorted set of nodes ordered by (freq, last_used)
+    get/put on existing key: erase from set; freq++; last_used = tick++; reinsert
+    put new key when full: evict set.begin() (lowest freq, oldest); insert node freq=1
+  complexity: { time: "O(log n) per operation (O(1) achievable)", space: "O(capacity)" }
+follow_ups:
+  - "Design the true O(1) version with per-frequency linked lists."
+  - "How does LFU differ from LRU under a scan-heavy workload?"
+  - "Handle capacity zero and frequency ties precisely."
+sources:
+  - { title: "LeetCode - LFU Cache", url: "https://leetcode.com/problems/lfu-cache/", supports: "problem statement" }
+  - { title: "Alexey's solution (460_lfu_cache.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/460_lfu_cache.cpp", supports: "reference implementation" }

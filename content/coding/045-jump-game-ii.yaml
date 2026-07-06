@@ -1,0 +1,30 @@
+id: leetcode-045-jump-game-ii
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "45. Jump Game II"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Treat indices as nodes: from index i you can reach any index up to i + nums[i], so
+    the minimum number of jumps to the end is the shortest path in this graph — a BFS by
+    levels. Each BFS level is one jump. Process indices in FIFO order, marking newly
+    reachable indices with their distance (parent distance + 1); the first time you can
+    reach or pass the last index, that distance + 1 is the answer. (Equivalently this is
+    the greedy "extend the current reach as far as possible, then take a jump" idea.)
+  pseudocode: |
+    dist = [-1]*n; dist[0] = 0
+    queue = [0]
+    while queue:
+        i = queue.pop_front()
+        if i + nums[i] >= n-1: return dist[i] + 1
+        for j from i + nums[i] down to i+1:
+            if not visited[j]:
+                dist[j] = dist[i] + 1; visited[j] = true; queue.push(j)
+    return dist[n-1]
+  complexity: { time: "O(n)", space: "O(n)" }
+sources:
+  - { title: "LeetCode — Jump Game II", url: "https://leetcode.com/problems/jump-game-ii/", supports: "problem statement" }
+  - { title: "Alexey's solution (045_jump_game_2.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/045_jump_game_2.cpp", supports: "reference implementation" }

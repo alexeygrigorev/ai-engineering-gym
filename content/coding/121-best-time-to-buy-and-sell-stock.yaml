@@ -1,0 +1,28 @@
+id: leetcode-121-best-time-to-buy-and-sell-stock
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "121. Best Time to Buy and Sell Stock"
+difficulty: easy
+status: draft
+answer:
+  approach: >
+    One buy and one sell, and the buy must come before the sell. Sweep left to
+    right tracking the minimum price seen so far; the best profit ending on any
+    given day is that day's price minus the running minimum. Keep the maximum
+    such profit over all days.
+  pseudocode: |
+    min_price = prices[0]; best = 0
+    for p in prices[1:]:
+        if p < min_price: min_price = p
+        else: best = max(best, p - min_price)
+    return best
+  complexity: { time: "O(n)", space: "O(1)" }
+follow_ups:
+  - "Allow unlimited transactions (LeetCode 122)."
+  - "Cap the number of transactions at two (LeetCode 123)."
+  - "Add a transaction fee or a cooldown - how does the DP change?"
+sources:
+  - { title: "LeetCode - Best Time to Buy and Sell Stock", url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", supports: "problem statement" }
+  - { title: "Alexey's solution (121_best_time_buy_stock.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/121_best_time_buy_stock.cpp", supports: "reference implementation" }

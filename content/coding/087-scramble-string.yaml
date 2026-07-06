@@ -1,0 +1,33 @@
+id: leetcode-087-scramble-string
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "87. Scramble String"
+difficulty: hard
+status: draft
+answer:
+  approach: >
+    Recursive solution. First, if s1 and s2 aren't anagrams, s2 can't be a scramble of s1;
+    if they're already equal, return true. Otherwise try splitting s1 at every position i
+    (1..n-1) — this walks the ways of building the scramble tree. s1[:i] is the left child
+    and s1[i:] the right. For each split there are two ways s2 could correspond: without a
+    swap at this node, s2 splits at i too, so check s1[:i] vs s2[:i] and s1[i:] vs s2[i:];
+    with a swap, s2's matching pieces are the last i and first n-i characters, so check
+    s1[:i] vs s2[n-i:] and s1[i:] vs s2[:n-i]. If any split works, return true; otherwise
+    false. The anagram check at the top prunes most branches.
+  pseudocode: |
+    isScramble(s1, s2):
+        if s1 == s2: return true
+        if not anagram(s1, s2): return false
+        n = len(s1)
+        for i in 1..n-1:
+            # no swap
+            if isScramble(s1[:i], s2[:i]) and isScramble(s1[i:], s2[i:]): return true
+            # swap
+            if isScramble(s1[:i], s2[n-i:]) and isScramble(s1[i:], s2[:n-i]): return true
+        return false
+  complexity: { time: "exponential without memoization (memoize on (s1,s2) substrings to make it polynomial)", space: "O(n) recursion (more with memoization)" }
+sources:
+  - { title: "LeetCode — Scramble String", url: "https://leetcode.com/problems/scramble-string/", supports: "problem statement" }
+  - { title: "Alexey's solution (087_scramble_string.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/087_scramble_string.cpp", supports: "reference implementation" }

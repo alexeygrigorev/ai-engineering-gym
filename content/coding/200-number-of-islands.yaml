@@ -1,0 +1,29 @@
+id: leetcode-200-number-of-islands
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: "200. Number of Islands"
+difficulty: medium
+status: draft
+answer:
+  approach: >
+    Count the connected components of '1' (land) cells in the grid. Scan every
+    cell; when an unvisited land cell is found, flood-fill from it (DFS or BFS
+    over its four-directional neighbors) marking all reachable land as visited,
+    and increment the island count. Each cell is visited once.
+  pseudocode: |
+    count = 0
+    for each cell (i, j):
+        if grid[i][j] == '1' and not visited:
+            flood_fill(i, j)          # DFS/BFS marking connected land visited
+            count += 1
+    return count
+  complexity: { time: "O(rows * cols)", space: "O(rows * cols)" }
+follow_ups:
+  - "Use union-find (disjoint set) instead of flood fill."
+  - "Count islands as the grid is updated online (LeetCode 305)."
+  - "How do you avoid recursion-depth overflow on very large grids?"
+sources:
+  - { title: "LeetCode - Number of Islands", url: "https://leetcode.com/problems/number-of-islands/", supports: "problem statement" }
+  - { title: "Alexey's solution (200_number_islands.cpp)", url: "https://github.com/alexeygrigorev/leetcode-solutions/blob/master/leetcode/src/200_number_islands.cpp", supports: "reference implementation" }
