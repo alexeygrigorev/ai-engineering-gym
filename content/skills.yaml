@@ -25,9 +25,7 @@ ai-system-design:
   - serving
 
 project-deep-dive:
-  - faq-assistant
-  - dataops
-  - olx
+  - project
 
 behavioral:
   - conflict

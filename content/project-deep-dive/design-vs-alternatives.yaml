@@ -1,0 +1,42 @@
+id: design-vs-alternatives
+category: project-deep-dive
+skill: project
+type: rehearsal
+question: "Why did you pick that design and tech stack for your project over the alternatives you considered?"
+difficulty: medium
+status: draft
+source_refs: [exponent-openai, hello-interview]
+sources:
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "why this approach over alternatives; why this tech stack; the 'why' is the interesting part"
+  - title: "Hello Interview — OpenAI L5 guide"
+    url: "https://www.hellointerview.com/guides/openai/l5"
+    supports: "reasoning behind architectural choices, not just naming them; consider rejected options"
+
+probes:
+  - "What alternatives did you seriously consider and reject?"
+  - "What was the deciding constraint — latency, cost, team skill, time, or data?"
+  - "What would have made you pick a different option?"
+  - "Where did you follow a convention versus deviate, and why?"
+  - "Which choice are you least sure about in hindsight?"
+
+rubric:
+  - "Explains the reasoning behind the choice, not just the name of the tool"
+  - "Names concrete alternatives that were considered and rejected"
+  - "Ties the decision to a real constraint (cost, latency, team, data, time)"
+  - "Shows engineering judgment: 'we chose X over Y because Z' framing"
+  - "Acknowledges uncertainty honestly where it exists"
+
+hints:
+  - "Never just name the tool — say what you rejected and why."
+  - "Anchor on the one constraint that actually forced the decision."
+  - "Use the 'X over Y because Z' shape for at least one choice."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real design rationale at runtime.
+  1. The choice: what you built and the key stack decisions.
+  2. Alternatives: the options you weighed and set aside.
+  3. Deciding constraint: the factor that broke the tie.
+  4. Judgment: 'X over Y because Z' for the load-bearing decision.
+  5. Honesty: the choice you're least certain about.

@@ -1,0 +1,44 @@
+id: what-youd-do-differently
+category: project-deep-dive
+skill: project
+type: rehearsal
+question: "If you started your project over today, what would you do differently — and what would you explore next if you had more time?"
+difficulty: medium
+status: draft
+source_refs: [exponent-openai, hello-interview, fonzi-ai]
+sources:
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "what you'd do differently if you started over; honest limitations still get you hired"
+  - title: "Hello Interview — OpenAI L5 guide"
+    url: "https://www.hellointerview.com/guides/openai/l5"
+    supports: "what you'd explore next with more time; handling different requirements"
+  - title: "Fonzi AI — What I've learned from sitting in on 50 AI-engineer interviews"
+    url: "https://medium.com/fonzi-ai/what-ive-learned-from-sitting-in-on-50-ai-engineer-interviews-c493696453c4"
+    supports: "honest self-assessment signals seniority; frame around impact and learning"
+
+probes:
+  - "Which specific decision would you reverse, and why?"
+  - "What did you learn only after shipping that you'd apply from day one now?"
+  - "Was the change a matter of new information, or a mistake you'd own?"
+  - "What would you explore or build next with more time?"
+  - "How would your answer change if the scale or requirements were different?"
+
+rubric:
+  - "Names a specific decision to change, not a vague 'more testing'"
+  - "Ties the reflection to a concrete lesson learned on this project"
+  - "Shows honest self-assessment without being self-flagellating"
+  - "Distinguishes new-information changes from genuine mistakes"
+  - "Points to a credible next step that shows forward thinking"
+
+hints:
+  - "Pick one real decision and own it — vague regrets read as evasion."
+  - "Separate 'I'd know better now' from 'that was the right call with what I knew'."
+  - "Close with a concrete next thing you'd build or explore."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real reflection at runtime.
+  1. The decision you'd change and the trigger for rethinking it.
+  2. The lesson: what you learned only after shipping.
+  3. Honest framing: mistake vs. new information.
+  4. Next step: what you'd explore with more time.

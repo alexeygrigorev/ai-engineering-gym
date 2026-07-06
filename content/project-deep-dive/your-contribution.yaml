@@ -1,0 +1,45 @@
+id: your-contribution
+category: project-deep-dive
+skill: project
+type: rehearsal
+question: "On your project, what did you personally own and decide, versus what the rest of the team did?"
+difficulty: easy
+status: draft
+source_refs: [fonzi-ai, prachub-anthropic, igotanoffer-meta]
+sources:
+  - title: "Fonzi AI — What I've learned from sitting in on 50 AI-engineer interviews"
+    url: "https://medium.com/fonzi-ai/what-ive-learned-from-sitting-in-on-50-ai-engineer-interviews-c493696453c4"
+    supports: "what was your actual role; ownership and initiative in the narrative signal seniority"
+  - title: "Prachub — Anthropic behavioral & leadership"
+    url: "https://prachub.com/companies/anthropic/categories/behavioral-and-leadership"
+    supports: "how you communicated technical decisions to stakeholders; driving vs executing"
+  - title: "IGotAnOffer — Meta ML engineer interview"
+    url: "https://igotanoffer.com/blogs/tech/facebook-machine-learning-engineer-interview"
+    supports: "tell me about the role you played and what you're most proud of"
+
+probes:
+  - "Which decisions were yours to make, and which did you influence but not own?"
+  - "What is one thing that would not have happened without you?"
+  - "How did you divide work with the rest of the team?"
+  - "Where did you disagree with the team, and how did it resolve?"
+  - "How did you communicate your part to stakeholders or teammates?"
+
+rubric:
+  - "Draws a clear line between 'I' and 'we' without over-claiming"
+  - "Names at least one decision the candidate personally owned"
+  - "Shows initiative and ownership, not just task execution"
+  - "Gives the team credit honestly where due"
+  - "Demonstrates it with a concrete artifact or outcome, not just a title"
+
+hints:
+  - "Use 'I' for what you owned and 'we' for the rest — keep the line clean."
+  - "Give one thing that wouldn't have happened without you, with proof."
+  - "Credit the team honestly; over-claiming reads as a red flag."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real contribution at runtime.
+  1. Scope: your area versus the team's, stated plainly.
+  2. Owned decision: one call that was yours and its outcome.
+  3. Initiative: something that happened because you pushed it.
+  4. Collaboration: how you split work and handled a disagreement.
+  5. Credit: what the team did that you don't claim.

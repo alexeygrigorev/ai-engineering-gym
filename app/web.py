@@ -60,6 +60,24 @@ STAGES = [
      "blurb": "Assignment prep & checklists", "category": "home-assignments", "flow": "reference"},
 ]
 STAGE_BY_KEY = {s["key"]: s for s in STAGES}
+CATEGORY_TO_KEY = {s["category"]: s["key"] for s in STAGES}
+
+# where each stage's questions come from in the field guide (for "Question source")
+FG_BASE = "https://github.com/alexeygrigorev/ai-engineering-field-guide/blob/main/"
+FG_QUESTION_DOC = {
+    "theory": "interview/questions/01-theory.md",
+    "coding": "interview/questions/02-coding.md",
+    "project-deep-dive": "interview/questions/03-project-deep-dive.md",
+    "ai-system-design": "interview/questions/04-ai-system-design.md",
+    "behavioral": "interview/questions/05-behavioral.md",
+    "home-assignments": "interview/questions/06-home-assignments.md",
+    "recruiter": "interview/01-interview-process.md",
+}
+
+
+def item_url(it) -> str:
+    """Pretty, category-scoped URL, e.g. /system-design/rag-10m-walkthrough."""
+    return f"/{CATEGORY_TO_KEY.get(it.category, 'item')}/{it.id}"
 
 
 # --- auth middleware -------------------------------------------------------
@@ -489,6 +507,8 @@ async function downloadOffline(){
     if(btn) btn.textContent='Downloaded '+urls.length+' cards \\u2713';
   }catch(e){ if(btn) btn.textContent='Download failed'; }
 }
+function toggleSources(){ var s=document.getElementById('sources');
+  if(s) s.style.display = s.style.display==='none' ? 'block' : 'none'; }
 </script>
 """
 
@@ -677,6 +697,70 @@ def review_controls(item_id: str, current) -> str:
     )
 
 
+def question_source(it) -> str:
+    """Where this question comes from in the field guide."""
+    refs = it.content.get("source_refs") or []
+    doc = FG_QUESTION_DOC.get(it.category)
+    if not refs and not doc:
+        return ""
+    link = f'<a href="{FG_BASE}{doc}">AI Engineering Field Guide</a>' if doc else "AI Engineering Field Guide"
+    refstr = (" — " + ", ".join(esc(r) for r in refs)) if refs else ""
+    return (
+        '<div class="qt" style="margin-top:14px">Question source</div>'
+        f'<div class="src">From {link}{refstr}</div>'
+    )
+
+
+def walkthrough_block(it, footer: str = "") -> str:
+    """Guided think-aloud: scenario, then step through guiding questions one at a time."""
+    c = it.content
+    scenario = c.get("scenario") or display_question(c, it.id)
+    steps = c.get("steps") or []
+    diagram = c.get("diagram") or c.get("skeleton_diagram") or ""
+    sources = render_sources(c)
+    sources_block = (
+        '<button class="ghost" type="button" onclick="toggleSources()">Sources</button>'
+        f'<div id="sources" style="display:none;margin-top:10px">{sources}</div>'
+        if sources else ""
+    )
+    steps_html = []
+    n = len(steps)
+    for i, st in enumerate(steps):
+        last = i == n - 1
+        nxt = (
+            '<button class="primary" type="button" onclick="wfinish()">Finish</button>'
+            if last
+            else f'<button class="primary" type="button" onclick="wnext({i})">Next step →</button>'
+        )
+        steps_html.append(
+            f'<div class="wstep" data-i="{i}" style="display:{"block" if i == 0 else "none"}">'
+            f'<div class="section-label">Step {i + 1} of {n} · {esc(st.get("phase", ""))}</div>'
+            f'<div class="question" style="font-size:17px">{esc(st.get("prompt", ""))}</div>'
+            f'<div class="wref" id="wref-{i}" style="display:none;margin-top:10px">{md(st.get("reference", ""))}</div>'
+            f'<div class="actions"><button class="ghost" type="button" onclick="wref({i})">Reveal reference</button>{nxt}</div>'
+            "</div>"
+        )
+    diagram_html = (
+        f'<div class="qt">Reference architecture (mermaid)</div><pre>{esc(diagram)}</pre>' if diagram else ""
+    )
+    end = f'<div id="wend" style="display:none">{diagram_html}{sources_block}{footer}</div>'
+    js = (
+        "<script>"
+        "function wref(i){var e=document.getElementById('wref-'+i);if(e)e.style.display='block';}"
+        "function wnext(i){var c=document.querySelector('.wstep[data-i=\"'+i+'\"]');if(c)c.style.display='none';"
+        "var nx=document.querySelector('.wstep[data-i=\"'+(i+1)+'\"]');if(nx)nx.style.display='block';}"
+        "function wfinish(){document.querySelectorAll('.wstep').forEach(function(e){e.style.display='none';});"
+        "document.getElementById('wend').style.display='block';}"
+        "</script>"
+    )
+    return (
+        f'<div class="tagrow">{difficulty_tag(it)}<span class="pill">{esc(skill_label(it.skill))}</span></div>'
+        f'<div class="question">{esc(scenario)}</div>'
+        '<p class="sub">Think it through out loud — reveal the reference for each step, then move on.</p>'
+        + "".join(steps_html) + end + js
+    )
+
+
 SERVICE_WORKER_JS = """
 const CACHE = 'gym-v1';
 self.addEventListener('install', e => { self.skipWaiting(); });
@@ -800,7 +884,7 @@ def build_router(store: Store, reviews) -> APIRouter:
         def row(it):
             q = display_question(it.content, it.id)
             return (
-                f'<a class="q" href="/item/{esc(it.id)}"><div class="qt">{esc(q)}</div>'
+                f'<a class="q" href="{item_url(it)}"><div class="qt">{esc(q)}</div>'
                 f"{difficulty_tag(it)}<span class=\"pill\">{esc(skill_label(it.skill))}</span></a>"
             )
 
@@ -857,18 +941,22 @@ def build_router(store: Store, reviews) -> APIRouter:
         return page(s["title"], head + buttons(f"/practice/{key}") + "".join(row(i) for i in items))
 
     # -- browse a single item (study mode) --
-    @r.get("/item/{item_id}", response_class=HTMLResponse)
-    def item(request: Request, item_id: str):
+    def render_item(item_id: str):
         it = store.get_item(item_id)
         if not it:
             return page("Not found", '<a class="back" href="/">&larr; Home</a><p>Not found.</p>')
         q = display_question(it.content, it.id)
-        footer = review_controls(it.id, reviews.get(it.id))
+        footer = question_source(it) + review_controls(it.id, reviews.get(it.id))
+        render = walkthrough_block if it.type == "walkthrough" else recall_block
         body = (
             '<a class="back" href="javascript:history.back()">&larr; Back</a>'
-            f'<div class="card">{recall_block(it, footer=footer)}</div>'
+            f'<div class="card">{render(it, footer=footer)}</div>'
         )
         return page(q, body)
+
+    @r.get("/item/{item_id}", response_class=HTMLResponse)
+    def item(request: Request, item_id: str):
+        return render_item(item_id)
 
     # -- practice: start a session --
     @r.get("/practice/{key}")
@@ -914,11 +1002,12 @@ def build_router(store: Store, reviews) -> APIRouter:
             + f'<form method="post" action="/practice/s/{esc(sid)}/next">'
             f'<button class="cta" style="width:100%;margin-top:14px">{nxt}</button></form>'
         )
+        render = walkthrough_block if it.type == "walkthrough" else recall_block
         body = (
             f'<a class="back" href="/stage/{esc(session.skill)}">&larr; Exit</a>'
             f'<div class="progress"><span style="width:{pct}%"></span></div>'
             f'<p class="sub">Card {session.cursor + 1} of {total}</p>'
-            f'<div class="card">{recall_block(it, footer=footer)}</div>'
+            f'<div class="card">{render(it, footer=footer)}</div>'
         )
         return page(q, body)
 
@@ -985,8 +1074,9 @@ def build_router(store: Store, reviews) -> APIRouter:
             v = rec.get("verdict", "")
             badge = "👍" if v == "up" else ("👎" if v == "down" else "•")
             cmt = esc(rec.get("comment", ""))
+            href = item_url(it) if it else f"/item/{esc(iid)}"
             rows.append(
-                f'<a class="q" href="/item/{esc(iid)}"><div class="qt">{badge} {esc(q)}</div>'
+                f'<a class="q" href="{href}"><div class="qt">{badge} {esc(q)}</div>'
                 + (f'<div class="sub">{cmt}</div>' if cmt else "")
                 + "</a>"
             )
@@ -1024,9 +1114,22 @@ def build_router(store: Store, reviews) -> APIRouter:
 
     @r.get("/offline-urls")
     def offline_urls():
-        urls = ["/"] + [f"/stage/{s['key']}" for s in STAGES]
-        urls += [f"/stage/coding?sub={sk}" for sk in ("ml-coding", "implementation", "algorithms")]
-        urls += [f"/item/{it.id}" for it in store.list_items()]
+        urls = ["/", "/reviews"] + [f"/stage/{s['key']}" for s in STAGES]
+        seen = set()
+        for it in store.list_items():
+            k = CATEGORY_TO_KEY.get(it.category)
+            if it.skill and (k, it.skill) not in seen:
+                seen.add((k, it.skill))
+                urls.append(f"/stage/{k}?sub={it.skill}")
+        urls += [item_url(it) for it in store.list_items()]
         return JSONResponse(urls)
+
+    # pretty category-scoped item URL, e.g. /system-design/rag-10m-walkthrough.
+    # Registered LAST so it never shadows /stage, /practice, etc.
+    @r.get("/{stage_key}/{item_id}", response_class=HTMLResponse)
+    def item_by_category(request: Request, stage_key: str, item_id: str):
+        if stage_key not in STAGE_BY_KEY:
+            return page("Not found", '<a class="back" href="/">&larr; Home</a><p>Not found.</p>')
+        return render_item(item_id)
 
     return r

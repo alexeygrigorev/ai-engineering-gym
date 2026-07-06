@@ -1,9 +1,8 @@
-id: faq-assistant-evaluation
+id: evaluation
 category: project-deep-dive
-skill: faq-assistant
+skill: project
 type: rehearsal
-your_project: faq-assistant
-question: "How did you evaluate the FAQ Assistant — was there a real eval framework, or was it vibes-based? What metrics did you track?"
+question: "How did you evaluate your project and measure success — was there a real eval framework, or was it vibes-based? What metrics did you track?"
 difficulty: hard
 status: draft
 source_refs: [exponent-openai, linkjob-anthropic, igotanoffer]
@@ -16,31 +15,31 @@ sources:
     supports: "post-deployment monitoring for drift/degradation; handling data quality"
   - title: "IGotAnOffer — Generative AI system design interview"
     url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
-    supports: "offline eval sets + online feedback loops; groundedness/faithfulness metrics for RAG-style answers"
+    supports: "offline eval sets + online feedback loops; quality metrics tied to the use case"
 
 probes:
-  - "What was your golden/test set, and how did you build it?"
-  - "Which metrics — retrieval quality, groundedness/faithfulness, answer correctness, user feedback?"
-  - "Did you use LLM-as-judge? How did you trust it?"
+  - "What was your test or golden set, and how did you build it?"
+  - "Which metrics did you track, and why those?"
+  - "Did you use any automated or LLM-as-judge scoring, and how did you trust it?"
   - "How did you catch a regression before it reached users?"
-  - "How did you monitor quality post-deployment for drift?"
+  - "How did you monitor quality post-deployment for drift or degradation?"
 
 rubric:
-  - "Describes a real evaluation approach, not 'it looked good' — offline set and/or online signal"
-  - "Names specific metrics tied to the FAQ use case (retrieval hit rate, groundedness, deflection, thumbs up/down)"
-  - "Cites actual numbers/outcomes where possible"
+  - "Describes a real evaluation approach, not 'it looked good', using an offline set and/or online signal"
+  - "Names specific metrics tied to the project's goal, not generic ones"
+  - "Cites actual numbers or outcomes where possible"
   - "Addresses regression detection and post-deploy monitoring, not just a one-time check"
-  - "Acknowledges limits of the eval (LLM-judge bias, small set) — honest self-assessment"
+  - "Acknowledges limits of the eval (bias, small set), an honest self-assessment"
 
 hints:
-  - "Separate offline eval (a fixed test set) from online signal (real user feedback)."
-  - "Name at least one retrieval metric and one answer-quality metric."
+  - "Separate offline eval (a fixed test set) from online signal (real user behavior)."
+  - "Name at least one quality metric and one business/impact metric."
   - "Say how you'd know if quality drifted after launch."
 
 example_structure: |
   # Model STRUCTURE only — fill with your real eval details at runtime.
   1. Offline: how you built a test/golden set and what you scored on it.
-  2. Metrics: retrieval quality + answer quality (+ how you judged them).
+  2. Metrics: the quality metric + the impact metric that mattered.
   3. Online: the feedback signal you watched in production.
   4. Regression + drift: how you caught problems before/after launch.
   5. Honest caveat: where the eval was weak.

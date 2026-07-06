@@ -1,0 +1,42 @@
+id: debugging-incident
+category: project-deep-dive
+skill: project
+type: rehearsal
+question: "Tell me about a nasty bug or production incident on your project — how did you find it and fix it?"
+difficulty: medium
+status: draft
+source_refs: [exponent-openai, linkjob-anthropic]
+sources:
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "what went wrong, what was harder than expected, and how you made the call under pressure"
+  - title: "LinkJob — Anthropic software engineer interview"
+    url: "https://www.linkjob.ai/interview-questions/anthropic-software-engineer-interview/"
+    supports: "how you debugged production issues; data quality and preprocessing challenges"
+
+probes:
+  - "What was the symptom, and how did you first notice it?"
+  - "How did you form and test a hypothesis about the root cause?"
+  - "What tools or signals (logs, metrics, traces, reproduction) did you use?"
+  - "What was the fix, and how did you verify it actually worked?"
+  - "What did you change afterward so it couldn't happen again?"
+
+rubric:
+  - "Describes a clear debugging method: symptom -> hypothesis -> isolation -> root cause -> fix"
+  - "Names the concrete tools and signals used, not just 'I looked into it'"
+  - "Shows the candidate personally drove the investigation"
+  - "Verifies the fix with evidence, not assumption"
+  - "Reflects honestly: a prevention or systemic improvement that followed"
+
+hints:
+  - "Lead with the symptom and blast radius, then narrate how you narrowed it down."
+  - "Name the specific signal that cracked it (a log line, a metric spike, a repro)."
+  - "End with the guardrail you added so it never recurs."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real incident at runtime.
+  1. Symptom: what broke, who was affected, how you noticed.
+  2. Investigation: hypotheses you formed and how you isolated the cause.
+  3. Root cause: the actual bug, stated precisely.
+  4. Fix + verification: what you changed and how you confirmed it.
+  5. Prevention: the test, alert, or design change you added after.

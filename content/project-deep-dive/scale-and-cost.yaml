@@ -1,0 +1,45 @@
+id: scale-and-cost
+category: project-deep-dive
+skill: project
+type: rehearsal
+question: "How would your project handle 10x the scale, and how did you think about cost?"
+difficulty: hard
+status: draft
+source_refs: [hello-interview, exponent-openai, igotanoffer]
+sources:
+  - title: "Hello Interview — OpenAI L5 guide"
+    url: "https://www.hellointerview.com/guides/openai/l5"
+    supports: "how you'd handle different scale constraints; resource allocation over pure technical elegance"
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "optimizing an existing process for efficiency/scalability; thinking about cost, not just correctness"
+  - title: "IGotAnOffer — Generative AI system design interview"
+    url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
+    supports: "what breaks at scale and how to detect it; cost/latency levers like caching and tiering"
+
+probes:
+  - "What is the first bottleneck that breaks at 10x, and how do you know?"
+  - "What were your dominant cost drivers, and how did you measure them?"
+  - "Which levers would you pull first — caching, batching, tiering, or a redesign?"
+  - "How would you detect the degradation before users do?"
+  - "Where does cost trade against latency or quality, and how do you set the dial?"
+
+rubric:
+  - "Identifies a concrete bottleneck that fails first at higher scale"
+  - "Reasons about cost with real drivers and numbers, not hand-waving"
+  - "Names specific scaling levers and their order of application"
+  - "Connects scale to detection and monitoring, not just capacity"
+  - "Shows impact orientation: resource allocation, not only technical elegance"
+
+hints:
+  - "Name the single component that breaks first — don't list everything."
+  - "Attach a cost driver to a number you actually tracked or estimated."
+  - "Say which lever you'd pull first and why, before redesigning."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real scale/cost analysis at runtime.
+  1. Bottleneck: what saturates first at 10x and the evidence.
+  2. Cost model: the dominant drivers and how you measured them.
+  3. Levers: caching/batching/tiering vs. redesign, in order.
+  4. Detection: the signal that warns you before users feel it.
+  5. Trade dial: where cost fights latency or quality.
