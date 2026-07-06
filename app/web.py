@@ -732,11 +732,7 @@ def build_router(store: Store, reviews) -> APIRouter:
         tiles = []
         for s in STAGES:
             items = items_for(s["category"])
-            if s["category"] == "coding":
-                rel = sum(1 for i in items if i.content.get("ai_relevant") is True)
-                count = f"{rel} relevant<br>{len(items)} total" if items else "soon"
-            else:
-                count = f"{len(items)} Q" if items else "soon"
+            count = f"{len(items)} Q" if items else "soon"
             tiles.append(
                 f'<a class="tile" href="/stage/{s["key"]}"><div class="row">'
                 f'<div class="emoji">{s["emoji"]}</div>'

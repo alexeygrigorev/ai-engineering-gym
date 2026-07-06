@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import os
 import uuid
-from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException
@@ -21,7 +21,7 @@ from mangum import Mangum
 from pydantic import BaseModel
 from starlette.middleware.sessions import SessionMiddleware
 
-from app.ingest import ingest_dir
+from app.ingest import ingest_dir, load_items_bundle
 from app.models import RehearsalAnswer, SessionResult, Session, User
 from app.reviews import get_review_store
 from app.store import InMemoryStore, Store
@@ -36,25 +36,27 @@ XP_PER_ITEM = 10
 # --- store + ingest bootstrap ---------------------------------------------
 store: Store = InMemoryStore()
 CONTENT_DIR = os.environ.get("CONTENT_DIR", "content")
+CONTENT_BUNDLE = os.environ.get("CONTENT_BUNDLE", "content_bundle.json")
 INCLUDE_DRAFTS = os.environ.get("INGEST_INCLUDE_DRAFTS", "").lower() in ("1", "true", "yes")
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "dev-insecure-secret-change-me")
 
 
 def bootstrap(content_dir: str = CONTENT_DIR) -> None:
-    """Load content and ensure the single default user exists."""
-    report = ingest_dir(content_dir, store, include_drafts=INCLUDE_DRAFTS)
+    """Load content once and ensure the single default user exists.
+
+    Fast path: a prebuilt ``content_bundle.json`` (made at deploy time) is loaded
+    directly, avoiding a per-startup parse+validate of ~200 YAML files. Falls back
+    to walking the YAML when there is no bundle (local dev / tests / custom dirs).
+    """
+    if content_dir == CONTENT_DIR and Path(CONTENT_BUNDLE).exists():
+        load_items_bundle(CONTENT_BUNDLE, store)
+    else:
+        ingest_dir(content_dir, store, include_drafts=INCLUDE_DRAFTS)
     if store.get_user(DEFAULT_USER) is None:
         store.put_user(User(id=DEFAULT_USER))
-    return report
 
 
-@asynccontextmanager
-async def lifespan(_app: FastAPI):
-    bootstrap()
-    yield
-
-
-app = FastAPI(title="AI Engineering Gym", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="AI Engineering Gym", version="0.1.0")
 
 # Passphrase gate (design: simple auth). SessionMiddleware must wrap AuthMiddleware,
 # so it is added last (outermost) to populate request.session first.
@@ -69,6 +71,10 @@ app.add_middleware(
 
 # Phone-first web UI (interview-stage navigation).
 app.include_router(build_router(store, review_store))
+
+# Ingest ONCE per container at import time (not per-request via lifespan), so warm
+# Lambda invocations don't re-parse content on every screen.
+bootstrap()
 
 
 # --- request/response shapes ----------------------------------------------
@@ -219,4 +225,14 @@ def _award_session(session: Session) -> None:
 
 
 # --- Lambda handler (Mangum) ----------------------------------------------
-handler = Mangum(app)
+# lifespan="off": content is ingested at import (above), so Mangum must NOT re-run
+# ASGI startup on every invocation — doing so re-ingested content per request and
+# made every screen slow.
+_asgi_handler = Mangum(app, lifespan="off")
+
+
+def handler(event, context=None):
+    # EventBridge keep-warm pings return immediately without touching the ASGI app.
+    if isinstance(event, dict) and event.get("warmup"):
+        return {"ok": True, "warm": True}
+    return _asgi_handler(event, context)

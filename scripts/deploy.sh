@@ -19,6 +19,8 @@ echo "==> building package with uv"
 rm -rf build && mkdir -p build/pkg
 uv pip install --target build/pkg . --quiet
 cp -r content build/pkg/content
+echo "    prebuilding content bundle (fast cold-start ingest)"
+INGEST_INCLUDE_DRAFTS=true uv run python -c "from app.ingest import build_items_bundle; print('    bundle items:', build_items_bundle('content','build/pkg/content_bundle.json'))"
 find build/pkg -name '__pycache__' -type d -prune -exec rm -rf {} + 2>/dev/null || true
 uv run python -c "import shutil; shutil.make_archive('build/lambda','zip','build/pkg')"
 echo "    package: $(du -h build/lambda.zip | cut -f1)"

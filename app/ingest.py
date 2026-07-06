@@ -10,6 +10,7 @@ single file are logged and skipped too, so one bad file can't take down ingest.
 
 from __future__ import annotations
 
+import json
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -114,3 +115,26 @@ def _to_item(content) -> Item:
         status=getattr(content, "status", "approved"),
         content=content.model_dump(mode="json"),
     )
+
+
+def build_items_bundle(content_dir: str | Path, out_path: str | Path, include_drafts: bool = True) -> int:
+    """Ingest YAML once at BUILD time and dump the items to a JSON bundle.
+
+    The runtime then loads this bundle instead of parsing + validating ~200 YAML
+    files on every cold start — a big load-time win.
+    """
+    from app.store import InMemoryStore
+
+    tmp = InMemoryStore()
+    ingest_dir(content_dir, tmp, include_drafts=include_drafts)
+    items = [i.model_dump(mode="json") for i in tmp.list_items()]
+    Path(out_path).write_text(json.dumps(items))
+    return len(items)
+
+
+def load_items_bundle(path: str | Path, store: Store) -> int:
+    """Load a prebuilt JSON bundle of items into the store (fast startup path)."""
+    data = json.loads(Path(path).read_text())
+    for d in data:
+        store.put_item(Item(**d))
+    return len(data)
