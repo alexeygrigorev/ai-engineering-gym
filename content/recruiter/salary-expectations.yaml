@@ -17,48 +17,48 @@ sources:
     supports: "practice vs serious vs exceptional phases inform how hard to anchor per role"
 
 probes:
-  - "We really do need a number to move forward."
+  - "We do need a number to move forward."
   - "What are you earning now / what's your current comp?"
   - "What's the minimum you'd consider?"
-  - "The form requires a figure — what should I put?"
+  - "The form requires a figure. What should I put?"
   - "Is comp the main thing driving this for you?"
 
 rubric:
-  - "Deflects the first ask gracefully — optimizing for scope, team, and impact first, and wants to understand the role before anchoring"
+  - "Deflects the first ask gracefully, optimizing for scope, team, and impact first, and wants to understand the role before anchoring"
   - "Turns the question around to get their band: 'What range is budgeted for this position?'"
   - "Holds the line politely if pushed, without a hard refusal or a random low number"
-  - "For a required form, gives a reasonable senior/staff figure that won't disqualify — not an extreme, not a number he'd definitely reject in a real process"
-  - "Never anchors low; never treats an early recruiter call as the real negotiation"
+  - "For a required form, gives a reasonable senior/staff figure that won't disqualify, not an extreme, not a number he'd definitely reject in a real process"
+  - "Never anchors low, and never treats an early recruiter call as the real negotiation"
   - "Reads the phase: softer anchoring on practice roles, firmer on serious/exceptional ones"
 
 hints:
-  - "Answer the salary question with a question — get their band before you give a number."
+  - "Answer the salary question with a question: get their band before you give a number."
   - "Lead with 'scope, team, impact first' so declining to anchor reads as senior, not evasive."
-  - "If a form forces a number, use a reasonable senior/staff figure — not extreme, not one you'd reject outright."
+  - "If a form forces a number, use a reasonable senior/staff figure, not extreme, not one you'd reject outright."
 
 example_structure: |
-  # HIS actual salary approach — rehearse toward this.
+  # HIS actual salary approach: rehearse toward this.
 
   ## First recruiter call (default)
-  "I am optimizing for scope, team, and impact first. For the right
+  "I'm optimizing for scope, team, and impact first. For the right
   senior/staff-level AI engineering role, I would expect a competitive package
-  aligned with the level, but I would rather understand the role before anchoring
+  aligned with the level. I would rather understand the role before anchoring
   on a number. What range is budgeted for this position?"
 
   ## If they push for a number
   "I would prefer not to anchor too early. If the role has senior/staff-level
-  scope and meaningful ownership, I am sure we can find something aligned. Could
+  scope and meaningful ownership, I'm sure we can find something aligned. Could
   you share the compensation band?"
 
   ## If a form requires a number
   Use a reasonable senior/staff figure that doesn't disqualify you from the
-  process — never an extreme, and never a number you'd definitely reject if things
+  process. Never pick an extreme, and never a number you'd definitely reject if things
   go far. Anchor softer for practice applications, firmer for serious/exceptional
-  targets; for top companies, try to get the band via referral/outreach first.
+  targets. For top companies, try to get the band via referral/outreach first.
 
   ## Internal rule (mindset, not spoken)
   Early conversations are for interview practice, market intelligence,
-  understanding the process, and calibrating positioning — NOT for immediate
+  understanding the process, and calibrating positioning. They are NOT for immediate
   salary negotiation. Negotiate seriously only when the role is genuinely
   interesting.
 

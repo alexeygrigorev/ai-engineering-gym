@@ -14,16 +14,16 @@ hints:
 status: draft
 answer:
   approach: >
-    The clean solution builds on histograms row by row and uses DP with three helper
-    arrays. For each cell keep: heights[i][j] — how many consecutive 1s are stacked above
-    (and including) cell (i,j); left[i][j] — the leftmost column the all-1s bar at (i,j)
-    can extend to; and right[i][j] — the rightmost such column. heights updates trivially
+    The clean solution builds histograms row by row and uses DP with three helper
+    arrays. For each cell, heights[i][j] counts the consecutive 1s stacked above
+    (and including) cell (i,j), left[i][j] is the leftmost column the all-1s bar at (i,j)
+    can extend to, and right[i][j] is the rightmost such column. heights updates trivially
     from the row above. For left, sweep the row left to right maintaining left_start (reset
-    to j+1 on a 0); on a 1, left = max(left-from-row-above, left_start). right is symmetric
-    sweeping right to left with right_end. The rectangle area at each cell is
-    heights * (right - left + 1); take the max over all cells. (Alternatively, run the
+    to j+1 on a 0), and on a 1 set left = max(left-from-row-above, left_start). right is
+    symmetric, sweeping right to left with right_end. Compute each cell's area as
+    heights * (right - left + 1), and take the max over all cells. Alternatively, run the
     histogram solution from problem 84 on the height array of each row, or grow rectangles
-    with DFS.)
+    with DFS.
   pseudocode: |
     for each row:
         for each col:                    # heights

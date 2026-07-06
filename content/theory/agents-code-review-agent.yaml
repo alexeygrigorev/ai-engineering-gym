@@ -19,26 +19,26 @@ sources:
 
 answer:
   short: >
-    Trigger on a pull request and give the agent the diff plus just enough context —
-    the changed files, related tests, and the team's style/guidelines — so it
-    reviews the change, not the whole repo. Combine deterministic tools with LLM
-    reasoning: run cheap static analysis, linters, SAST, and the test suite first to
-    catch obvious issues and cut cost and false positives, then have the LLM reason
-    about correctness, security, performance, and readability. Optionally split into
+    Trigger on a pull request and give the agent the diff plus enough context (the
+    changed files, related tests, and the team's style/guidelines) so it reviews the
+    change, not the whole repo. Combine deterministic tools with LLM reasoning. Run
+    cheap static analysis, linters, SAST, and the test suite first to catch obvious
+    issues, cut cost, and reduce false positives. Then have the LLM reason about
+    correctness, security, performance, and readability. Optionally split into
     focused checks/sub-agents (bugs, security, style, perf). Post a structured PR
     summary plus line-level comments, each grounded in the code and citing the rule
-    or reason — and suppress nitpicks. Keep a human as the approver, integrate it as
+    or reason, and suppress nitpicks. Keep a human as the approver, integrate it as
     a CI step, and evaluate it on comment precision (useful vs. noisy) and
     false-positive rate.
   key_points:
-    - "Trigger on the PR/diff and scope context to changed files + tests + guidelines — review the diff, not the whole repo"
+    - "Trigger on the PR/diff and scope context to changed files + tests + guidelines: review the diff, not the whole repo"
     - "Hybrid: run linters/static analysis/SAST/tests first (cheap, deterministic), then LLM reasoning over what's left"
-    - "Cover multiple aspects — correctness/bugs, security, performance, style — optionally via focused sub-agents"
-    - "Output a structured summary + line-level comments grounded in the code and citing the rule/why; avoid nitpicks"
-    - "Human stays the approver; ship as a CI step; evaluate on comment precision and false-positive rate"
+    - "Cover multiple aspects (correctness/bugs, security, performance, style), optionally via focused sub-agents"
+    - "Output a structured summary + line-level comments grounded in the code and citing the rule/why, and avoid nitpicks"
+    - "Human stays the approver, ship as a CI step, and evaluate on comment precision and false-positive rate"
 
 hints:
-  - "What should you feed the reviewer — the whole repository, or just the change?"
+  - "What should you feed the reviewer: the whole repository, or just the change?"
   - "Which checks are better done by deterministic tools than by the LLM?"
   - "How do you keep the review useful instead of a wall of nitpicks?"
 

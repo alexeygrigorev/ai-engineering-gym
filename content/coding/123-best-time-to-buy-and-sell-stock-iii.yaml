@@ -15,11 +15,11 @@ status: draft
 answer:
   approach: >
     At most two transactions. Split the timeline at every index into a left and
-    a right part, solve the single-transaction problem (problem 121)
-    independently on each side, and take the split that maximizes the sum of the
-    two best profits. This split approach is O(n^2). The optimal refinement is
-    an O(n) DP that carries four running states - best first buy, first sell,
-    second buy, second sell.
+    a right part, then solve the single-transaction problem (problem 121)
+    independently on each side. Take the split that maximizes the sum of the
+    two best profits. This split approach costs O(n^2), but an O(n) DP refines
+    it by tracking four running states: best first buy, first sell, second buy,
+    and second sell.
   pseudocode: |
     best121(a, lo, hi): one-pass max single-transaction profit within a[lo:hi]
     answer = best121(prices, 0, n)

@@ -19,23 +19,23 @@ sources:
 
 answer:
   short: >
-    An AI system is agentic when the LLM itself drives the control flow — it decides
-    what to do next, which tools to call, and when the task is done — instead of
+    An AI system is agentic when the LLM drives the control flow. It decides
+    what to do next, which tools to call, and when the task is done, instead of
     following a fixed, hard-coded path. Anthropic frames it as a spectrum: workflows
     orchestrate LLMs and tools through predefined code paths, while agents let the
     model dynamically direct its own process. The hallmarks are autonomy,
-    goal-directedness, tool use to act on the world, and an iterative
-    perceive → reason/plan → act → observe loop that runs until a goal or stop
-    condition is met. Autonomy is what you gain — and predictability is what you trade away.
+    goal-directedness, and tool use to act on the world. It runs in an iterative
+    perceive → reason/plan → act → observe loop until a goal or stop
+    condition is met. Autonomy is what you gain, and predictability is what you trade away.
   key_points:
     - "Autonomy: the model chooses the next step and its own tool use, not a fixed script"
     - "Goal-directed: given an objective it plans and decomposes into subtasks, not one prompt→one answer"
     - "Tool use: it acts on and senses the environment (APIs, code, databases) and reacts to results"
     - "Runs in a loop: perceive → reason/plan → act → observe, iterating until done"
-    - "It's a spectrum: workflow (predefined paths) → agent (open-ended, model-driven); autonomy trades away predictability"
+    - "It's a spectrum: workflow (predefined paths) → agent (open-ended, model-driven). Autonomy trades away predictability"
 
 hints:
-  - "Ask who is in control of the next step — hard-coded application code, or the LLM itself?"
+  - "Ask who's in control of the next step: hard-coded application code, or the LLM?"
   - "Contrast a single prompt→response with something that loops, plans, and calls tools toward a goal."
   - "Recall Anthropic's workflow-vs-agent distinction and the perceive→reason→act→observe loop."
 

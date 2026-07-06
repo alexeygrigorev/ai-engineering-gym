@@ -9,18 +9,18 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Track a sliding window over the string along with a map from character to the last index at which it appeared."
-  - "When you hit a character already seen inside the current window, jump the window's start to just after that previous occurrence instead of restarting the scan."
+  - "When you hit a character already seen inside the current window, jump the window's start to just after that previous occurrence. This avoids restarting the scan."
   - "One left-to-right pass updating the start and the best length as you go gives O(n) time."
 status: draft
 answer:
   approach: >
-    Keep two things as you scan: start, the index where the current substring (the
-    one ending at i) begins, and a map char -> the index where that char was seen
-    previously (-1 if not seen). To advance to i+1: let c = str[i+1] and m = map[c],
-    where we saw c last. If m is before the current start, start stays put. Otherwise
-    move start to m+1 — that is, if c was seen after the current start, jump start to
-    just after that previous occurrence. Record the char's new position and track the
-    max length i - start + 1 along the way.
+    As you scan, keep start, the index where the current substring (the one ending
+    at i) begins, and a map char -> the index where that char was seen previously
+    (-1 if not seen). To advance to i+1: let c = str[i+1] and m = map[c], where we
+    saw c last. If m is before the current start, start stays put. Otherwise move
+    start to m+1: if c was seen after the current start, jump start to just after
+    that previous occurrence. Record the char's new position and track the max
+    length i - start + 1 along the way.
   pseudocode: |
     seen = {}                       # char -> last index, default -1
     start = 0

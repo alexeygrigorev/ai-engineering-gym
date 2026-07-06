@@ -28,36 +28,36 @@ answer:
   short: >
     Decompose the pipeline first: the same confidently-wrong output can come from a
     retrieval failure (wrong or missing chunks) or a generation failure (right context,
-    but the model ignored or misused it) — and these have different fixes. Run the
-    isolation test: manually inject known-good context and re-run generation; a correct
+    but the model ignored or misused it). These have different fixes. Run the
+    isolation test: manually inject known-good context and re-run generation. A correct
     answer means retrieval is the culprit, still wrong means generation/prompt is. Diagnose
-    retrieval with context recall (was the needed evidence retrieved at all?) and context
-    precision (is the top-k mostly relevant?) — common root causes are bad chunking, weak
+    retrieval with context recall (whether the needed evidence was retrieved at all) and context
+    precision (whether the top-k is mostly relevant). Common root causes are bad chunking, weak
     or mismatched embeddings, and missing reranking. Diagnose generation with faithfulness
-    / groundedness (is every claim entailed by the retrieved context, or hallucinated?)
-    and answer relevance; low faithfulness on good context points at the prompt or model
+    / groundedness (whether every claim is entailed by the retrieved context or hallucinated)
+    and answer relevance. Low faithfulness on good context points at the prompt or model
     behavior. Add citations/attribution so you can instantly see whether the answer traces
-    to a retrieved span — confident-but-wrong with no supporting span is hallucination,
-    with a wrong span is retrieval. Instrument every stage (query → embeddings → retrieved
+    to a retrieved span. Confident-but-wrong with no supporting span is a hallucination,
+    and with a wrong span it's retrieval. Instrument every stage (query → embeddings → retrieved
     chunks → prompt → answer) with tracing, and run a labeled golden set so you localize
     where failures concentrate instead of debugging anecdotally.
   key_points:
     - "Decompose first: a confidently-wrong answer is either a retrieval failure (wrong/missing chunks) or a generation failure (good context ignored)"
-    - "Isolation test: inject known-good context and re-run — correct now = retrieval fault; still wrong = generation/prompt fault"
-    - "Diagnose retrieval with context recall and precision; common causes are bad chunking, weak/mismatched embeddings, and missing reranking"
-    - "Diagnose generation with faithfulness/groundedness and answer relevance; low faithfulness on good context means a prompt/model problem"
-    - "Add citations/attribution: no supporting span = hallucination; wrong span = retrieval problem"
+    - "Isolation test: inject known-good context and re-run. Correct now = retrieval fault, still wrong = generation/prompt fault"
+    - "Diagnose retrieval with context recall and precision. Common causes are bad chunking, weak/mismatched embeddings, and missing reranking"
+    - "Diagnose generation with faithfulness/groundedness and answer relevance. Low faithfulness on good context means a prompt/model problem"
+    - "Add citations/attribution: no supporting span = hallucination, wrong span = retrieval problem"
     - "Instrument each stage with tracing and use a labeled golden set to localize failures instead of debugging anecdotally"
 
 hints:
-  - "Two components could be at fault — which two, and how do you tell them apart?"
+  - "Two components could be at fault. Which two, and how do you tell them apart?"
   - "There's a quick controlled experiment that isolates one of them."
-  - "Inject known-good context (isolation test): correct now = retrieval fault, still wrong = generation fault; then use context recall/precision vs faithfulness, add citations, and trace on a golden set."
+  - "Inject known-good context (isolation test): correct now = retrieval fault, still wrong = generation fault. Then use context recall/precision vs faithfulness, add citations, and trace on a golden set."
 
 follow_ups:
-  - "Retrieval recall is fine but faithfulness is low — walk me through the prompt- and generation-side fixes you'd try, in order."
+  - "Retrieval recall is fine but faithfulness is low. Walk me through the prompt- and generation-side fixes you'd try, in order."
   - "How would you build the golden/eval set to attribute failures to retrieval vs generation, and what do you label?"
-  - "The correct chunk is retrieved but ranked #8 and truncated out of the prompt — how do you detect and fix that (reranking, chunk size, top-k, context ordering)?"
+  - "The correct chunk is retrieved but ranked #8 and truncated out of the prompt. How do you detect and fix that (reranking, chunk size, top-k, context ordering)?"
 
 exercises:
   - kind: mcq

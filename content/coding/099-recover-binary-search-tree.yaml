@@ -16,9 +16,9 @@ answer:
   approach: >
     Two nodes of a BST were swapped, so an in-order traversal is sorted except
     at the swap points. Collect the nodes in-order, scan left-to-right for the
-    first place the order breaks (the larger misplaced node) and scan right-to-
-    left for the last break (the smaller misplaced node), then swap those two
-    nodes' values to restore the tree.
+    first place the order breaks (the larger misplaced node), and scan
+    right-to-left for the last break (the smaller misplaced node). Then swap
+    those two nodes' values to restore the tree.
   pseudocode: |
     nodes = inorder(root)                    # list of nodes
     left  = first i where nodes[i].val > nodes[i+1].val

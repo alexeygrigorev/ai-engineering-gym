@@ -9,13 +9,13 @@ tags: [dsa]
 ai_relevant: true
 hints:
   - "Only one buy and one sell are allowed, and the buy must happen before the sell."
-  - "Track the minimum price seen so far as you scan left to right, since it is always the best possible buy point for the current day's sell."
+  - "Track the minimum price seen so far as you scan left to right. It's always the best possible buy point for the current day's sell."
   - "A single linear pass keeping the running minimum and best profit so far solves it in O(n) time and O(1) space."
 status: draft
 answer:
   approach: >
     One buy and one sell, and the buy must come before the sell. Sweep left to
-    right tracking the minimum price seen so far; the best profit ending on any
+    right tracking the minimum price seen so far. The best profit ending on any
     given day is that day's price minus the running minimum. Keep the maximum
     such profit over all days.
   pseudocode: |

@@ -10,16 +10,16 @@ ai_relevant: false
 hints:
   - "Work on the absolute value and peel off digits one at a time using mod and integer division by 10."
   - "Rebuild the reversed number by repeatedly multiplying the accumulator by 10 and adding the next digit, then restore the original sign at the end."
-  - "Guard against 32-bit overflow by checking after each step that dividing the accumulator back by the same power of ten still returns the digit you just added; return 0 if not."
+  - "Guard against 32-bit overflow by checking after each step that dividing the accumulator back by the same power of ten still returns the digit you added. Return 0 if not."
 status: draft
 answer:
   approach: >
-    Pull digits off the number one at a time with mod/divide by 10 and rebuild the
-    reversed value, multiplying the accumulator by 10 and adding each digit. Handle
+    Pull digits off the number one at a time with mod/divide by 10. Rebuild the
+    reversed value by multiplying the accumulator by 10 and adding each digit. Handle
     the sign separately by working on the absolute value. The one subtlety is 32-bit
     overflow: after each step check that dividing the accumulator back by the current
-    power of ten still yields the digit you added; if it doesn't, the value overflowed
-    and you return 0.
+    power of ten still yields the digit you added. If it doesn't, the value overflowed,
+    so return 0.
   pseudocode: |
     sign = sign(x); x = abs(x)
     digits = []

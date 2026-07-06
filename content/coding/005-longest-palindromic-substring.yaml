@@ -9,13 +9,13 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Think in terms of a 2D table where entry (i, j) records whether the substring from i to j is a palindrome."
-  - "A substring is a palindrome exactly when its two ends match and the substring strictly inside them is also a palindrome, giving a recurrence you can fill bottom-up by increasing length."
+  - "A substring is a palindrome exactly when its two ends match and the substring strictly inside them is also a palindrome. This recurrence can be filled bottom-up by increasing length."
   - "Filling the whole table and tracking the longest span that comes out true costs O(n^2) time and space."
 status: draft
 answer:
   approach: >
-    A DP problem. Keep a boolean table palindromes[i][j] meaning s[i..j] is a
-    palindrome. s[i..j] is a palindrome when s[i] == s[j] and the inside s[i+1..j-1]
+    This is a DP problem, so keep a boolean table palindromes[i][j] meaning s[i..j]
+    is a palindrome. s[i..j] is a palindrome when s[i] == s[j] and the inside s[i+1..j-1]
     is also a palindrome. So palindromes[i][j] = true if s[i] == s[j] and
     palindromes[i+1][j-1] is true (with length 1 and 2 as base cases). Fill the table
     and keep track of the longest span that comes out true.

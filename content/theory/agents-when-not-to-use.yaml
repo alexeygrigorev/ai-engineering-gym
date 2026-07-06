@@ -19,24 +19,24 @@ sources:
 
 answer:
   short: >
-    An agent is the wrong tool when the task has a known, fixed path — a
+    An agent is the wrong tool when the task has a known, fixed path. A
     deterministic workflow or pipeline is more predictable, cheaper, and easier to
     test and debug. Agents are also wrong when error tolerance is low: reliability
     doesn't average across steps, it multiplies, so one early mistake propagates
     downstream. And they're wrong when cost or latency is tight, because each
-    autonomous turn re-calls a large model — the same task can cost several times a
-    plain workflow. Anthropic's rule of thumb: use the simplest thing that passes
-    your eval, and reserve agents for open-ended tasks where you can't hardcode the
+    autonomous turn re-calls a large model. The same task can cost several times a
+    plain workflow. Anthropic recommends using the simplest thing that passes
+    your eval, and reserving agents for open-ended tasks where you can't hardcode the
     path but can still verify progress.
   key_points:
     - "Known, fixed path → use a workflow/pipeline: more predictable, cheaper, easier to test"
     - "Low error tolerance → agents are risky: reliability multiplies across steps, early mistakes propagate"
     - "Cost/latency-sensitive → each autonomous turn re-calls a large model (can be several× a plain workflow)"
-    - "Anthropic: use the simplest solution that passes eval; add autonomy only when needed"
+    - "Anthropic: use the simplest solution that passes eval. Add autonomy only when needed"
     - "Reserve agents for open-ended tasks you can't hardcode but can still verify progress on"
 
 hints:
-  - "Ask whether you could write down the exact steps in advance — if yes, do you even need an agent?"
+  - "Ask whether you could write down the exact steps in advance. If yes, do you even need an agent?"
   - "Think about how errors compound when each step feeds the next."
   - "Weigh the cost of re-calling a large model at every decision point."
 

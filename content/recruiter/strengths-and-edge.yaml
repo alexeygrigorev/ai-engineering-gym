@@ -19,50 +19,50 @@ sources:
 probes:
   - "Give me a concrete example of that strength."
   - "What makes you different from another senior AI engineer?"
-  - "You've been running your own thing — how do I know you can still go deep technically?"
+  - "You've been running your own thing. How do I know you can still go deep technically?"
   - "What's a weakness or gap you'd want to close in the next role?"
   - "Where has that edge actually produced a result?"
 
 rubric:
   - "Leads with the differentiator: he already runs production AI in real workflows, end-to-end, not demos"
-  - "Backs each strength with a named proof point — FAQ Assistant (RAG + evals + deployment + feedback loop), DataOps (business automation), OLX (production ML/platform at scale)"
+  - "Backs each strength with a named proof point: FAQ Assistant (RAG + evals + deployment + feedback loop), DataOps (business automation), OLX (production ML/platform at scale)"
   - "Surfaces the rare combination: production ML depth + product/user empathy + communication/teaching + public authority"
   - "Frames DataTalks.Club as a real deployment environment (mapped workflows, built, deployed, measured, fed back), not just 'a community'"
-  - "Uses honest wording on automation — 'automating more and more', not 'fully automated' — until metrics are in"
+  - "Uses honest wording on automation ('automating more and more', not 'fully automated') until metrics are in"
   - "Ties the edge to the role's needs (discovery, scoping, evals, adoption) rather than listing generic virtues"
 
 hints:
-  - "Your edge is not a skill, it's a combination: production ML + product/user empathy + can-explain-it. Say the combination out loud."
-  - "Every strength gets a proof point immediately after it — FAQ Assistant, DataOps, or OLX. No unbacked adjectives."
+  - "Your edge isn't a skill, it's a combination: production ML + product/user empathy + can-explain-it. Say the combination out loud."
+  - "Every strength gets a proof point immediately after it: FAQ Assistant, DataOps, or OLX. No unbacked adjectives."
   - "Frame DataTalks.Club as a deployment environment you owned end-to-end, not 'a side community'."
 
 example_structure: |
-  # HIS actual proof points and framing — rehearse toward this.
+  # HIS actual proof points and framing: rehearse toward this.
 
   ## The edge, in one line
-  "I'm strongest where AI meets real workflows — I already build, deploy, and
+  "I'm strongest where AI meets real workflows. I already build, deploy, and
   evaluate production AI systems every day, not demos."
 
   ## The proof points (pair a strength with each)
-  - DataTalks.Club — a large technical community/education platform, and my real
+  - DataTalks.Club, a large technical community/education platform, and my real
     AI deployment environment: I mapped workflows, found bottlenecks, built AI
     systems, deployed them into Slack and operations, measured quality, and built
     feedback loops.
-  - FAQ Assistant — a production-style Slack RAG assistant: retrieval, evals
+  - FAQ Assistant, a production-style Slack RAG assistant: retrieval, evals
     (hit@k, MRR), serverless deployment, logging, cost/usage tracking, and an
     answer-gap loop back into the docs. Proof I ship production AI, not prototypes.
-  - DataOps — an internal AI-assisted operations platform: messy real business
+  - DataOps, an internal AI-assisted operations platform: messy real business
     ops modeled as auditable, reviewable, semi-automated workflows.
-  - FAQ automation — the knowledge-maintenance loop that turns Slack questions
+  - FAQ automation, the knowledge-maintenance loop that turns Slack questions
     into GitHub-driven FAQ updates, so the assistant improves from real usage.
-  - OLX — production ML and ML-platform work at real scale: credibility for
+  - OLX, production ML and ML-platform work at real scale: credibility for
     infrastructure, serving, and engineering maturity.
-  - Public authority — courses, books, open-source, Kaggle, and teaching: I can
+  - Public authority: courses, books, open-source, Kaggle, and teaching. I can
     communicate complex systems to technical and non-technical stakeholders.
 
   ## The rare combination to name explicitly
   "Production ML depth + product and user empathy + the ability to explain it
-  clearly. Most people have one or two of those — I've had to use all three to run
+  clearly. Most people have one or two of those. I've had to use all three to run
   DataTalks.Club and build these systems."
 
   ## Wording guardrail

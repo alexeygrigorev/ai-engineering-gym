@@ -76,13 +76,13 @@ framework:
 
 # Cross-cutting patterns worth naming in almost any RAG answer (from synthesis).
 key_patterns:
-  - "Grounding over trust: never treat the LLM as the source of truth — ground every answer in retrieval and cite sources. [interviewnode, slack, bytebytego-perplexity]"
-  - "Stateless RAG: pass all needed context per request so the model retains nothing — a privacy win and a product win (answers grounded in your corpus, not the open web). [slack]"
-  - "Least privilege + ACLs at query time: retrieve only what the requesting user may see; propagate the user's own permissions, gate write actions behind human approval. [slack, doctolib]"
+  - "Grounding over trust: never treat the LLM as the source of truth. Ground every answer in retrieval and cite sources. [interviewnode, slack, bytebytego-perplexity]"
+  - "Stateless RAG: pass all needed context per request so the model retains nothing. That's a privacy win and a product win (answers grounded in your corpus, not the open web). [slack]"
+  - "Least privilege + ACLs at query time: retrieve only what the requesting user may see. Propagate the user's own permissions, and gate write actions behind human approval. [slack, doctolib]"
   - "Two-stage retrieval: cheap recall-oriented retrieval, then expensive precision reranking. [pinecone]"
   - "Model gateway/router: one interface over many providers with fallback, PII redaction, cost/latency accounting. [chip-huyen, uber]"
   - "Multi-layer caching + model tiering to bend the cost/latency curve without more GPUs. [chip-huyen, interviewnode]"
-  - "Evaluation is not optional: golden sets, LLM-as-judge, online feedback loop — skipping it reads as not production-ready. [igotanoffer, interviewnode]"
+  - "Evaluation isn't optional: golden sets, LLM-as-judge, online feedback loop. Skipping it reads as not production-ready. [igotanoffer, interviewnode]"
 
 # Skeleton architecture. Concrete walkthroughs flesh this out per scenario.
 skeleton_diagram: |

@@ -14,11 +14,11 @@ hints:
 status: draft
 answer:
   approach: >
-    Build the sequence iteratively by reflection. Start with [0]. For each bit i
-    from 0 to n-1, take the current list and, walking it in reverse order, set
+    Build the sequence iteratively by reflection, starting with [0]. For each
+    bit i from 0 to n-1, take the current list. Walking it in reverse order, set
     bit i on each existing code and append the result. Reflecting the list and
     prefixing the new high bit guarantees consecutive codes differ by exactly
-    one bit, and the list doubles each round until it holds all 2^n codes.
+    one bit. The list doubles each round until it holds all 2^n codes.
   pseudocode: |
     result = [0]
     for i in 0..n-1:

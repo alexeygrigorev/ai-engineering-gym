@@ -20,23 +20,23 @@ sources:
 answer:
   short: >
     The LLM is only the "brain." Around it, a working agent needs planning
-    (decompose the goal into subtasks and reflect/self-correct), memory
+    (decompose the goal into subtasks and reflect/self-correct) and memory
     (short-term context/scratchpad plus long-term storage, often a vector store, to
-    keep state across steps), and tools (APIs, code execution, retrieval — how it
-    acts on and senses the world). Gluing them together is an orchestration loop
-    that runs the perceive→act→observe cycle, plus guardrails and stop conditions
-    that keep it bounded and safe. OpenAI frames the same triad as instructions,
-    tools, and guardrails.
+    keep state across steps). It also needs tools (APIs, code execution, retrieval)
+    that let it act on and sense the world. Gluing them together is an orchestration
+    loop that runs the perceive→act→observe cycle, plus guardrails and stop
+    conditions that keep it bounded and safe. OpenAI frames the same triad as
+    instructions, tools, and guardrails.
   key_points:
-    - "LLM as the reasoning core / 'brain' — necessary but not sufficient on its own"
-    - "Planning: decompose the goal into subtasks; reflection and self-critique to correct course"
+    - "LLM as the reasoning core / 'brain', necessary but not sufficient on its own"
+    - "Planning: decompose the goal into subtasks, plus reflection and self-critique to correct course"
     - "Memory: short-term (context window / scratchpad) plus long-term (external store, often vectors) for state across steps"
-    - "Tools: APIs, code execution, retrieval — the way the agent acts on and senses the environment"
-    - "Orchestration loop + guardrails/stop conditions to run the cycle and keep it safe and bounded"
+    - "Tools: APIs, code execution, retrieval (how the agent acts on and senses the environment)"
+    - "Orchestration loop + guardrails/stop conditions to run the cycle, keeping it safe and bounded"
 
 hints:
   - "Think about what a person needs to finish a multi-step task, not just to answer a question."
-  - "Group the pieces into planning, memory, and tools — then ask what runs the loop."
+  - "Group the pieces into planning, memory, and tools, then ask what runs the loop."
   - "Recall Lilian Weng's 'brain + planning + memory + tool use' and OpenAI's 'instructions + tools + guardrails'."
 
 follow_ups:

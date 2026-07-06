@@ -19,33 +19,32 @@ sources:
 
 answer:
   short: >
-    The headline risk is prompt injection — especially indirect injection, where
-    malicious text in a retrieved document, web page, or tool output is treated as
-    trusted instructions and triggers unintended tool calls (OWASP LLM01). It gets
-    dangerous when three conditions combine — access to private data, exposure to
-    untrusted content, and the ability to exfiltrate — often called the "lethal
-    trifecta," because that's enough to steal data. Excessive agency /
-    over-permissioned tools amplify the blast radius: too much autonomy or broad
-    write access turns a small mistake or injection into real damage. Then there's
-    unsafe tool execution — code execution, SQL/command injection, or SSRF through
-    tools — plus sensitive-data leakage into logs. Defend in depth: least-privilege
-    tools, input/output filtering, human approval for high-risk actions, sandboxing,
-    and adversarial testing.
+    The headline risk is prompt injection, especially indirect injection. Malicious
+    text in a retrieved document, web page, or tool output is treated as trusted
+    instructions and triggers unintended tool calls (OWASP LLM01). It gets dangerous
+    when three conditions combine, often called the "lethal trifecta." Together,
+    private-data access, exposure to untrusted content, and the ability to exfiltrate
+    are enough to steal data. Excessive agency and over-permissioned tools amplify the
+    blast radius: too much autonomy or broad write access turns a small mistake or
+    injection into real damage. Then there's unsafe tool execution (code execution,
+    SQL/command injection, or SSRF through tools), plus sensitive-data leakage into
+    logs. Defend in depth with least-privilege tools, input/output filtering, human
+    approval for high-risk actions, sandboxing, and adversarial testing.
   key_points:
-    - "Prompt injection, especially indirect (from retrieved/tool content), makes the agent follow attacker instructions and fire unintended tools — OWASP LLM01"
+    - "Prompt injection, especially indirect (from retrieved/tool content), makes the agent follow attacker instructions and fire unintended tools (OWASP LLM01)"
     - "The 'lethal trifecta': private-data access + untrusted content + exfiltration ability = data theft"
-    - "Excessive agency / over-permissioned tools amplify damage — too much autonomy or write access on a mistake or injection"
-    - "Unsafe tool execution: code execution, SQL/command injection, SSRF via tools; plus sensitive-data leakage into logs"
+    - "Excessive agency / over-permissioned tools amplify damage: too much autonomy or write access on a mistake or injection"
+    - "Unsafe tool execution: code execution, SQL/command injection, SSRF via tools, plus sensitive-data leakage into logs"
     - "Defense in depth: least-privilege tools, input/output filtering, human approval for high-risk actions, sandboxing, adversarial testing"
 
 hints:
   - "What happens if a document the agent reads contains hidden instructions?"
   - "Think about which permissions the agent's tools hold and what an attacker could do with them."
-  - "No single control is enough — what layered defenses would you stack?"
+  - "No single control is enough. What layered defenses would you stack?"
 
 follow_ups:
   - "What's the difference between direct and indirect prompt injection?"
-  - "What is the 'lethal trifecta' and how do you break it?"
+  - "What's the 'lethal trifecta' and how do you break it?"
   - "How does least privilege limit the blast radius of an attack?"
   - "Where should human-in-the-loop approvals sit in the defense?"
 

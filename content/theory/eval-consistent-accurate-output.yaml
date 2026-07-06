@@ -28,21 +28,21 @@ answer:
   short: >
     You treat consistency and accuracy as engineering problems, not free properties.
     LLM decoding is non-deterministic, so lower temperature (temperature=0 / greedy)
-    to shrink variance, but don't expect bit-identical output — batching and
+    to shrink variance, but don't expect bit-identical output. Batching and
     floating-point still cause drift. Constrain the output surface with structured
-    outputs or function calling so the shape is guaranteed, then add deterministic
+    outputs or function calling so the structure is guaranteed. Then add deterministic
     validators (schema/business rules) with bounded retries on failure. Improve
     accuracy with prompt engineering, retrieval grounding, and self-consistency
     (sample N, take the majority) for high-stakes calls. Verify with an LLM-as-judge
-    that has been calibrated against human labels, and lock everything in with a
+    that has been calibrated against human labels. Lock everything in with a
     versioned regression eval set in CI so prompt- and model-version changes can't
     silently degrade quality.
   key_points:
-    - "LLM decoding is non-deterministic; temperature=0 reduces variance but does not guarantee identical output (batching, floating-point, no stable seed)"
-    - "Constrain the output surface: structured outputs / JSON-schema-constrained decoding or function calling guarantees the shape"
+    - "LLM decoding is non-deterministic. Temperature=0 reduces variance but doesn't guarantee identical output (batching, floating-point, no stable seed)"
+    - "Constrain the output surface: structured outputs / JSON-schema-constrained decoding or function calling guarantees the structure"
     - "Add deterministic post-processing: schema and business-rule validators with bounded retries / re-ask on failure"
     - "Raise accuracy with prompt engineering, retrieval grounding, and self-consistency (sample N, majority vote) for high-stakes answers"
-    - "Verify content with an LLM-as-judge that is validated against human labels and kept as a binary decision"
+    - "Verify content with an LLM-as-judge that's validated against human labels and kept as a binary decision"
     - "Lock it in with evals in CI: a versioned regression dataset that gates prompt and model-version changes"
 
 hints:
@@ -51,9 +51,9 @@ hints:
   - "Temperature, structured outputs + validators/retries, self-consistency, a calibrated LLM-judge, and a regression eval set in CI."
 
 follow_ups:
-  - "Temperature 0 still produced two different answers in production — why, and how would you mitigate it?"
-  - "How do you validate that your LLM-as-judge is itself correct, and stop it drifting when you swap the underlying model?"
-  - "Structured outputs guarantees valid JSON, but the content was wrong — which layers catch that?"
+  - "Temperature 0 still produced two different answers in production. Why, and how would you mitigate it?"
+  - "How do you validate that your LLM-as-judge is correct, and stop it drifting when you swap the underlying model?"
+  - "Structured outputs guarantees valid JSON, but the content was wrong. Which layers catch that?"
 
 exercises:
   - kind: mcq

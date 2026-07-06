@@ -21,6 +21,8 @@ import random
 import uuid
 from datetime import timedelta
 
+import markdown as _markdown
+
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from pydantic import BaseModel
@@ -37,7 +39,7 @@ class ReviewIn(BaseModel):
 PASSPHRASE = os.environ.get("GYM_PASSPHRASE", "aislgym")
 PUBLIC_PATHS = {"/login", "/health", "/favicon.ico", "/manifest.webmanifest", "/sw.js", "/icon.svg"}
 USER = "me"
-PRACTICE_SIZE = 15
+PRACTICE_SIZE = 200  # effectively "all in this sub-category" per session
 GRADES = {"again": 0, "hard": 1, "good": 2, "easy": 3}
 
 # Interview stages (field guide: interview/01-interview-process.md) → content category.
@@ -506,6 +508,37 @@ def esc(s) -> str:
     return html.escape(str(s if s is not None else ""))
 
 
+def md(text) -> str:
+    """Render answer prose as markdown → HTML."""
+    if not text:
+        return ""
+    return _markdown.markdown(str(text), extensions=["fenced_code", "tables", "sane_lists"])
+
+
+def md_list(items) -> str:
+    return md("\n".join(f"- {x}" for x in items))
+
+
+SKILL_LABELS = {
+    "rag": "RAG", "agents": "Agents & Tool Use", "evaluation": "Testing & Evaluation",
+    "llm-practice": "LLM Practice", "ml-fundamentals": "ML Fundamentals",
+    "ml-coding": "ML Coding", "implementation": "Implementation Rounds",
+    "algorithms": "Algorithms & DSA",
+    "conflict": "Conflict", "failure": "Failure & Learning", "leadership": "Leadership",
+    "ambiguity": "Ambiguity", "teamwork": "Teamwork", "ownership": "Ownership",
+    "faq-assistant": "FAQ Assistant", "dataops": "DataOps", "olx": "OLX",
+    "positioning": "Positioning", "take-home": "Take-Home",
+    "chatbot": "Chatbot", "agentic": "Agentic Systems", "scaling": "Scaling & Cost",
+    "serving": "Serving",
+}
+
+
+def skill_label(sk) -> str:
+    if not sk:
+        return "General"
+    return SKILL_LABELS.get(sk, sk.replace("-", " ").title())
+
+
 def difficulty_tag(item) -> str:
     d = (item.difficulty or "medium").lower()
     return f'<span class="tag {esc(d)}">{esc(d)}</span>'
@@ -518,43 +551,41 @@ def display_question(content: dict, fallback: str) -> str:
 # --- answer / sources rendering (shared by browse + card reveal) -----------
 
 
+def _flat(v) -> str:
+    if isinstance(v, dict):
+        return " — ".join(str(x) for x in v.values())
+    return str(v)
+
+
 def render_answer(content: dict) -> str:
     parts: list[str] = []
     ans = content.get("answer")
     if isinstance(ans, dict):
         if ans.get("short"):
-            parts.append(f'<div class="qt">Answer</div><div>{esc(ans["short"])}</div>')
+            parts.append('<div class="qt">Answer</div>' + md(ans["short"]))
         if ans.get("approach"):
-            parts.append(f'<div class="qt">Approach</div><div>{esc(ans["approach"])}</div>')
+            parts.append('<div class="qt">Approach</div>' + md(ans["approach"]))
         if ans.get("design_approach"):
-            parts.append(f'<div class="qt">Design approach</div><div>{esc(ans["design_approach"])}</div>')
+            parts.append('<div class="qt">Design approach</div>' + md(ans["design_approach"]))
         if ans.get("pseudocode"):
             parts.append(f'<div class="qt">Pseudocode</div><pre>{esc(ans["pseudocode"])}</pre>')
         if ans.get("complexity"):
             parts.append(f'<p class="sub">Complexity: {esc(ans["complexity"])}</p>')
         if ans.get("key_points"):
-            lis = "".join(f"<li>{esc(v)}</li>" for v in ans["key_points"])
-            parts.append(f'<div class="qt">Key points</div><ul>{lis}</ul>')
+            parts.append('<div class="qt">Key points</div>' + md_list(ans["key_points"]))
         if ans.get("extension_points"):
-            lis = "".join(f"<li>{esc(_flat(v))}</li>" for v in ans["extension_points"])
-            parts.append(f'<div class="qt">Extension points</div><ul>{lis}</ul>')
-    for step in content.get("steps", []) or []:
-        parts.append(
-            f'<div class="qt">{esc(step.get("phase", ""))}: {esc(step.get("prompt", ""))}</div>'
-            f'<div>{esc(step.get("reference", ""))}</div>'
-        )
+            parts.append('<div class="qt">Extension points</div>' + md_list(_flat(v) for v in ans["extension_points"]))
     if content.get("diagram") or content.get("skeleton_diagram"):
         parts.append(
             '<div class="qt">Diagram (mermaid)</div>'
             f'<pre>{esc(content.get("diagram") or content.get("skeleton_diagram"))}</pre>'
         )
     if content.get("example_structure"):
-        parts.append(f'<div class="qt">Model structure</div><pre>{esc(content["example_structure"])}</pre>')
-    for key in ("probes", "follow_ups", "rubric", "key_patterns", "extension_points"):
+        parts.append('<div class="qt">Model structure</div>' + md(content["example_structure"]))
+    for key in ("probes", "follow_ups", "rubric", "key_patterns"):
         vals = content.get(key)
         if vals:
-            lis = "".join(f"<li>{esc(v)}</li>" for v in vals)
-            parts.append(f'<div class="qt">{esc(key.replace("_", " ").title())}</div><ul>{lis}</ul>')
+            parts.append(f'<div class="qt">{key.replace("_", " ").title()}</div>' + md_list(vals))
     return "".join(parts)
 
 
@@ -770,59 +801,60 @@ def build_router(store: Store, reviews) -> APIRouter:
             q = display_question(it.content, it.id)
             return (
                 f'<a class="q" href="/item/{esc(it.id)}"><div class="qt">{esc(q)}</div>'
-                f"{difficulty_tag(it)}<span class=\"pill\">{esc(it.type)}</span></a>"
+                f"{difficulty_tag(it)}<span class=\"pill\">{esc(skill_label(it.skill))}</span></a>"
             )
 
-        def practice_buttons(link_base, n):
+        def buttons(base):
+            sep = "&" if "?" in base else "?"
             return (
-                f'<a class="cta" href="{link_base}&mode=random">🎲 Random question</a>'
-                if "?" in link_base
-                else f'<a class="cta" href="{link_base}?mode=random">🎲 Random question</a>'
-            ) + (
-                f'<a class="cta secondary" href="{link_base}">Practice due cards ({n})</a>'
+                f'<a class="cta" href="{base}{sep}mode=random">🎲 Random question</a>'
+                f'<a class="cta secondary" href="{base}">Practice all</a>'
             )
 
-        # coding: drill into a sub-type (ML Coding / Implementation / Algorithms)
-        if s["category"] == "coding":
-            groups = [
-                ("ml-coding", "ML Coding", "💡", "Implement ML/AI primitives in NumPy"),
-                ("implementation", "Implementation Rounds", "🔧", "Progressive build &amp; extend systems"),
-                ("algorithms", "Algorithms &amp; DSA", "🧩", "LeetCode-style problem solving"),
-            ]
-            sub = request.query_params.get("sub")
-            if not sub:
-                tiles = []
-                for gskill, gname, gemoji, gblurb in groups:
-                    n = len([i for i in items if i.skill == gskill])
-                    if not n:
-                        continue
-                    tiles.append(
-                        f'<a class="tile" href="/stage/coding?sub={gskill}"><div class="row">'
-                        f'<div class="emoji">{gemoji}</div>'
-                        f'<div><div class="t">{gname}</div><div class="b">{gblurb}</div></div>'
-                        f'<div class="count">{n} Q</div></div></a>'
-                    )
-                return page(s["title"], head + '<p class="sub">Pick a coding type.</p>' + "".join(tiles))
+        # distinct sub-categories (skills) present, in first-seen order
+        skills, seen = [], set()
+        for it in items:
+            if it.skill and it.skill not in seen:
+                seen.add(it.skill)
+                skills.append(it.skill)
 
-            g = next((x for x in groups if x[0] == sub), None)
-            if not g:
-                return RedirectResponse("/stage/coding", status_code=303)
-            gskill, gname, gemoji, gblurb = g
-            gitems = practice_order([i for i in items if i.skill == gskill])
+        sub = request.query_params.get("sub")
+
+        # a sub-category is selected -> its list + random/practice
+        if sub:
+            pool = practice_order([i for i in items if i.skill == sub])
+            if not pool:
+                return RedirectResponse(f"/stage/{key}", status_code=303)
             body = (
-                '<a class="back" href="/stage/coding">&larr; Coding</a>'
-                f"<header><h1>{gemoji} {gname}</h1></header>"
-                f'<p class="sub">{gblurb}</p>'
-                + practice_buttons(f"/practice/coding?skill={gskill}", min(len(gitems), PRACTICE_SIZE))
-                + "".join(row(i) for i in gitems)
+                f'<a class="back" href="/stage/{key}">&larr; {esc(s["title"])}</a>'
+                f"<header><h1>{esc(skill_label(sub))}</h1></header>"
+                + buttons(f"/practice/{key}?skill={sub}")
+                + "".join(row(i) for i in pool)
             )
-            return page(gname, body)
+            return page(skill_label(sub), body)
 
-        return page(
-            s["title"],
-            head + practice_buttons(f"/practice/{key}", min(len(items), PRACTICE_SIZE))
-            + "".join(row(i) for i in items),
-        )
+        # multiple sub-categories -> folder tiles + a stage-level random button
+        if len(skills) > 1:
+            tiles = []
+            for sk in skills:
+                n = sum(1 for i in items if i.skill == sk)
+                tiles.append(
+                    f'<a class="tile" href="/stage/{key}?sub={sk}"><div class="row">'
+                    '<div class="emoji">📁</div>'
+                    f'<div><div class="t">{esc(skill_label(sk))}</div>'
+                    f'<div class="b">{n} question{"s" if n != 1 else ""}</div></div>'
+                    '<div class="count">›</div></div></a>'
+                )
+            body = (
+                head
+                + f'<a class="cta" href="/practice/{key}?mode=random">🎲 Random question (any)</a>'
+                + '<div class="section-label">Categories</div>'
+                + "".join(tiles)
+            )
+            return page(s["title"], body)
+
+        # single sub-category -> flat list + random/practice
+        return page(s["title"], head + buttons(f"/practice/{key}") + "".join(row(i) for i in items))
 
     # -- browse a single item (study mode) --
     @r.get("/item/{item_id}", response_class=HTMLResponse)
@@ -876,44 +908,37 @@ def build_router(store: Store, reviews) -> APIRouter:
         it = store.get_item(session.item_ids[session.cursor])
         q = display_question(it.content, it.id)
         pct = int(session.cursor / total * 100)
-        rating = (
-            f'<form method="post" action="/practice/s/{esc(sid)}/rate" class="rating">'
-            '<button class="again" name="grade" value="again">Again</button>'
-            '<button class="hard" name="grade" value="hard">Hard</button>'
-            '<button class="good" name="grade" value="good">Good</button>'
-            '<button class="easy" name="grade" value="easy">Easy</button></form>'
+        nxt = "Finish" if session.cursor + 1 >= total else "Next →"
+        footer = (
+            review_controls(it.id, reviews.get(it.id))
+            + f'<form method="post" action="/practice/s/{esc(sid)}/next">'
+            f'<button class="cta" style="width:100%;margin-top:14px">{nxt}</button></form>'
         )
         body = (
             f'<a class="back" href="/stage/{esc(session.skill)}">&larr; Exit</a>'
             f'<div class="progress"><span style="width:{pct}%"></span></div>'
             f'<p class="sub">Card {session.cursor + 1} of {total}</p>'
-            f'<div class="card">{recall_block(it, footer=rating)}</div>'
+            f'<div class="card">{recall_block(it, footer=footer)}</div>'
         )
         return page(q, body)
 
     # -- practice: rate current card, advance --
-    @r.post("/practice/s/{sid}/rate")
-    def practice_rate(request: Request, sid: str, grade: str = Form("good")):
+    @r.post("/practice/s/{sid}/next")
+    def practice_next(request: Request, sid: str):
         session = store.get_session(sid)
         if session is None:
             return RedirectResponse("/", status_code=303)
         total = len(session.item_ids)
         if session.cursor < total:
             item_id = session.item_ids[session.cursor]
-            q = GRADES.get(grade, 2)
+            # mark seen + schedule for spaced repetition (remembers last-shown/due)
             prog = store.get_progress(USER, item_id) or Progress(user_id=USER, item_id=item_id)
             prog.reps += 1
-            prog.last_grade = q
-            if q == 0:
-                prog.interval = 0
-                prog.ease = max(1.3, prog.ease - 0.2)
-            else:
-                prog.interval = 1 if prog.interval == 0 else max(1, round(prog.interval * prog.ease))
-                if q >= 3:
-                    prog.ease = min(3.0, prog.ease + 0.1)
+            prog.last_grade = 2
+            prog.interval = 1 if prog.interval == 0 else max(1, round(prog.interval * prog.ease))
             prog.due = _now() + timedelta(days=prog.interval)
             store.put_progress(prog)
-            session.results.append(SessionResult(item_id=item_id, grade=q))
+            session.results.append(SessionResult(item_id=item_id, grade=2))
             session.cursor += 1
             session.xp_earned += 10
             store.put_session(session)

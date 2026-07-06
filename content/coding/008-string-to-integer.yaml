@@ -8,14 +8,14 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "Walk the string as a small state machine: first skip leading spaces, then read an optional sign character."
+  - "Scan the string as a small state machine: first skip leading spaces, then read an optional sign character."
   - "Consume digits while building result = result * 10 + digit, stopping as soon as you hit a non-digit character."
   - "Detect 32-bit overflow immediately after each multiply-and-add and clamp to INT_MAX or INT_MIN based on the sign, giving an O(n) single pass."
 status: draft
 answer:
   approach: >
-    A careful state walk over the characters. First skip leading spaces and read an
-    optional +/- sign. Then consume digits, building the result as result * 10 + digit,
+    Scan the characters as a careful state machine: first skip leading spaces and read
+    an optional +/- sign. Then consume digits, building the result as result * 10 + digit,
     stopping at the first non-digit. The tricky part is 32-bit overflow: after each
     multiply-and-add, detect that the accumulation wrapped and clamp to INT_MAX or
     INT_MIN according to the sign. Anything that isn't a valid prefix yields 0.

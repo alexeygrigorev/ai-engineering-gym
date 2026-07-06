@@ -9,16 +9,16 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "Instead of building a full 2D grid, keep one output string buffer per row of the zigzag."
-  - "Simulate the walk by moving a row pointer down to the last row and then bouncing back up, appending each character to whichever row buffer it currently lands on."
-  - "Concatenating the row buffers at the end gives O(n) time and space; handle numRows == 1 as a special case that returns the string unchanged."
+  - "Simulate the traversal by moving a row pointer down to the last row and then bouncing back up. Append each character to whichever row buffer it currently belongs to."
+  - "Concatenating the row buffers at the end gives O(n) time and space. Handle numRows == 1 as a special case that returns the string unchanged."
 status: draft
 answer:
   approach: >
-    Simulate walking the zigzag instead of building a 2D grid. Keep one string buffer
-    per row. Walk the characters, appending to row 0, 1, 2, ... down to the last row,
-    then bounce back up to row 1, and repeat. Each character just gets appended to the
-    buffer of its current row. At the end, concatenate the row buffers top to bottom.
-    The single-row case is returned unchanged.
+    Simulate the zigzag path instead of building a 2D grid, keeping one string buffer
+    per row. Iterate over the characters, appending to row 0, 1, 2, ... down to the
+    last row, then bounce back up to row 1 and repeat. Each character gets appended to
+    the buffer of its current row. At the end, concatenate the row buffers top to
+    bottom. The single-row case is returned unchanged.
   pseudocode: |
     if numRows == 1: return s
     rows = array of numRows empty strings

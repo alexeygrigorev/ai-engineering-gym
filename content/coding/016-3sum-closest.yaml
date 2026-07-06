@@ -8,16 +8,17 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "This has the same shape as 3Sum: sort the array, then fix one element and sweep the remaining suffix with two pointers."
-  - "At each step compare the current triplet sum's distance from the target against the best distance found so far, and move whichever pointer moves the sum toward the target."
-  - "This gives O(n^2) time overall; an exact match (distance zero) can return immediately without finishing the sweep."
+  - "This has the same structure as 3Sum: sort the array, then fix one element and sweep the remaining suffix with two pointers."
+  - "At each step compare the current triplet sum's distance from the target against the best distance found so far. Move whichever pointer moves the sum toward the target."
+  - "This gives O(n^2) time overall. An exact match (distance zero) can return immediately without finishing the sweep."
 status: draft
 answer:
   approach: >
-    Same shape as 3Sum: sort the array, fix each element a, and sweep the rest with two
-    pointers. For every triplet track the sum whose absolute distance to the target is
-    smallest so far. If the current sum exceeds the target move the right pointer left,
-    otherwise move the left pointer right; an exact hit (distance 0) returns immediately.
+    This has the same structure as 3Sum. Sort the array, fix each element a, and sweep
+    the rest with two pointers. For every triplet track the sum whose absolute distance
+    to the target is smallest so far. If the current sum exceeds the target move the
+    right pointer left, otherwise move the left pointer right. An exact hit (distance 0)
+    returns immediately.
   pseudocode: |
     sort(nums)
     best = infinity distance

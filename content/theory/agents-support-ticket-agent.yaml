@@ -21,23 +21,23 @@ answer:
   short: >
     Model it as a triage pipeline with a human-in-the-loop, not a fully autonomous
     responder. Ingest the ticket, then classify it (intent, category, priority,
-    sentiment). Retrieve context — RAG over the knowledge base plus read-only
+    sentiment). Retrieve context using RAG over the knowledge base plus read-only
     account/order data from the CRM. Draft a reply grounded in that context, then run
-    a confidence/quality self-check: above threshold, send or queue for a quick human
-    approve/edit; below threshold, or high-stakes/angry/high-value, escalate to a
-    human with the full context attached. Give it least-privilege tools (KB
-    retrieval, read-only CRM), log every action, and keep writes gated. Then close
-    the loop with evaluation and monitoring: resolution rate, escalation accuracy,
-    CSAT, and draft faithfulness/hallucination — and iterate.
+    a confidence/quality self-check. Above threshold, send it or queue it for a quick
+    human approve/edit. Below threshold, or for high-stakes, angry, or high-value
+    tickets, escalate to a human with the full context attached. Give it
+    least-privilege tools (KB retrieval, read-only CRM), log every action, and keep
+    writes gated. Finally, evaluate and monitor on resolution rate, escalation
+    accuracy, CSAT, and draft faithfulness or hallucination, then iterate.
   key_points:
     - "Pipeline: ingest → classify/triage (intent, category, priority, sentiment) → retrieve context → draft → self-check → send or escalate"
-    - "Human-in-the-loop: draft-and-approve; a confidence threshold decides autonomous send vs. escalate"
-    - "Tools with least privilege: KB retrieval (RAG) and read-only CRM/account lookups; log every action, gate writes"
+    - "Human-in-the-loop: draft-and-approve, where a confidence threshold decides autonomous send vs. escalate"
+    - "Tools with least privilege: KB retrieval (RAG) and read-only CRM/account lookups. Log every action and gate writes"
     - "Escalation logic: route complex / low-confidence / angry / high-value tickets to a human with full context and SLA rules"
-    - "Evaluate + monitor: resolution rate, escalation accuracy, CSAT, and draft faithfulness/hallucination; iterate"
+    - "Evaluate + monitor: resolution rate, escalation accuracy, CSAT, and draft faithfulness/hallucination, then iterate"
 
 hints:
-  - "Break the job into stages — what has to happen before a reply can be drafted?"
+  - "Break the job into stages. What has to happen before a reply can be drafted?"
   - "Decide what the agent sends on its own versus what a human must approve."
   - "Don't forget how you'd measure whether it's actually working in production."
 

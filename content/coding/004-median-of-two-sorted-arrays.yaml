@@ -8,18 +8,19 @@ difficulty: hard
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "The median is just the k-th smallest element across both arrays (or the average of two such elements), so reframe the task as finding the k-th smallest."
+  - "The median is the k-th smallest element across both arrays (or the average of two such elements). Reframe the task as finding the k-th smallest."
   - "Compare the m-th elements of each array, where m = k/2, to see which array's prefix can never contain the answer and discard it, shrinking k."
   - "Discarding roughly half of the remaining elements at each step gives O(log(n+m)) instead of merging in O(n+m)."
 status: draft
 answer:
   approach: >
-    The median is the k-th smallest element of the combined arrays (or the average
-    of the two middle ones for even total length), so reduce the problem to "find the
-    k-th smallest across two sorted arrays" and solve that with binary search instead
-    of merging. Compare the m-th elements of each array where m = k/2: whichever side
-    is smaller cannot contain the k-th element in its first m entries, so discard that
-    prefix and shrink k accordingly. Recurse until k reaches 1 or one array is empty.
+    Treat the median as the k-th smallest element of the combined arrays (or the
+    average of the two middle ones for even total length). Reduce the problem to "find
+    the k-th smallest across two sorted arrays" and solve that with binary search
+    instead of merging. Compare the m-th elements of each array where m = k/2.
+    Whichever side is smaller can't contain the k-th element in its first m entries,
+    so discard that prefix and shrink k accordingly. Recurse until k reaches 1 or one
+    array is empty.
     This gets to O(log(n+m)) rather than the O(n+m) merge.
   pseudocode: |
     kth(a, b, k):

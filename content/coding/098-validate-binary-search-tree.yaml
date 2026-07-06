@@ -16,8 +16,8 @@ answer:
   approach: >
     An in-order traversal of a binary search tree yields values in strictly
     increasing order. Traverse in-order collecting the values, then check that
-    every adjacent pair is strictly increasing; any equal-or-decreasing pair
-    means the tree is not a valid BST.
+    every adjacent pair is strictly increasing. Any equal-or-decreasing pair
+    means the tree isn't a valid BST.
   pseudocode: |
     values = []
     inorder(node):

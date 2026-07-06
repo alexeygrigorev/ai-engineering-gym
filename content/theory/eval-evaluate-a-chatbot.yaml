@@ -32,8 +32,8 @@ answer:
     like escalation and retry rate. Evaluate turn-level quality (relevance, correctness,
     tone/safety of a single response given prior context) and conversation-level quality
     (goal completion, coherence across turns, role/persona adherence, knowledge
-    retention). The primary outcome metric is task success / goal completion — did the
-    conversation resolve the user's intent — expressed as a binary judgment, not a fuzzy
+    retention). The primary outcome metric is task success / goal completion (did the
+    conversation resolve the user's intent), expressed as a binary judgment, not a fuzzy
     1-5. Start with error analysis: sample real transcripts, open-code failure modes,
     then turn frequent failures into targeted evals. LLM-as-judge is the scalable
     workhorse but degrades on long transcripts and must be aligned to human labels. For
@@ -44,7 +44,7 @@ answer:
     - "Separate offline eval (golden conversations in CI, LLM-judge + references) from online eval (A/B tests, thumbs/CSAT, escalation/retry signals)"
     - "Evaluate at two granularities: turn-level (relevance, correctness, tone/safety) and conversation-level (goal completion, coherence, role adherence, knowledge retention)"
     - "The primary outcome is task success / goal completion, expressed as a binary pass/fail rather than a fuzzy 1-5"
-    - "Do error analysis first — sample transcripts, open-code failure modes, then build targeted evals from frequent failures"
+    - "Do error analysis first: sample transcripts, open-code failure modes, then build targeted evals from frequent failures"
     - "LLM-as-judge scales scoring but degrades on long conversations and must be aligned to human labels before you trust it"
     - "For support bots, translate quality into business KPIs (containment/deflection, escalation, first-contact resolution, CSAT) and gate on safety/tone guardrails"
 

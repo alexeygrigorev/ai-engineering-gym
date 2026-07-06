@@ -27,35 +27,35 @@ sources:
 answer:
   short: >
     First define what you mean: intrinsic hallucination contradicts the source, extrinsic
-    can't be verified against it; faithfulness means grounded in the provided context,
-    factuality means true about the world — and they need different tests. Detection is a
+    can't be verified against it. Faithfulness means grounded in the provided context,
+    factuality means true about the world, and they need different tests. Detection is a
     portfolio, not one tool: an LLM-as-judge / faithfulness score, NLI entailment of each
-    claim against evidence, self-consistency sampling (SelfCheckGPT — sample N and check
+    claim against evidence, self-consistency sampling (SelfCheckGPT: sample N and check
     the facts agree), retrieval-grounded groundedness checks, and cheap token-level
-    uncertainty flags from log-probs or entropy. The highest-leverage mitigation is
+    uncertainty flags from log-probs or entropy. The most effective mitigation is
     grounding: RAG puts facts in the prompt so the model conditions on evidence instead
     of recalling from weights, and requiring inline citations makes every claim auditable.
     Add prompt and decoding controls (explicitly permit "I don't know", instruct
     "use only the provided context", lower temperature), an output-side verification pass
     that vetoes ungrounded claims, and human review for high-stakes outputs. Fine-tuning
-    helps but nothing fully eliminates hallucination — so measure the residual rate with
+    helps but nothing fully eliminates hallucination, so measure the residual rate with
     an eval set.
   key_points:
-    - "Distinguish intrinsic (contradicts source) from extrinsic (unverifiable) hallucination, and faithfulness (grounded) from factuality (true) — they need different tests"
+    - "Distinguish intrinsic (contradicts source) from extrinsic (unverifiable) hallucination, and faithfulness (grounded) from factuality (true). They need different tests"
     - "Detection is a portfolio: LLM-as-judge/faithfulness scoring, NLI entailment of claims, self-consistency sampling (SelfCheckGPT), groundedness checks, log-prob/entropy uncertainty"
-    - "Grounding is the highest-leverage mitigation: RAG conditions the answer on retrieved evidence rather than parametric recall"
+    - "Grounding is the most effective mitigation: RAG conditions the answer on retrieved evidence rather than parametric recall"
     - "Require inline citations so every claim is auditable and retractable"
     - "Prompt/decoding controls: allow 'I don't know', restrict to provided context, extract verbatim quotes, lower temperature"
-    - "Add an output-side verification pass and human-in-the-loop for high-stakes outputs; fine-tuning helps but never fully eliminates it — measure the residual rate"
+    - "Add an output-side verification pass and human-in-the-loop for high-stakes outputs. Fine-tuning helps but never fully eliminates it, so measure the residual rate"
 
 hints:
-  - "Start by defining it — faithfulness vs factuality, intrinsic vs extrinsic."
-  - "Separate detection from mitigation; detection is a portfolio of signals, not one tool."
-  - "Detect with LLM-judge/NLI entailment, self-consistency (SelfCheckGPT), log-prob uncertainty; mitigate with RAG grounding, citations, 'I don't know', low temperature, and a verification pass."
+  - "Start by defining it: faithfulness vs factuality, intrinsic vs extrinsic."
+  - "Separate detection from mitigation. Detection is a portfolio of signals, not one tool."
+  - "Detect with LLM-judge/NLI entailment, self-consistency (SelfCheckGPT), log-prob uncertainty. Mitigate with RAG grounding, citations, 'I don't know', low temperature, and a verification pass."
 
 follow_ups:
   - "How would you build an automated eval to measure hallucination rate before/after a mitigation, and what's your ground truth?"
-  - "The LLM-as-judge is itself an LLM — how do you keep the judge from hallucinating, and calibrate it against human labels?"
+  - "The LLM-as-judge is also an LLM. How do you keep the judge from hallucinating, and calibrate it against human labels?"
   - "When is token-level uncertainty a reliable hallucination signal, and when does it fail (e.g. confidently wrong on memorized-but-false facts)?"
 
 exercises:

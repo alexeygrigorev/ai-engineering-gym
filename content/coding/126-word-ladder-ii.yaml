@@ -15,8 +15,8 @@ status: draft
 answer:
   approach: >
     Return every shortest transformation sequence. Bucket words by wildcard
-    patterns - replace each position with '_' - so words that differ by one
-    letter share a bucket; this builds an implicit graph of single-letter-change
+    patterns that replace one position with '_', so words that differ by one
+    letter share a bucket. This builds an implicit graph of single-letter-change
     neighbors. Run BFS from beginWord recording, for each word, all predecessors
     that first reach it at the shortest distance. Then DFS backward from endWord
     through those predecessor links to reconstruct all shortest paths.

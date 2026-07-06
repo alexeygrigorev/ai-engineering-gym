@@ -8,8 +8,8 @@ difficulty: medium
 tags: [dsa]
 ai_relevant: false
 hints:
-  - "Sort the array first, then fix one element and look for the remaining pair using two pointers moving toward each other from the ends of the rest."
-  - "With the array sorted, move the left pointer right when the two-pointer sum is too small, move the right pointer left when it's too big, and skip past duplicate values on both the fixed element and the pointers to avoid repeated triplets."
+  - "Sort the array first, then fix one element and look for the remaining pair. Use two pointers moving toward each other from the ends of the rest."
+  - "With the array sorted, move the left pointer right when the two-pointer sum is too small, and move the right pointer left when it's too big. Skip past duplicate values on both the fixed element and the pointers to avoid repeated triplets."
   - "Sorting once plus this two-pointer sweep for each fixed element gives O(n^2) time overall."
 status: draft
 answer:
@@ -17,8 +17,8 @@ answer:
     Sort the array, then fix each element a in turn and reduce to a two-sum on the
     remaining suffix using two pointers. Fast-forward a past any value equal to the
     previous one to avoid duplicate triplets. With target = -a, put b at the element
-    after a and c at the rightmost element: if a + b == target, record (a, b, c) and
-    move both pointers inward, skipping over repeated values on each side; if the sum
+    after a and c at the rightmost element. If a + b == target, record (a, b, c) and
+    move both pointers inward, skipping over repeated values on each side. If the sum
     is too small move b right, if too big move c left. (An alternative is to count
     every element in a hash and reason about how many times each distinct value
     appears, using a set to dedupe.)

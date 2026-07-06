@@ -17,7 +17,7 @@ sources:
 
 probes:
   - "What business problem were you solving, and who consumed the data/output?"
-  - "What was your actual role — which parts of the pipeline did you personally build?"
+  - "What was your actual role, and which parts of the pipeline did you personally build?"
   - "Trace one record from source through to the final consumer."
   - "Where are the boundaries: ingestion, transformation, storage, orchestration, serving?"
   - "Which stage was the riskiest or most fragile, and why?"

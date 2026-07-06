@@ -9,19 +9,19 @@ tags: [dsa]
 ai_relevant: false
 hints:
   - "A scramble is built by recursively splitting a string into two children that may or may not swap places."
-  - "Try every split point of the first string and check both the no-swap and swap alignments against the second string, pruning first with an anagram check."
+  - "Try every split point of the first string and check both the no-swap and swap alignments against the second string. Prune first with an anagram check."
   - "Memoizing on the pair of substrings turns the exponential recursion into a polynomial-time solution."
 status: draft
 answer:
   approach: >
-    Recursive solution. First, if s1 and s2 aren't anagrams, s2 can't be a scramble of s1;
-    if they're already equal, return true. Otherwise try splitting s1 at every position i
-    (1..n-1) — this walks the ways of building the scramble tree. s1[:i] is the left child
-    and s1[i:] the right. For each split there are two ways s2 could correspond: without a
-    swap at this node, s2 splits at i too, so check s1[:i] vs s2[:i] and s1[i:] vs s2[i:];
-    with a swap, s2's matching pieces are the last i and first n-i characters, so check
-    s1[:i] vs s2[n-i:] and s1[i:] vs s2[:n-i]. If any split works, return true; otherwise
-    false. The anagram check at the top prunes most branches.
+    Solve it with recursion. First, if s1 and s2 aren't anagrams, s2 can't be a scramble
+    of s1. If they're already equal, return true. Otherwise try splitting s1 at every
+    position i (1..n-1). Each split explores the ways of building the scramble tree.
+    s1[:i] is the left child and s1[i:] the right. For each split, s2 could correspond in
+    two ways. Without a swap at this node, s2 splits at i too, so check s1[:i] vs s2[:i]
+    and s1[i:] vs s2[i:]. With a swap, s2's matching pieces are the last i and first n-i
+    characters, so check s1[:i] vs s2[n-i:] and s1[i:] vs s2[:n-i]. If any split works,
+    return true. Otherwise return false. The anagram check at the top prunes most branches.
   pseudocode: |
     isScramble(s1, s2):
         if s1 == s2: return true
