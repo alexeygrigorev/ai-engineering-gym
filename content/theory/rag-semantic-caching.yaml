@@ -1,0 +1,81 @@
+id: rag-semantic-caching
+category: theory
+skill: rag
+type: knowledge
+question: "What is semantic caching?"
+difficulty: easy
+status: draft
+source_refs: [designgurus-rag, hn-44796765]
+sources:
+  - title: "Kuldeep Paul (DEV) — Reducing LLM Cost and Latency Using Semantic Caching"
+    url: "https://dev.to/kuldeep_paul/reducing-llm-cost-and-latency-using-semantic-caching-3bn9"
+    supports: "embed query, compare by cosine similarity to cached queries, return cached response on threshold hit"
+  - title: "GPT Semantic Cache: Reducing LLM Costs and Latency via Semantic Embedding Caching (arXiv:2411.05276)"
+    url: "https://arxiv.org/abs/2411.05276"
+    supports: "semantic embedding caching materially cuts inference cost and latency vs exact-match caching"
+  - title: "PyImageSearch — Semantic Caching for LLMs: FastAPI, Redis, and Embeddings"
+    url: "https://pyimagesearch.com/2026/04/27/semantic-caching-for-llms-fastapi-redis-and-embeddings/"
+    supports: "components: embedding model, vector store, response store, similarity threshold"
+
+answer:
+  short: >
+    Semantic caching is a cache that matches queries by *meaning* instead of exact
+    string. A normal cache only hits when a new request is byte-for-byte identical to
+    a past one; that almost never happens with natural language, where "reset my
+    password" and "how do I change my password?" are the same intent worded
+    differently. A semantic cache embeds each incoming query into a vector, compares
+    it (usually cosine similarity) against the vectors of previously seen queries,
+    and if the closest one is above a similarity threshold, returns the stored
+    response instead of calling the LLM (or re-running retrieval) again. Components:
+    an embedding model, a vector store for cached query embeddings, a response store,
+    and a tunable similarity threshold. The payoff is big cost and latency reduction
+    on repeated/similar traffic. The main risk is a threshold set too loose, which
+    serves a cached answer to a subtly different question (a false hit) — so you tune
+    the threshold, and often scope or invalidate the cache when the underlying data
+    changes.
+  key_points:
+    - "Matches queries by semantic meaning, not exact string, so paraphrases hit the cache"
+    - "Mechanism: embed query -> similarity search vs cached query embeddings -> return stored answer if above threshold"
+    - "Components: embedding model, vector store (cached queries), response store, similarity threshold"
+    - "Benefit: large cost and latency savings on repeated/similar queries"
+    - "Risk: threshold too loose -> false hits (right-looking answer to a slightly different question); tune it and invalidate on data change"
+
+follow_ups:
+  - "How do you set the similarity threshold, and what breaks if it's too loose or too strict?"
+  - "How is a semantic cache invalidated when the underlying documents change?"
+  - "Where does the cache sit — in front of the LLM, the retriever, or both?"
+
+hints:
+  - "Contrast it with an ordinary cache: what has to match for a normal cache to hit, and why does that almost never happen with natural-language questions?"
+  - "The trick is embeddings + a similarity threshold. What do you compare, and what do you return on a hit?"
+  - "Embed the incoming query, similarity-search it against past query embeddings; if the nearest is above a threshold, return the stored response instead of calling the LLM. Saves cost/latency; too-loose a threshold causes false hits."
+
+exercises:
+  - kind: mcq
+    stem: "How does a semantic cache differ from a traditional exact-match cache?"
+    options:
+      - { text: "It returns a cached response when a new query is semantically similar, not just identical", correct: true }
+      - { text: "It stores responses on disk instead of in memory" }
+      - { text: "It caches the model weights rather than responses" }
+      - { text: "It only works when two queries are byte-for-byte identical" }
+    explain: "Semantic caching uses embedding similarity to match meaning, so paraphrased queries hit; exact-match caching requires identical strings, which rarely occurs in natural language."
+
+  - kind: mcq
+    stem: "What is the main risk of setting the similarity threshold too low (loose)?"
+    options:
+      - { text: "False cache hits — serving a stored answer to a subtly different question", correct: true }
+      - { text: "The cache will never return any result" }
+      - { text: "Embeddings stop being computed" }
+      - { text: "It doubles the LLM's token cost" }
+    explain: "A loose threshold treats not-quite-the-same queries as matches, returning a cached answer that doesn't actually fit — the classic false-hit failure. Too strict, and you miss valid hits."
+
+  - kind: fill
+    template: "A semantic cache embeds the query, does a {0} search against cached queries, and returns the stored answer if above a {1}."
+    blanks: ["similarity", "threshold"]
+    chips: ["similarity", "threshold", "keyword", "temperature"]
+
+  - kind: recall
+    front: "One-line definition of semantic caching?"
+    back: "A cache keyed by meaning: embed the query, similarity-search past queries, and return the stored response when the match clears a threshold — avoiding a redundant LLM call and cutting cost/latency."
+
+  - kind: explain

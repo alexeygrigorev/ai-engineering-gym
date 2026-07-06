@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "347. Top K Frequent Elements"
 difficulty: medium
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "Frequencies only range from 1 to n, which suggests indexing by count instead of sorting elements."
+  - "Bucket each element by its frequency into an array indexed by count, then read the buckets off from the highest frequency downward."
+  - "Collecting elements until you have k gives O(n) overall time, beating a full sort or heap."
 status: draft
 answer:
   approach: >

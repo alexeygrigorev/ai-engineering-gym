@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "16. 3Sum Closest"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "This has the same shape as 3Sum: sort the array, then fix one element and sweep the remaining suffix with two pointers."
+  - "At each step compare the current triplet sum's distance from the target against the best distance found so far, and move whichever pointer moves the sum toward the target."
+  - "This gives O(n^2) time overall; an exact match (distance zero) can return immediately without finishing the sweep."
 status: draft
 answer:
   approach: >

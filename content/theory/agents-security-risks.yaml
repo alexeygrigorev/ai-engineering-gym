@@ -1,0 +1,75 @@
+id: agents-security-risks
+category: theory
+skill: agents
+type: knowledge
+question: "What are the biggest security risks with tool-using agents?"
+difficulty: hard
+status: draft
+source_refs: [techeon, reddit-expdevs-agentic, datainterview-mistral]
+sources:
+  - title: "OWASP — LLM Prompt Injection Prevention Cheat Sheet"
+    url: "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+    supports: "prompt injection (incl. indirect) as the top LLM risk and defense-in-depth mitigations"
+  - title: "Mend — 2025 OWASP Top 10 for LLM Applications: a quick guide"
+    url: "https://www.mend.io/blog/2025-owasp-top-10-for-llm-applications-a-quick-guide/"
+    supports: "prompt injection (LLM01), excessive agency, and sensitive information disclosure risks and mitigations"
+  - title: "ARMO — AI Agent Sandboxing & Progressive Enforcement Guide"
+    url: "https://www.armosec.io/blog/ai-agent-sandboxing-progressive-enforcement-guide/"
+    supports: "unsafe tool/code execution risk and isolation as a mitigation"
+
+answer:
+  short: >
+    The headline risk is prompt injection — especially indirect injection, where
+    malicious text in a retrieved document, web page, or tool output is treated as
+    trusted instructions and triggers unintended tool calls (OWASP LLM01). It gets
+    dangerous when three conditions combine — access to private data, exposure to
+    untrusted content, and the ability to exfiltrate — often called the "lethal
+    trifecta," because that's enough to steal data. Excessive agency /
+    over-permissioned tools amplify the blast radius: too much autonomy or broad
+    write access turns a small mistake or injection into real damage. Then there's
+    unsafe tool execution — code execution, SQL/command injection, or SSRF through
+    tools — plus sensitive-data leakage into logs. Defend in depth: least-privilege
+    tools, input/output filtering, human approval for high-risk actions, sandboxing,
+    and adversarial testing.
+  key_points:
+    - "Prompt injection, especially indirect (from retrieved/tool content), makes the agent follow attacker instructions and fire unintended tools — OWASP LLM01"
+    - "The 'lethal trifecta': private-data access + untrusted content + exfiltration ability = data theft"
+    - "Excessive agency / over-permissioned tools amplify damage — too much autonomy or write access on a mistake or injection"
+    - "Unsafe tool execution: code execution, SQL/command injection, SSRF via tools; plus sensitive-data leakage into logs"
+    - "Defense in depth: least-privilege tools, input/output filtering, human approval for high-risk actions, sandboxing, adversarial testing"
+
+hints:
+  - "What happens if a document the agent reads contains hidden instructions?"
+  - "Think about which permissions the agent's tools hold and what an attacker could do with them."
+  - "No single control is enough — what layered defenses would you stack?"
+
+follow_ups:
+  - "What's the difference between direct and indirect prompt injection?"
+  - "What is the 'lethal trifecta' and how do you break it?"
+  - "How does least privilege limit the blast radius of an attack?"
+  - "Where should human-in-the-loop approvals sit in the defense?"
+
+exercises:
+  - kind: mcq
+    stem: "Why is indirect prompt injection especially dangerous for tool-using agents?"
+    options:
+      - { text: "Malicious text in retrieved content or tool output is treated as trusted instructions and can trigger unintended tool calls", correct: true }
+      - { text: "It makes the model's responses longer" }
+      - { text: "It only affects the temperature setting" }
+      - { text: "It prevents the agent from using any tools" }
+    explain: "In RAG/tool/agent setups the model may treat external content as instructions, so injected text can drive real actions."
+
+  - kind: mcq
+    stem: "Which best mitigates 'excessive agency' in a tool-using agent?"
+    options:
+      - { text: "Least-privilege tools plus human approval for high-risk actions", correct: true }
+      - { text: "Giving every tool full write access for flexibility" }
+      - { text: "Increasing the context window" }
+      - { text: "Turning off logging to avoid leaks" }
+    explain: "Scoping tool permissions and gating high-risk actions behind human approval limits how much damage an over-eager or hijacked agent can do."
+
+  - kind: recall
+    front: "Name the top security risks for tool-using agents and the core defense."
+    back: "Prompt injection (esp. indirect), the lethal trifecta (private data + untrusted content + exfiltration), excessive agency/over-permissioned tools, and unsafe tool execution — defended with defense-in-depth: least privilege, I/O filtering, human approval, sandboxing, adversarial testing."
+
+  - kind: explain

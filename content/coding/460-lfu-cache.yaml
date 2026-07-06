@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "460. LFU Cache"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Eviction needs both a frequency ordering and a recency tiebreaker among equally-frequent entries."
+  - "Keep a hash map from key to node plus a structure ordering nodes by (frequency, last-used time), updating both on every get and put by removing and reinserting the touched node."
+  - "An ordered-set version costs O(log n) per operation; the true O(1) design instead chains a doubly linked list per frequency bucket."
 status: draft
 answer:
   approach: >

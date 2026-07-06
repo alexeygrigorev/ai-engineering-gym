@@ -1,0 +1,45 @@
+id: faq-assistant-scale-and-cost
+category: project-deep-dive
+skill: faq-assistant
+type: rehearsal
+your_project: faq-assistant
+question: "How does the FAQ Assistant hold up under scale and cost constraints — what breaks first, and how would you handle 10x traffic or content?"
+difficulty: hard
+status: draft
+source_refs: [hello-interview, exponent-openai, igotanoffer]
+sources:
+  - title: "Hello Interview — OpenAI L5 guide"
+    url: "https://www.hellointerview.com/guides/openai/l5"
+    supports: "handling different scale constraints; reasoning about what changes at higher load"
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "impact/resource orientation — think about cost and business outcomes, not just elegance"
+  - title: "IGotAnOffer — Generative AI system design interview"
+    url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
+    supports: "cost/latency levers for LLM systems: caching, model tiering, token budgeting, and failure modes at scale"
+
+probes:
+  - "What's the dominant cost driver — LLM tokens, embeddings, vector store, or infra?"
+  - "What's the bottleneck at 10x — latency, cost, retrieval quality, or rate limits?"
+  - "Which levers would you pull first: caching, a smaller/tiered model, better retrieval, batching?"
+  - "What's your rough cost-per-query, and how would you drive it down?"
+  - "How does the system degrade gracefully under a traffic spike or provider outage?"
+
+rubric:
+  - "Identifies the real bottleneck and cost driver for THIS system, with reasoning"
+  - "Proposes concrete scaling/cost levers (caching, tiering, token budgeting) tied to their trade-offs"
+  - "Cites or estimates numbers: QPS, latency, cost-per-query"
+  - "Shows impact/resource orientation — cost as a first-class concern, not an afterthought"
+  - "Covers graceful degradation and failure modes at scale, not just the happy path"
+
+hints:
+  - "Find the dominant cost driver first — usually tokens or the vector store."
+  - "For each lever, say what it costs you (e.g. cache staleness, smaller-model quality)."
+  - "Attach an estimate: cost-per-query or p95 latency."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real scale/cost analysis at runtime.
+  1. Cost + load profile: dominant cost driver and current QPS/latency.
+  2. First bottleneck at 10x and why.
+  3. Levers in order, each with its trade-off.
+  4. Graceful degradation under spike/outage.

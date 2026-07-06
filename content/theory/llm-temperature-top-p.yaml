@@ -1,0 +1,84 @@
+id: llm-temperature-top-p
+category: theory
+skill: llm-practice
+type: knowledge
+question: "What is temperature and top-p sampling? How do they affect outputs?"
+difficulty: medium
+status: draft
+source_refs: [fahd-mirza, reddit-genai-consulting, x-aryyann8]
+sources:
+  - title: "IBM — What is LLM temperature?"
+    url: "https://www.ibm.com/think/topics/llm-temperature"
+    supports: "temperature scales the logits before softmax; low = focused/deterministic, high = diverse/creative"
+  - title: "Holtzman et al. — The Curious Case of Neural Text Degeneration (nucleus/top-p sampling)"
+    url: "https://arxiv.org/abs/1904.09751"
+    supports: "original definition of top-p (nucleus) sampling: smallest set of tokens whose cumulative probability exceeds p"
+  - title: "PromptEngineering.org — Guide to Temperature and Top-p"
+    url: "https://promptengineering.org/prompt-engineering-with-temperature-and-top-p/"
+    supports: "practical effects of temperature vs top-p and the advice to tune one, not both"
+
+answer:
+  short: >
+    Both are decoding controls that decide how the model picks the next token from
+    its probability distribution — they change randomness, not the model's weights.
+    Temperature rescales the logits before the softmax. Low temperature (→0) sharpens
+    the distribution so the top token dominates: focused, repetitive, near-deterministic
+    output — good for extraction, classification, code. High temperature (>1) flattens
+    the distribution so unlikely tokens get a real chance: diverse, creative, but riskier
+    output. Temperature 0 is effectively greedy decoding. Top-p (nucleus sampling)
+    instead truncates the distribution: it keeps the smallest set of most-probable tokens
+    whose cumulative probability reaches p (e.g. 0.9), then samples from just that set,
+    dropping the long tail of junk tokens. So top-p adapts how many candidates are
+    considered to how confident the model is at that step. They interact — temperature is
+    applied first, so a low temperature shrinks the nucleus. Common advice (OpenAI) is to
+    tune one, not both. Rule of thumb: low temperature / low-ish top-p for factual and
+    deterministic tasks; higher for brainstorming and creative writing.
+  key_points:
+    - "Both are decoding-time sampling controls; they change randomness, not the model weights"
+    - "Temperature rescales logits before softmax: low → sharper/more deterministic, high → flatter/more diverse"
+    - "Temperature ≈ 0 is greedy decoding (always the most likely token)"
+    - "Top-p (nucleus) keeps the smallest set of tokens whose cumulative probability ≥ p and samples from it, cutting the low-probability tail"
+    - "Top-p adapts the candidate set size to the model's confidence at each step; top-k fixes a constant count instead"
+    - "They stack (temperature applied first); common advice is to tune one, not both"
+    - "Low settings for factual/extraction/code; higher settings for creative/brainstorming tasks"
+
+follow_ups:
+  - "How does top-p differ from top-k sampling?"
+  - "If you need reproducible outputs, what settings do you use and is that enough?"
+  - "Why might temperature 0 still not be perfectly deterministic in practice?"
+  - "You want deterministic JSON extraction — what decoding settings do you choose and why?"
+
+hints:
+  - "Both act at decoding time on the next-token probability distribution — one reshapes it, the other trims it."
+  - "One is a knob on the whole distribution's sharpness; the other is a cutoff on cumulative probability mass. Which does which, and which direction means 'more creative'?"
+  - "Temperature scales logits (low = focused/deterministic, high = diverse). Top-p keeps the smallest set of tokens summing to probability p and samples from it, dropping the tail. Tune one, not both."
+
+exercises:
+  - kind: mcq
+    stem: "You need consistent, near-deterministic answers for a data-extraction task. What temperature do you pick?"
+    options:
+      - { text: "A low temperature (near 0)", correct: true }
+      - { text: "A high temperature (above 1)" }
+      - { text: "Temperature has no effect on determinism" }
+      - { text: "Exactly 1.0, always" }
+    explain: "Low temperature sharpens the distribution toward the most likely token, giving focused, near-deterministic output — what you want for extraction and classification."
+
+  - kind: mcq
+    stem: "What does top-p = 0.9 actually do?"
+    options:
+      - { text: "Samples from the smallest set of tokens whose cumulative probability reaches 0.9", correct: true }
+      - { text: "Always keeps exactly 90 candidate tokens" }
+      - { text: "Multiplies every logit by 0.9 before softmax" }
+      - { text: "Discards the 90% most likely tokens" }
+    explain: "Top-p (nucleus) sampling keeps the smallest set of most-probable tokens whose probabilities sum to p and samples from that nucleus, discarding the low-probability tail. Keeping a fixed count is top-k."
+
+  - kind: fill
+    template: "{0} rescales the logits to control randomness; {1} keeps the smallest set of tokens whose cumulative probability reaches a threshold."
+    blanks: ["Temperature", "Top-p"]
+    chips: ["Temperature", "Top-p", "Top-k", "Beam search"]
+
+  - kind: recall
+    front: "Higher temperature does what to the output distribution and the resulting text?"
+    back: "It flattens the distribution so lower-probability tokens are more likely to be chosen, producing more diverse/creative but less predictable text. Low temperature sharpens it toward focused, deterministic output."
+
+  - kind: explain

@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "49. Group Anagrams"
 difficulty: medium
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "Two words are anagrams exactly when they share the same multiset of letters, so you need a canonical form to compare them by."
+  - "Sort the letters of each word to get a canonical key, and use a hash map from that key to the list of words sharing it."
+  - "One pass over all words, sorting each into its bucket, gives O(N * k log k) time for N words of max length k."
 status: draft
 answer:
   approach: >

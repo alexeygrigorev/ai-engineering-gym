@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "85. Maximal Rectangle"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Treat each row as the baseline of a histogram formed by the run of consecutive 1s stacked above it."
+  - "For each column, track the running height plus how far left and right that height still holds, updating these bounds row by row."
+  - "Combining height times width at every cell across all rows yields an O(rows * cols) solution."
 status: draft
 answer:
   approach: >

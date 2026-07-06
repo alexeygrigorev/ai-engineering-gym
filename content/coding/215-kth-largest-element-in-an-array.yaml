@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "215. Kth Largest Element in an Array"
 difficulty: medium
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "The kth largest element has a fixed final index once the array is sorted, so you do not need to fully sort it."
+  - "Use quickselect: partition around a pivot, then recurse only into the side of the partition containing the target index."
+  - "Shuffle the array first to avoid worst-case behavior, giving O(n) average time versus O(n log n) for full sorting."
 status: draft
 answer:
   approach: >

@@ -1,0 +1,81 @@
+id: rag-citations-source-attribution
+category: theory
+skill: rag
+type: knowledge
+question: "How do you handle citations and source attribution in a RAG system?"
+difficulty: medium
+status: draft
+source_refs: [proptech-founder-1]
+sources:
+  - title: "Tensorlake — Citation-Aware RAG: fine-grained citations in retrieval and response synthesis"
+    url: "https://www.tensorlake.ai/blog/rag-citations"
+    supports: "preserve source metadata at index time; inline citation IDs that resolve to chunks/pages"
+  - title: "Henry Ruiz — Building Trustworthy RAG Systems with In-Text Citations"
+    url: "https://haruiz.github.io/blog/improve-rag-systems-reliability-with-citations"
+    supports: "prompt the model to attach citations per claim to improve reliability/verifiability"
+  - title: "DEV Community — Unlocking Advanced RAG: Citations and Attributions"
+    url: "https://dev.to/experilearning/unlocking-advanced-rag-citations-and-attributions-59lk"
+    supports: "simultaneous vs post-hoc citation generation; verifying citations against evidence spans"
+
+answer:
+  short: >
+    Citations are what turn a plausible answer into a verifiable one, so build them
+    into the pipeline rather than bolting them on. Start at ingestion: attach
+    metadata to every chunk — source document, URL/title, page, section — and carry a
+    stable chunk ID through retrieval so you always know where a passage came from. At
+    generation, give the model the chunks tagged with those IDs and instruct it to
+    attach a citation to each claim, ideally with a verbatim evidence span. Two broad
+    strategies: simultaneous (the model emits [id] markers inline as it writes) or
+    post-hoc (generate the answer, then attribute each sentence back to the
+    best-supporting chunk, e.g. with an NLI/entailment check). Then verify — the
+    dangerous failure is "citation-shaped hallucination", where the answer looks
+    grounded (has quotes/links) but the cited source doesn't actually support the
+    claim; check that the cited span entails the statement. In the UI, render
+    citations as resolvable links back to the exact page/section so users can click
+    through and audit.
+  key_points:
+    - "Preserve provenance at index time: per-chunk metadata (source, page, section) + stable chunk IDs carried through retrieval"
+    - "Prompt the model to cite each claim, tagging chunks with IDs; prefer verbatim evidence spans"
+    - "Two strategies: simultaneous inline [id] markers vs post-hoc attribution (map each sentence to its supporting chunk)"
+    - "Verify against 'citation-shaped hallucination': confirm the cited span actually entails the claim (e.g. NLI check)"
+    - "Render citations as resolvable links to the exact page/section for user audit"
+
+follow_ups:
+  - "How do you detect a citation that looks valid but doesn't support the claim?"
+  - "Inline citations while generating vs attributing after the fact — trade-offs?"
+  - "How do you cite when an answer synthesizes several chunks?"
+
+hints:
+  - "Provenance has to start before generation. What must you attach to a chunk the moment you index it?"
+  - "Think of two jobs: making the model emit citations, and checking those citations are real. The scary bug is an answer that looks cited but isn't actually supported."
+  - "Index-time metadata + stable chunk IDs -> instruct the model to cite each claim (inline [id] or post-hoc attribution) -> verify the cited span entails the claim to avoid 'citation-shaped hallucination' -> render clickable links to page/section."
+
+exercises:
+  - kind: mcq
+    stem: "Where does reliable source attribution have to begin?"
+    options:
+      - { text: "At ingestion — attach source/page/section metadata and a stable chunk ID to every chunk", correct: true }
+      - { text: "Only at generation — the model can infer sources on its own" }
+      - { text: "After deployment, by manually labeling answers" }
+      - { text: "In the embedding model's weights" }
+    explain: "You can only cite what you tracked. Provenance metadata and stable IDs must be captured at index time and carried through retrieval to generation."
+
+  - kind: mcq
+    stem: "What is a 'citation-shaped hallucination'?"
+    options:
+      - { text: "An answer that looks grounded (quotes/links) but the cited source doesn't actually support the claim", correct: true }
+      - { text: "A citation formatted in the wrong style guide" }
+      - { text: "A missing citation on a correct answer" }
+      - { text: "A duplicate citation on the same sentence" }
+    explain: "The claim is unsupported or distorted even though a source marker is present — which is why you verify that the cited span actually entails the statement."
+
+  - kind: fill
+    template: "Attach provenance {0} at index time, then verify that each cited {1} actually supports the claim."
+    blanks: ["metadata", "span"]
+    chips: ["metadata", "span", "temperature", "embedding"]
+
+  - kind: recall
+    front: "How do you guard against fake-looking citations in RAG?"
+    back: "Verify grounding: confirm the cited evidence span actually entails the claim (e.g. an NLI/faithfulness check), not just that a source marker is present. Pair this with index-time provenance and clickable source links."
+
+  - kind: explain

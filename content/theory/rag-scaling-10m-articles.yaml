@@ -1,0 +1,90 @@
+id: rag-scaling-10m-articles
+category: theory
+skill: rag
+type: knowledge
+question: "How do you scale a RAG system to 10M+ articles?"
+difficulty: hard
+status: draft
+source_refs: [bhavishya-pandit]
+sources:
+  - title: "DesignGurus — System Design for RAG: Vector Databases, Chunking, and Re-ranking"
+    url: "https://www.designgurus.io/blog/system-design-for-rag"
+    supports: "ANN vector DB, chunking, two-stage retrieve-then-rerank architecture at scale"
+  - title: "Milvus — Strategies to scale the vector store for a large RAG knowledge base"
+    url: "https://milvus.io/ai-quick-reference/what-strategies-could-be-used-to-scale-the-vector-store-component-for-a-rag-system-dealing-with-a-very-large-knowledge-base-or-high-query-volume-sharding-indexing-optimizations-etc"
+    supports: "sharding, replication, index optimization, and infra scaling for large vector stores"
+  - title: "Towards Data Science — HNSW at Scale: Why Your RAG System Gets Worse as the Vector Database Grows"
+    url: "https://towardsdatascience.com/hnsw-at-scale-why-your-rag-system-gets-worse-as-the-vector-database-grows/"
+    supports: "HNSW graph index behavior and recall/latency/memory trade-offs at large scale"
+
+answer:
+  short: >
+    At 10M+ documents (often 100M+ chunks) brute-force similarity is off the table,
+    so scaling is about the index, the topology, and a staged retrieval funnel.
+    Index: use an approximate nearest neighbor (ANN) index — HNSW for high
+    recall/low latency, IVF for memory-efficient clustering — instead of exact
+    search; both trade a little recall for a huge latency win. Memory: 10M+
+    high-dimensional vectors is terabytes of RAM, so compress with product
+    quantization (PQ) to cut memory ~an order of magnitude at some recall cost.
+    Topology: shard the index across nodes (partition the vectors, query all shards
+    in parallel, aggregate the top results) and replicate shards to handle query
+    volume and stay available. Retrieval funnel: do cheap high-recall ANN to pull a
+    few hundred candidates, then an expensive high-precision reranker (cross-encoder)
+    on just those — you don't rerank 10M docs, only the shortlist. Add metadata
+    filtering to prune the search space (recency, source, ACLs), a semantic cache for
+    repeated queries, and asynchronous/batched ingestion so the index stays fresh
+    without blocking. Throughout it's a recall-vs-latency-vs-cost-vs-memory
+    trade-off, so you need continuous eval to know where you sit.
+  key_points:
+    - "Use ANN indexes (HNSW / IVF), not exact search — trade a little recall for large latency gains"
+    - "Compress with product quantization (PQ) — 10M+ high-dim vectors is terabytes of RAM"
+    - "Shard the index across nodes (parallel query + aggregate) and replicate for throughput/availability"
+    - "Two-stage funnel: cheap high-recall ANN -> rerank only the shortlist with a cross-encoder"
+    - "Metadata filtering (recency/source/ACL) to prune search space; semantic cache for repeated queries"
+    - "Async/batched ingestion to keep the index fresh; continuous eval on recall-latency-cost-memory trade-offs"
+
+follow_ups:
+  - "HNSW vs IVF vs IVF-PQ — how do you choose for 10M vectors at low latency?"
+  - "How do you keep the index fresh as new articles arrive without downtime?"
+  - "Why rerank only a shortlist instead of the whole corpus?"
+
+hints:
+  - "First, why can't you just do the same thing you'd do for 10k docs? What breaks at 10 million?"
+  - "Think along three axes: the index algorithm (exact vs approximate), the machine topology (one box vs many), and the retrieval funnel (how many candidates each stage touches)."
+  - "ANN index (HNSW/IVF) instead of brute force + product quantization for memory + sharding/replication across nodes + a two-stage retrieve-then-rerank funnel + metadata filters and caching. It's a recall/latency/cost/memory trade-off you eval continuously."
+
+exercises:
+  - kind: mcq
+    stem: "Why switch from exact nearest-neighbor search to an ANN index (HNSW/IVF) at 10M+ vectors?"
+    options:
+      - { text: "Exact search is too slow at that scale; ANN trades a little recall for a large latency win", correct: true }
+      - { text: "ANN indexes are always more accurate than exact search" }
+      - { text: "Exact search cannot represent embeddings above 512 dimensions" }
+      - { text: "ANN removes the need for a vector store entirely" }
+    explain: "Brute-force exact search scans everything and doesn't scale to millions; ANN approximates neighbors for millisecond latency, accepting a small, tunable recall drop."
+
+  - kind: mcq
+    stem: "In a two-stage retrieval funnel at scale, what does the reranker operate on?"
+    options:
+      - { text: "Only the small shortlist of candidates from the fast ANN stage", correct: true }
+      - { text: "All 10M+ documents on every query" }
+      - { text: "The raw query string before embedding" }
+      - { text: "The full index, replacing the ANN stage" }
+    explain: "The cheap high-recall ANN stage narrows to a few hundred candidates; the expensive cross-encoder reranker only scores that shortlist — reranking the whole corpus would be prohibitively slow."
+
+  - kind: order
+    prompt: "Order a scaled retrieval funnel for a 10M+ article RAG"
+    steps:
+      - "Embed the query"
+      - "Apply metadata filters to prune the search space"
+      - "ANN search across shards for top candidates"
+      - "Aggregate candidates from all shards"
+      - "Rerank the shortlist with a cross-encoder"
+      - "Augment the prompt and generate"
+
+  - kind: fill
+    template: "Use an {0} index instead of brute force, and compress vectors with product {1} to fit memory."
+    blanks: ["ANN", "quantization"]
+    chips: ["ANN", "quantization", "keyword", "temperature"]
+
+  - kind: explain

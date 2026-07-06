@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "48. Rotate Image"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "A 90-degree clockwise rotation of a matrix can be decomposed into two simpler, well-known operations."
+  - "First transpose the matrix in place by swapping across the diagonal, then reverse each row."
+  - "This composition of transpose and row-reversal rotates the matrix in O(n^2) time and O(1) extra space."
 status: draft
 answer:
   approach: >

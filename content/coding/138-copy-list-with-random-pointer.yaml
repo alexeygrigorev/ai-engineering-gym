@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "138. Copy List with Random Pointer"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "The random pointer can point to any node in the list, so you need a fast way to look up the clone of a given original node."
+  - "Build a hash map from each original node to its newly created clone in a first pass over the list."
+  - "A second pass wires each clone's next and random by looking them up in the map, giving O(n) time and space."
 status: draft
 answer:
   approach: >

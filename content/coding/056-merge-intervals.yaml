@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "56. Merge Intervals"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "If the intervals are sorted by their start, any interval that could merge with the current one is guaranteed to appear right after it."
+  - "Sort by start, then walk the intervals keeping a running result list: extend the last result interval's end when the next interval overlaps it, otherwise start a new interval."
+  - "This single pass after sorting gives O(n log n) time overall (dominated by the sort) and O(n) space for the result."
 status: draft
 answer:
   approach: >

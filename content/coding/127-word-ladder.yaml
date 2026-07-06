@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "127. Word Ladder"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Group words by wildcard patterns, one position replaced by a placeholder, so one-letter-apart words share a bucket and form an implicit graph."
+  - "Instead of BFS from only beginWord, grow two frontiers at once from beginWord and endWord, expanding the smaller one each step."
+  - "Stop as soon as the two frontiers meet and sum their distances, for O(N * L^2) time."
 status: draft
 answer:
   approach: >

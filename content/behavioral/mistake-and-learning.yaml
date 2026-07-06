@@ -1,0 +1,53 @@
+id: mistake-and-learning
+category: behavioral
+skill: failure
+type: rehearsal
+question: "What's a mistake you made, and what did you learn from it?"
+difficulty: easy
+status: draft
+source_refs: [interviewnode, exponent-behavioral]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Earn Trust)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "being vocally self-critical and owning mistakes to earn trust"
+  - title: "Big Interview — Behavioral Interview Questions and Answers"
+    url: "https://resources.biginterview.com/behavioral-interviews/"
+    supports: "pick a genuine mistake, own it, and show the concrete lesson and change"
+
+probes:
+  - "Why did the mistake happen — what did you miss?"
+  - "What was the impact, and who else was affected?"
+  - "How did you handle it once you realized?"
+  - "What specifically did you change afterward?"
+  - "Has that change actually prevented a repeat since?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation is a genuine, non-trivial mistake with real stakes (not a humblebrag or a fake weakness)"
+  - "Takes full ownership in the first person"
+  - "Action shows how you responded: owned it, fixed it, communicated honestly"
+  - "The lesson is specific and led to a concrete change in behavior or process"
+  - "Shows growth and that the change stuck; result is honest about impact"
+  - "Tone is self-aware and constructive, not defensive or overly self-critical"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A real mistake you made (e.g. shipped without a guardrail, made an
+     assumption that broke something, mis-scoped an estimate).
+  T (Task): What you were responsible for.
+  A (Action): The concrete steps YOU took after realizing — owned it, fixed the
+     immediate damage, communicated, then changed the underlying cause.
+  R (Result): How it resolved and the durable change you made, plus what you learned.
+
+hints:
+  - "Choose a real mistake with stakes; a disguised strength reads as evasive."
+  - "Spend little time on the error and most on ownership, the fix, and the lesson."
+  - "Make the lesson a concrete process change you can show actually stuck."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

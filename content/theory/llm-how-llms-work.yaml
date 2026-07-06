@@ -1,0 +1,88 @@
+id: llm-how-llms-work
+category: theory
+skill: llm-practice
+type: knowledge
+question: "How do LLMs work?"
+difficulty: easy
+status: draft
+source_refs: [proptech-founder-2]
+sources:
+  - title: "IBM — What Are Large Language Models (LLMs)?"
+    url: "https://www.ibm.com/think/topics/large-language-models"
+    supports: "LLMs are transformer-based deep learning models that predict the next token; trained on huge text corpora"
+  - title: "Sebastian Raschka — How does next-token prediction train an LLM?"
+    url: "https://sebastianraschka.com/faq/docs/next-token-prediction.html"
+    supports: "self-supervised next-token objective, cross-entropy loss, autoregressive generation"
+
+answer:
+  short: >
+    An LLM is a large neural network — almost always a transformer — trained to do
+    one thing: predict the next token given all the tokens before it. Text is split
+    into tokens (words or word-pieces), each token becomes a vector, and stacked
+    self-attention layers let every position read from earlier positions to build up
+    context. The final layer outputs a probability distribution over the whole
+    vocabulary for the next token. Training is self-supervised: run over trillions of
+    tokens of text, and for each position penalize the model (cross-entropy loss)
+    when it assigns low probability to the token that actually came next. Doing this
+    at scale forces the model to internalize grammar, facts, style, and reasoning
+    patterns. At inference the model is autoregressive: predict a token, append it,
+    feed it back in, repeat. Base models are then aligned with instruction tuning and
+    RLHF so they follow instructions instead of just continuing text.
+  key_points:
+    - "Core objective: predict the next token given the preceding context (autoregressive language modeling)"
+    - "Architecture is a transformer — self-attention lets each token attend to earlier tokens to build context"
+    - "Text → tokens → embeddings → transformer layers → probability distribution over the vocabulary"
+    - "Training is self-supervised on huge corpora with cross-entropy loss; no manual labels needed"
+    - "Generation is iterative: sample/pick a token, append it, feed back in, repeat"
+    - "Instruction tuning + RLHF turn a raw next-token predictor into a helpful assistant"
+
+follow_ups:
+  - "What is the difference between a base (pretrained) model and an instruction-tuned/chat model?"
+  - "If it just predicts the next token, how does it appear to reason?"
+  - "How does sampling (temperature, top-p) change what token gets produced?"
+  - "Why do LLMs hallucinate if they're trained to predict likely text?"
+
+hints:
+  - "Start from the single training objective — what is the model actually asked to output at each step?"
+  - "Think about the pipeline: how does raw text become something the network consumes, and what does the last layer emit?"
+  - "It's an autoregressive next-token predictor built on transformer self-attention, trained self-supervised with cross-entropy, then aligned with instruction tuning/RLHF."
+
+exercises:
+  - kind: mcq
+    stem: "What is the fundamental training objective of a modern LLM?"
+    options:
+      - { text: "Predict the next token given the preceding tokens", correct: true }
+      - { text: "Classify each sentence into a fixed set of topics" }
+      - { text: "Compress the training corpus into a lookup table" }
+      - { text: "Translate every input into a canonical embedding and store it" }
+    explain: "LLMs are trained with a self-supervised next-token prediction objective; everything else (facts, style, reasoning) is a side effect of doing this well at scale."
+
+  - kind: mcq
+    stem: "Which neural architecture underpins essentially all current LLMs?"
+    options:
+      - { text: "The transformer, using self-attention", correct: true }
+      - { text: "A convolutional neural network (CNN)" }
+      - { text: "A decision-tree ensemble" }
+      - { text: "A recurrent LSTM with no attention" }
+    explain: "Transformers with self-attention let every token attend to earlier tokens in parallel, which is what made large-scale language modeling practical."
+
+  - kind: order
+    prompt: "Order the steps an LLM takes to generate the next token"
+    steps:
+      - "Split the input text into tokens"
+      - "Map each token to an embedding vector"
+      - "Pass embeddings through transformer self-attention layers"
+      - "Produce a probability distribution over the vocabulary"
+      - "Select/sample the next token"
+      - "Append it to the context and repeat"
+
+  - kind: fill
+    template: "An LLM is trained with a {0} objective and generates text {1}, feeding each new token back in."
+    blanks: ["next-token prediction", "autoregressively"]
+    chips: ["next-token prediction", "autoregressively", "classification", "all at once"]
+
+  - kind: recall
+    front: "In one sentence, how does an LLM work?"
+    back: "It is a transformer trained self-supervised to predict the next token from context, and it generates text autoregressively by repeatedly sampling a token and feeding it back in."
+
+  - kind: explain

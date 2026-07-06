@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "87. Scramble String"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "A scramble is built by recursively splitting a string into two children that may or may not swap places."
+  - "Try every split point of the first string and check both the no-swap and swap alignments against the second string, pruning first with an anagram check."
+  - "Memoizing on the pair of substrings turns the exponential recursion into a polynomial-time solution."
 status: draft
 answer:
   approach: >

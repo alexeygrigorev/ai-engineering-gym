@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "5. Longest Palindromic Substring"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Think in terms of a 2D table where entry (i, j) records whether the substring from i to j is a palindrome."
+  - "A substring is a palindrome exactly when its two ends match and the substring strictly inside them is also a palindrome, giving a recurrence you can fill bottom-up by increasing length."
+  - "Filling the whole table and tracking the longest span that comes out true costs O(n^2) time and space."
 status: draft
 answer:
   approach: >

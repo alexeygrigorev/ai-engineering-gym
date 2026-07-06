@@ -1,0 +1,56 @@
+id: mentored-engineer
+category: behavioral
+skill: leadership
+type: rehearsal
+question: "Tell me about a time you mentored an engineer who went on to grow into a more senior role."
+difficulty: medium
+status: draft
+source_refs: [hellointerview-openai-l5]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Hire and Develop the Best)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "developing others through coaching, feedback, and stretch opportunities"
+  - title: "The Muse — How to Use the STAR Method to Ace Your Job Interview"
+    url: "https://www.themuse.com/advice/star-interview-method"
+    supports: "keep the Situation brief; make the outcome measurable"
+
+probes:
+  - "Where was the engineer when you started, and what did they need to grow?"
+  - "How did you tailor your mentoring to them specifically?"
+  - "What did you delegate or hand off to stretch them?"
+  - "How did you give feedback when they struggled?"
+  - "How did you know it was working?"
+  - "What did mentoring them teach you?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation identifies a specific mentee and their concrete growth gap"
+  - "Task shows you took responsibility for their development, not just their output"
+  - "Action centers on YOUR coaching: stretch assignments, feedback, sponsorship, gradually removing scaffolding"
+  - "Focuses on their growth and autonomy, not you doing the work for them"
+  - "Result is their advancement (promotion, ownership of a system, senior role) tied to your investment"
+  - "Reflection on what you learned about developing people"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A junior or mid engineer with clear potential but a specific gap
+     (e.g. system design, communicating decisions, driving projects).
+  T (Task): What you owned — help them level up toward more scope.
+  A (Action): The concrete steps YOU took — paired on hard problems, gave them a
+     stretch project with a safety net, coached on feedback, sponsored their work
+     to leadership, stepped back as they grew.
+  R (Result): Their advancement (promoted, led a project, reached senior) plus a
+     one-line lesson on developing people.
+
+hints:
+  - "Center the story on the mentee's growth arc, not your own accomplishments."
+  - "Show a deliberate mechanism — stretch work, feedback loops, sponsorship — not just 'I helped'."
+  - "Land their concrete advancement as the Result and what mentoring taught you."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

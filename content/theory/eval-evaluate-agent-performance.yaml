@@ -1,0 +1,90 @@
+id: eval-evaluate-agent-performance
+category: theory
+skill: evaluation
+type: knowledge
+question: "How do you evaluate agent performance? What metrics matter (tool selection quality, action advancement, context adherence)?"
+difficulty: hard
+status: draft
+source_refs: [reddit-aiagents-prep]
+sources:
+  - key: langsmith-agent-eval
+    title: "LangChain — LangSmith: Agent evaluation approaches"
+    url: "https://docs.langchain.com/langsmith/evaluation-approaches"
+    supports: "three complementary methods — final-response, single-step (tool selection + arguments), and trajectory evaluation"
+  - key: galileo-agent-metrics
+    title: "Galileo — A Deep Dive into AI Agent Metrics"
+    url: "https://galileo.ai/blog/ai-agent-metrics"
+    supports: "named metrics — Tool Selection Quality, Action Advancement, Action Completion, Context Adherence, Agent Efficiency, Tool Error"
+  - key: databricks-agent-eval
+    title: "Databricks — What is AI Agent Evaluation?"
+    url: "https://www.databricks.com/blog/what-is-agent-evaluation"
+    supports: "trajectory match (exact/in-order/any-order), tool-call argument accuracy, efficiency (cost/latency/tokens/steps)"
+  - key: ragas-agent-metrics
+    title: "Ragas — Agent / tool-use metrics"
+    url: "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/"
+    supports: "implementable agent metrics — Agent Goal Accuracy, Tool Call Accuracy/F1, Topic Adherence"
+
+answer:
+  short: >
+    Evaluate an agent at three complementary levels. First, final-response / outcome eval:
+    did it accomplish the goal — task / goal completion rate. Second, single-step eval:
+    was the right tool chosen with correct parameters (tool selection quality plus
+    argument correctness and tool-error rate). Third, trajectory eval: was the whole
+    sequence of steps sound. Because multiple valid paths usually exist, score
+    trajectories with exact / in-order / any-order matching against a reference OR an
+    LLM-as-judge over the full trace rather than brittle exact match, and count incorrect
+    steps so near-misses beat total deviations. Action advancement (does each step make
+    progress) and action/task completion (did it achieve all goals in the session) capture
+    progress at trace vs session level. Context adherence measures whether outputs stay
+    grounded in provided/retrieved context — the agent analog of RAG groundedness, catching
+    closed-domain hallucinations. Track efficiency and cost as first-class metrics — number
+    of steps, latency, tokens/dollars per run, and looping/convergence stability — since an
+    agent that succeeds in 30 steps and $5 may be worse than one that succeeds in 5. And
+    include error recovery / robustness plus safety guardrails, because agents take real
+    actions.
+  key_points:
+    - "Use three complementary levels: final-response/outcome (goal completion rate), single-step (tool selection + arguments), and trajectory (whole step sequence)"
+    - "Tool selection quality decomposes into: right tool chosen, correct arguments/parameters, and successful execution (tool-error rate)"
+    - "Score trajectories with exact/in-order/any-order match OR LLM-as-judge over the trace — multiple valid paths make brittle exact match unfair; count incorrect steps"
+    - "Action advancement = progress per step (trace-level); action/task completion = achieving all goals (session-level)"
+    - "Context adherence = outputs stay grounded in provided/retrieved context — the agent analog of RAG groundedness, catching closed-domain hallucinations"
+    - "Track efficiency and cost as first-class (steps, latency, tokens/$ per run, convergence stability), plus error recovery and safety guardrails since agents take real actions"
+
+follow_ups:
+  - "Your agent reaches the correct final answer but takes a wildly inefficient path — how do you catch and score that, and does it matter?"
+  - "There are multiple valid trajectories for a task — how do you evaluate the path without over-fitting to one golden sequence?"
+  - "How would you evaluate an agent's ability to recover from a tool that returns an error or malformed output?"
+
+exercises:
+  - kind: mcq
+    stem: "Why is exact-match trajectory scoring often a poor way to evaluate an agent?"
+    options:
+      - { text: "Multiple valid step sequences can solve the task, so exact match unfairly penalizes correct alternatives", correct: true }
+      - { text: "Trajectories are impossible to record" }
+      - { text: "Agents never use tools" }
+      - { text: "It is the only metric that ignores the final answer" }
+    explain: "Real tasks have many valid paths; use any-order matching or an LLM-as-judge over the trace, and count incorrect steps rather than demanding one exact sequence."
+
+  - kind: mcq
+    stem: "'Context adherence' for an agent is most analogous to which RAG metric?"
+    options:
+      - { text: "Groundedness / faithfulness — outputs stay grounded in provided context", correct: true }
+      - { text: "Retrieval latency" }
+      - { text: "Chunk size" }
+      - { text: "Embedding dimension" }
+    explain: "Context adherence checks the agent's outputs against provided/retrieved context, catching closed-domain hallucinations — the agent version of RAG groundedness."
+
+  - kind: match
+    prompt: "Match each agent metric to what it measures"
+    pairs:
+      - { left: "Tool selection quality", right: "chose the right tool with correct arguments" }
+      - { left: "Action advancement", right: "each step makes progress toward the goal (trace-level)" }
+      - { left: "Action/task completion", right: "achieved all goals in the session" }
+      - { left: "Agent efficiency", right: "steps, latency, and cost per run" }
+
+  - kind: fill
+    template: "Judging whether the right tool was called with correct parameters is {0} evaluation; judging the whole sequence of steps is {1} evaluation."
+    blanks: ["single-step", "trajectory"]
+    chips: ["single-step", "trajectory", "final-response", "offline"]
+
+  - kind: explain

@@ -1,0 +1,78 @@
+id: rag-text-vs-vector-search
+category: theory
+skill: rag
+type: knowledge
+question: "Text vs vector search — when would you use each?"
+difficulty: medium
+status: draft
+source_refs: [reddit-clear-genai]
+sources:
+  - title: "Redis — Hybrid search explained: full-text meets vector search"
+    url: "https://redis.io/blog/hybrid-search-explained/"
+    supports: "keyword search gives exact-match precision; vector search gives semantic recall; hybrid fuses both"
+  - title: "Meilisearch — Understanding hybrid search RAG for better AI answers"
+    url: "https://www.meilisearch.com/blog/hybrid-search-rag"
+    supports: "when to prefer lexical vs semantic retrieval and why hybrid is common in RAG"
+  - title: "MongoDB — Hybrid Search Explained With An In-Depth Guide"
+    url: "https://www.mongodb.com/resources/products/capabilities/hybrid-search"
+    supports: "reciprocal rank fusion to combine BM25 and vector scores"
+
+answer:
+  short: >
+    Text (keyword/lexical) search — usually BM25 — matches the exact tokens in the
+    query. It's fast, cheap, needs no embedding model, and is unbeatable for exact
+    identifiers: product SKUs, error codes, names, acronyms, legal citations. Its
+    weakness is vocabulary mismatch — it misses relevant content that uses different
+    words. Vector (semantic) search embeds the query and documents into a shared
+    space and retrieves by cosine similarity, so it finds content by *meaning* even
+    when wording differs (synonyms, paraphrases, cross-lingual). Its weakness is
+    exact matches — it can drift on rare tokens and precise strings. Rule of thumb:
+    keyword for "where is that exact thing?", vector for "what did the user mean?".
+    In practice most production RAG uses hybrid search — run both and fuse the scores
+    (e.g. reciprocal rank fusion) — to get keyword precision plus semantic recall.
+  key_points:
+    - "Text/keyword search (BM25): exact-token matching; fast, cheap, no embeddings; best for IDs, codes, names, rare terms"
+    - "Keyword weakness: vocabulary mismatch — misses relevant docs that use different words"
+    - "Vector/semantic search: embed query + docs, retrieve by similarity; finds meaning across synonyms/paraphrase"
+    - "Vector weakness: can miss exact strings and rare identifiers"
+    - "Hybrid search fuses both (e.g. reciprocal rank fusion) and is the usual production default"
+
+follow_ups:
+  - "How would you combine the two scores — what is reciprocal rank fusion?"
+  - "Your users search by part numbers and error codes. Which do you lean on, and why?"
+  - "When does pure vector search actively hurt retrieval quality?"
+
+hints:
+  - "Think about the two things a query can be about: exact tokens versus meaning."
+  - "One is great for SKUs, error codes, and names; the other is great for synonyms and paraphrases. Which is which, and what's each one's blind spot?"
+  - "Keyword/BM25 = exact match, weak on vocabulary mismatch. Vector = semantic meaning, weak on exact strings. Most production RAG runs both and fuses scores (hybrid search)."
+
+exercises:
+  - kind: mcq
+    stem: "A user searches for the exact error code 'ERR_0x8004'. Which retrieval method is most reliable?"
+    options:
+      - { text: "Keyword/BM25 search — it matches the exact token", correct: true }
+      - { text: "Vector search — embeddings capture the code's meaning best" }
+      - { text: "Neither; error codes cannot be retrieved" }
+      - { text: "Vector search, because it is always more accurate than keyword search" }
+    explain: "Exact identifiers like error codes are keyword search's strength and vector search's weakness — embeddings can drift on rare, meaningless-to-semantics tokens."
+
+  - kind: mcq
+    stem: "Why is hybrid search common in production RAG?"
+    options:
+      - { text: "It combines keyword precision with semantic recall by fusing both rankings", correct: true }
+      - { text: "It removes the need for a language model" }
+      - { text: "It is always cheaper than either method alone" }
+      - { text: "It guarantees 100% retrieval recall" }
+    explain: "Hybrid fuses lexical and semantic scores (e.g. reciprocal rank fusion) to cover each method's blind spot; it isn't cheaper or a correctness guarantee."
+
+  - kind: fill
+    template: "{0} search matches exact tokens (good for IDs); {1} search matches meaning via embeddings (good for synonyms)."
+    blanks: ["Keyword", "Vector"]
+    chips: ["Keyword", "Vector", "Fuzzy", "Graph"]
+
+  - kind: recall
+    front: "When do you pick keyword search over vector search?"
+    back: "When exact-token precision matters — identifiers, codes, names, rare terms — or when you need cheap, embedding-free retrieval. Vector search wins on semantic/meaning-based matching; hybrid gets both."
+
+  - kind: explain

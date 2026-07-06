@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "141. Linked List Cycle"
 difficulty: easy
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "Use two pointers that move through the list at different speeds."
+  - "Advance a slow pointer one step and a fast pointer two steps each iteration; a cycle forces them to eventually collide."
+  - "This runs in O(n) time and O(1) space with no extra data structure needed."
 status: draft
 answer:
   approach: >

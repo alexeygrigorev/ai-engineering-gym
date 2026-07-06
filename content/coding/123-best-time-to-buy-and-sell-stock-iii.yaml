@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "123. Best Time to Buy and Sell Stock III"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "With at most two transactions, think about splitting the timeline into an independent left part and right part."
+  - "For every possible split point, solve the single-transaction problem on each side and combine the two profits."
+  - "This gives O(n^2) directly, and is refinable to O(n) by precomputing best-profit-so-far arrays from both ends."
 status: draft
 answer:
   approach: >

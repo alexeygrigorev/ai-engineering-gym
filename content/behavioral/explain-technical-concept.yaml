@@ -1,0 +1,56 @@
+id: explain-technical-concept
+category: behavioral
+skill: teamwork
+type: rehearsal
+question: "Tell me about a time you had to explain a complex technical concept to someone without a technical background."
+difficulty: easy
+status: draft
+source_refs: [interviewnode]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Indeed — How To Use the STAR Interview Response Technique"
+    url: "https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-interview-response-technique"
+    supports: "structure a communication story around a concrete audience and outcome"
+  - title: "The Muse — How to Use the STAR Method to Ace Your Job Interview"
+    url: "https://www.themuse.com/advice/star-interview-method"
+    supports: "keep the Situation brief; make the outcome measurable"
+
+probes:
+  - "Who was the audience and why did they need to understand it?"
+  - "What analogy or framing did you use to make it land?"
+  - "How did you check that they actually understood?"
+  - "What did you deliberately leave out, and why?"
+  - "How did explaining it change the decision they made?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation names a concrete non-technical audience (exec, sales, customer, legal) and a real decision at stake"
+  - "Shows empathy for what the audience needed and already knew"
+  - "Action centers on YOUR communication choices: analogy, visual, plain language, dropping jargon"
+  - "Demonstrates you verified understanding, not just talked at them"
+  - "Result ties the explanation to a decision or outcome (buy-in secured, risk understood, project unblocked)"
+  - "Reflection on how clear communication drove impact"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A non-technical stakeholder needed to understand a technical
+     concept (e.g. why an LLM hallucinates, or why evaluation takes time) to make
+     a decision.
+  T (Task): What you owned — get them to a confident, correct-enough mental model.
+  A (Action): The concrete steps YOU took — chose an analogy, stripped jargon,
+     used a simple diagram or example, paused to check understanding, answered
+     their real question.
+  R (Result): The decision or outcome that followed (approval, realistic timeline,
+     trust) plus a one-line lesson on communicating with non-technical partners.
+
+hints:
+  - "Name the audience and the decision first — that frames why clarity mattered."
+  - "In Action, quote the actual analogy or framing you used; specifics beat 'I explained it simply'."
+  - "Close with the decision your explanation unblocked, not just 'they understood'."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

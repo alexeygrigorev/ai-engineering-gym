@@ -1,0 +1,72 @@
+id: agents-essential-components
+category: theory
+skill: agents
+type: knowledge
+question: "What are the essential components of an agent beyond an LLM?"
+difficulty: easy
+status: draft
+source_refs: [techeon, reddit-expdevs-agentic, reddit-ai-agentic]
+sources:
+  - title: "Lilian Weng — LLM Powered Autonomous Agents"
+    url: "https://lilianweng.github.io/posts/2023-06-23-agent/"
+    supports: "an agent system = LLM as brain + planning + memory + tool use"
+  - title: "Chip Huyen — Agents"
+    url: "https://huyenchip.com/2025/01/07/agents.html"
+    supports: "planning (task decomposition + reflection), tool use, and failure modes tied to planning/tools"
+  - title: "OpenAI — A Practical Guide to Building Agents (PDF)"
+    url: "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf"
+    supports: "an agent has instructions (what to do), tools (what it can do), and guardrails (what it must not do)"
+
+answer:
+  short: >
+    The LLM is only the "brain." Around it, a working agent needs planning
+    (decompose the goal into subtasks and reflect/self-correct), memory
+    (short-term context/scratchpad plus long-term storage, often a vector store, to
+    keep state across steps), and tools (APIs, code execution, retrieval — how it
+    acts on and senses the world). Gluing them together is an orchestration loop
+    that runs the perceive→act→observe cycle, plus guardrails and stop conditions
+    that keep it bounded and safe. OpenAI frames the same triad as instructions,
+    tools, and guardrails.
+  key_points:
+    - "LLM as the reasoning core / 'brain' — necessary but not sufficient on its own"
+    - "Planning: decompose the goal into subtasks; reflection and self-critique to correct course"
+    - "Memory: short-term (context window / scratchpad) plus long-term (external store, often vectors) for state across steps"
+    - "Tools: APIs, code execution, retrieval — the way the agent acts on and senses the environment"
+    - "Orchestration loop + guardrails/stop conditions to run the cycle and keep it safe and bounded"
+
+hints:
+  - "Think about what a person needs to finish a multi-step task, not just to answer a question."
+  - "Group the pieces into planning, memory, and tools — then ask what runs the loop."
+  - "Recall Lilian Weng's 'brain + planning + memory + tool use' and OpenAI's 'instructions + tools + guardrails'."
+
+follow_ups:
+  - "What's the difference between short-term and long-term memory in an agent?"
+  - "Why is reflection/self-critique part of planning?"
+  - "Which component most often causes agent failures?"
+  - "How do guardrails fit into this picture?"
+
+exercises:
+  - kind: mcq
+    stem: "In Lilian Weng's framing, which three components surround the LLM 'brain'?"
+    options:
+      - { text: "Planning, memory, and tool use", correct: true }
+      - { text: "Fine-tuning, quantization, and distillation" }
+      - { text: "Embeddings, chunking, and reranking" }
+      - { text: "Prompt, temperature, and top-p" }
+    explain: "Weng describes an agent as an LLM brain plus planning, memory, and tool use."
+
+  - kind: mcq
+    stem: "Why isn't an LLM alone enough to be an agent?"
+    options:
+      - { text: "It can reason but can't retain state across steps or act on the world without memory and tools", correct: true }
+      - { text: "It is too small to hold instructions" }
+      - { text: "It cannot generate text without retrieval" }
+      - { text: "It always needs to be fine-tuned first" }
+    explain: "The LLM supplies reasoning; memory holds state across steps and tools let it take actions — those are what make it agentic."
+
+  - kind: fill
+    template: "{0} lets the agent retain state across steps; {1} let it act on and sense the world."
+    blanks: ["Memory", "Tools"]
+    chips: ["Memory", "Tools", "Temperature", "Embeddings"]
+
+  - kind: explain

@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "239. Sliding Window Maximum"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "You need the max of every k-sized window without rescanning the whole window on each shift."
+  - "Maintain a structure over the current window that supports fast insert, remove, and max query as the window slides."
+  - "A monotonic decreasing deque of indices achieves this in O(n) total, beating an O(n log k) ordered-set approach."
 status: draft
 answer:
   approach: >

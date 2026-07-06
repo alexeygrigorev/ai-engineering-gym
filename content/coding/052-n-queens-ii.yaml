@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "52. N-Queens II"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "This is the same row-by-row placement problem as N-Queens, but you never need to materialize a board."
+  - "Backtrack by placing one queen per row in a free column, marking its column and diagonals as attacked, and recursing on a copy of that attack state."
+  - "Instead of recording boards, simply increment a counter whenever a placement reaches row n; the search is still exponential but touches only masks, not full boards."
 status: draft
 answer:
   approach: >

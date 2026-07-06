@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "84. Largest Rectangle in Histogram"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "For each bar, the widest rectangle of its height is limited by the nearest shorter bar on either side."
+  - "A stack of indices kept in non-decreasing height order lets you discover, as you scan, the nearest shorter bar to the left and right of each bar."
+  - "Popping the stack whenever a shorter bar arrives computes every bar's rectangle in a single O(n) pass."
 status: draft
 answer:
   approach: >

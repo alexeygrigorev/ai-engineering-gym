@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "19. Remove Nth Node From End of List"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "First find the list's total length in one pass so you know exactly which position from the front needs to be removed."
+  - "The node to delete sits at position length - n; walk to the node just before it and splice it out by pointing its next past the target."
+  - "Two passes over the list gives O(L) time and O(1) space (a single-pass two-pointer variant spaced n apart also works)."
 status: draft
 answer:
   approach: >

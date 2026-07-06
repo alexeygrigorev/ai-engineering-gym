@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "121. Best Time to Buy and Sell Stock"
 difficulty: easy
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "Only one buy and one sell are allowed, and the buy must happen before the sell."
+  - "Track the minimum price seen so far as you scan left to right, since it is always the best possible buy point for the current day's sell."
+  - "A single linear pass keeping the running minimum and best profit so far solves it in O(n) time and O(1) space."
 status: draft
 answer:
   approach: >

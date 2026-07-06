@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "82. Remove Duplicates from Sorted List II"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Because the list is sorted, any duplicated value forms a contiguous run of nodes."
+  - "When you spot a repeated value, skip the entire run rather than a single node, keeping only values that appear exactly once."
+  - "A single recursive or iterative pass handles this in O(n) time."
 status: draft
 answer:
   approach: >

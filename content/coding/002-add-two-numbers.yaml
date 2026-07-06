@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "2. Add Two Numbers"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "The digits are stored least-significant-first, so you can add the two lists the same way you add numbers by hand, one position at a time."
+  - "At each position add the two current digits plus the incoming carry, keep the units digit for a new node, and pass the rest forward as the next carry."
+  - "Treat a missing node as digit 0 so lists of different lengths just work, and emit one final node if a carry remains at the end, for O(max(n, m)) time and space."
 status: draft
 answer:
   approach: >

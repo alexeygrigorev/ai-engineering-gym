@@ -1,0 +1,95 @@
+id: llm-memory-management
+category: theory
+skill: llm-practice
+type: knowledge
+question: "How do you do memory management and context management with LLMs?"
+difficulty: medium
+status: draft
+source_refs: [reddit-ai-eng-questions]
+sources:
+  - title: "APXML — Memory mechanisms for LLM agents (short- & long-term)"
+    url: "https://apxml.com/courses/multi-agent-llm-systems-design-implementation/chapter-2-architecting-agents-defining-roles/memory-mechanisms-llm-agents"
+    supports: "short-term (working, in-context) vs long-term (persistent, external) memory; summarization/truncation strategies"
+  - title: "Redis — Build smarter AI agents: manage short-term and long-term memory"
+    url: "https://redis.io/blog/build-smarter-ai-agents-manage-short-term-and-long-term-memory-with-redis/"
+    supports: "short-term = working memory within the window; long-term persisted in an external store and retrieved on demand"
+  - title: "mem0 — AI memory management for LLMs and agents"
+    url: "https://mem0.ai/blog/ai-memory-management-for-llms-and-agents"
+    supports: "extract, store, and retrieve salient memories; semantic/episodic/procedural memory types"
+
+answer:
+  short: >
+    LLMs are stateless — each call only knows what's in its context window — so "memory"
+    is something you engineer around the model. Split it into two layers. Short-term
+    (working) memory is what you fit into the context this turn: the system prompt, recent
+    conversation, and retrieved snippets. Because the window is finite and stuffing it
+    degrades quality, you manage it: keep the last N turns verbatim, and compress older
+    history into a running summary (summarization), or truncate/drop the least relevant
+    parts. Long-term memory is persistent state kept outside the model — a database or
+    vector store — that survives across sessions: user preferences, facts, past decisions.
+    You don't feed all of it in; you extract salient memories, store them, and at query
+    time retrieve only the relevant ones (RAG-style) back into the context. This is often
+    organized as semantic (facts/knowledge), episodic (past interactions), and procedural
+    (learned how-to) memory. Context management is the discipline of deciding, each turn,
+    exactly what goes into the limited window — recent history + retrieved long-term
+    memories + tools — so the model has what it needs and nothing that pollutes it. Watch
+    for staleness and contradictory memories, and prune/update them over time.
+  key_points:
+    - "LLMs are stateless; memory is engineered around them, not stored in the weights"
+    - "Short-term / working memory = what fits in the context window this turn (system prompt, recent turns, retrieved snippets)"
+    - "Manage short-term memory by keeping recent turns verbatim and summarizing/compressing or truncating older history"
+    - "Long-term memory = persistent external store (DB / vector store) surviving across sessions: preferences, facts, past events"
+    - "Retrieve long-term memory on demand (RAG-style) — store salient items, fetch only the relevant ones back into context"
+    - "Memory types: semantic (facts), episodic (past interactions), procedural (learned procedures)"
+    - "Context management = curating what enters the finite window each turn; prune stale/contradictory memories"
+
+follow_ups:
+  - "How do you decide what's worth writing to long-term memory versus discarding?"
+  - "What breaks when the running summary loses an important detail, and how do you guard against it?"
+  - "How do conflicting or stale memories cause bad behavior, and how do you handle them?"
+  - "How is this different from just using a bigger context window?"
+
+hints:
+  - "Start from a key property of the model itself: does a plain LLM call remember anything from the last one?"
+  - "Two layers: one lives inside the context window right now, the other lives somewhere else and gets pulled in when needed."
+  - "Short-term/working memory = curated context (recent turns + summaries), long-term memory = external store retrieved on demand (RAG). Context management is choosing what enters the finite window each turn."
+
+exercises:
+  - kind: mcq
+    stem: "Why do LLM applications need an explicit memory layer at all?"
+    options:
+      - { text: "The model is stateless — a call only sees its context window, so persistence must be handled outside it", correct: true }
+      - { text: "Because the model stores every past conversation in its weights automatically" }
+      - { text: "Because temperature resets memory between calls" }
+      - { text: "Only fine-tuned models can read the context window" }
+    explain: "LLMs don't retain anything between calls; whatever isn't in the current context is gone. Memory is engineered around the model with external storage plus retrieval."
+
+  - kind: mcq
+    stem: "Which best describes long-term memory in an LLM agent?"
+    options:
+      - { text: "Persistent state in an external store (e.g. vector DB), retrieved into context when relevant", correct: true }
+      - { text: "The recent messages currently sitting in the context window" }
+      - { text: "Extra parameters added to the model at runtime" }
+      - { text: "A larger temperature setting that improves recall" }
+    explain: "Long-term memory persists outside the model across sessions; you retrieve only the relevant pieces back into the window. Recent in-window messages are short-term/working memory."
+
+  - kind: order
+    prompt: "Order how an agent uses long-term memory across a conversation"
+    steps:
+      - "Extract salient facts from the interaction"
+      - "Store them in an external memory store"
+      - "On a later query, embed the query"
+      - "Retrieve the relevant memories"
+      - "Inject them into the context window"
+      - "Generate a response grounded in that memory"
+
+  - kind: fill
+    template: "{0} memory is the curated content inside the context window this turn; {1} memory is persistent state kept in an external store."
+    blanks: ["Short-term", "Long-term"]
+    chips: ["Short-term", "Long-term", "Parametric", "Frozen"]
+
+  - kind: recall
+    front: "How do you keep a long conversation from overflowing the context window while retaining what matters?"
+    back: "Keep the last N turns verbatim, compress older history into a running summary (and/or truncate the least relevant parts), and push durable facts to a long-term store you retrieve from on demand."
+
+  - kind: explain

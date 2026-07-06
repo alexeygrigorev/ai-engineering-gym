@@ -1,0 +1,75 @@
+id: agents-tool-failures-retries
+category: theory
+skill: agents
+type: knowledge
+question: "How do you handle tool failures, retries, and idempotency in an agent?"
+difficulty: medium
+status: draft
+source_refs: [techeon, reddit-expdevs-agentic, reddit-csuk-agents, reddit-aiagents-prep]
+sources:
+  - title: "Motomtech — AI Agent Retries and Idempotency: Tool Failure Patterns"
+    url: "https://www.motomtech.com/blog-post/ai-agent-retries-idempotency-tool-failures/"
+    supports: "retry policies by error type, circuit breakers, retry budgets, and idempotency for safe retries"
+  - title: "Chanl — How to Build Idempotent Tool Calls for AI Agents"
+    url: "https://www.channel.tel/blog/idempotent-tool-calls-agent-retry-safety"
+    supports: "unique requestId/idempotency keys so downstream APIs dedupe retried writes"
+  - title: "Chip Huyen — Agents"
+    url: "https://huyenchip.com/2025/01/07/agents.html"
+    supports: "tool failures as a distinct agent failure mode requiring detection and recovery"
+
+answer:
+  short: >
+    Feed the failure back to the agent as an observation — the error message plus
+    valid options — so the model can reason about it and self-correct (retry with
+    fixed arguments). Pick the retry policy by error type: rate limits (429) and
+    transient 5xx get exponential backoff with jitter; a bad-argument error lets the
+    model correct and retry; an unrecoverable failure stops and notifies. Make
+    writes idempotent so retries don't double-act: attach an idempotency key / unique
+    requestId that the downstream API dedupes (a GET is safe to retry, a POST is not
+    by default). Cap it all with retry budgets and circuit breakers — open after N
+    failures with a cooldown, alert on error-rate thresholds. Watch for context
+    contamination: a failure preserved in history can make the agent repeat the same
+    bad call, so sometimes prune or reset.
+  key_points:
+    - "Return the error to the model as an observation so it can reason and self-correct the tool call"
+    - "Retry by error type: 429/5xx → exponential backoff + jitter; bad args → let the model fix; hard failure → stop/notify"
+    - "Idempotency: attach an idempotency key / unique requestId so downstream dedupes retried writes (GET safe, POST not by default)"
+    - "Retry budgets + circuit breakers: cap retries per turn, open after N failures with a cooldown, alert on error rate"
+    - "Beware context contamination — a preserved failure can make the agent repeat the bad call; prune/reset when needed"
+
+hints:
+  - "What should the agent see when a tool call fails, so it can try something smarter?"
+  - "Which failures are worth retrying, and how do you space those retries?"
+  - "If a retried 'create order' call runs twice, how do you stop a duplicate order?"
+
+follow_ups:
+  - "Which HTTP errors should you retry and which should you fail fast on?"
+  - "How do idempotency keys prevent duplicate side effects?"
+  - "How do you keep retries from blowing the token/cost budget?"
+  - "What is context contamination and how do you mitigate it?"
+
+exercises:
+  - kind: mcq
+    stem: "How do you make a write tool safe to retry after a timeout?"
+    options:
+      - { text: "Attach an idempotency key / unique requestId the downstream API uses to dedupe", correct: true }
+      - { text: "Retry immediately as fast as possible" }
+      - { text: "Switch the call from POST to GET" }
+      - { text: "Increase the model temperature" }
+    explain: "An idempotency key lets the downstream service recognize and drop a duplicate retried write, avoiding double side effects."
+
+  - kind: mcq
+    stem: "The right retry strategy for an HTTP 429 (rate limit) is:"
+    options:
+      - { text: "Exponential backoff with jitter", correct: true }
+      - { text: "Immediate tight-loop retries" }
+      - { text: "Never retry; fail the whole run" }
+      - { text: "Retry only after a human approves" }
+    explain: "429s are transient; exponential backoff with jitter spaces retries so you don't flood the API."
+
+  - kind: fill
+    template: "{0} keys make a write safe to retry; {1} backoff spaces out retries after rate limits."
+    blanks: ["Idempotency", "Exponential"]
+    chips: ["Idempotency", "Exponential", "Embedding", "Linear"]
+
+  - kind: explain

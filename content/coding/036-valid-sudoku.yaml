@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "36. Valid Sudoku"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Validity only requires checking three independent kinds of groups: rows, columns, and 3x3 boxes."
+  - "For each group, use a small seen-array or set of size 9 and fail as soon as a digit repeats, skipping empty cells."
+  - "Checking all rows, columns, and boxes this way takes only O(1) time and space on the fixed 9x9 board."
 status: draft
 answer:
   approach: >

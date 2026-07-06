@@ -44,6 +44,13 @@ Gym-native extras (later modules): recruiter openers, salary scripts, job tracke
 
 ## 4. The four flows
 
+**Core practice = Anki-style active recall.** A card shows the **question only**. You try
+to answer it in your head, optionally tapping for **progressive hints** (`hints` field),
+then **reveal** the full answer and **self-rate** (Again / Hard / Good / Easy) — which
+feeds spaced repetition. This applies to `knowledge` and `coding` (question → think →
+hint → reveal → rate); `rehearsal` uses the recall variant; `walkthrough` is step-wise.
+The flat "browse" view is study-mode; the card flow is the real workout.
+
 ### A. `knowledge` — shared bank, tap-first
 Objective answers everyone shares. SRS-driven. Exercise types, easy → hard:
 
@@ -137,8 +144,11 @@ sources:                   # MY citations, researched for THIS item (inline OR b
 - **`skill`** must come from the controlled vocabulary in `content/skills.yaml` (e.g.
   `rag`, `agents`, `evaluation`, `llm-practice`, `ml-fundamentals`, `algorithms`,
   `conflict`, …). Ingest tags on this — no free-text.
-- **`difficulty` (1–3) is item-level**; the easy→hard exercise ordering in §4A is a
-  separate within-item axis. Don't conflate them.
+- **`difficulty` is `easy | medium | hard`** (item-level); the easy→hard exercise
+  ordering in §4A is a separate within-item axis. Don't conflate them.
+- **`hints`** (optional list) drives the Anki-style recall flow: progressive hints
+  shown one at a time before the answer is revealed ("think about X" → "now consider
+  Y" → …). Author 2–3 per item, ordered from gentle nudge to near-giveaway.
 - `sources` may be inline (`{title, url, supports}`) or block mapping form — both valid.
   Each entry may carry a short `key:` (e.g. `igotanoffer`); reference/answer prose then
   cites inline with `[igotanoffer]` tags that the app can resolve to the source.

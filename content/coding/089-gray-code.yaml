@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "89. Gray Code"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Reflecting an existing list of codes and adding a new high bit preserves the property that consecutive codes differ by one bit."
+  - "Build the sequence bit by bit, appending the current list in reverse order with the new bit set on each copy."
+  - "This doubles the list every round, producing all 2^n codes in O(2^n) time."
 status: draft
 answer:
   approach: >

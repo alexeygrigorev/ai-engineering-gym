@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "211. Design Add and Search Words Data Structure"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Store all words in a trie so common prefixes are shared and lookups walk letter by letter."
+  - "To add a word, descend the trie creating child nodes as needed and mark the final node as an end of word."
+  - "To search with wildcard dots, recurse into every child at that position instead of following a single path."
 status: draft
 answer:
   approach: >

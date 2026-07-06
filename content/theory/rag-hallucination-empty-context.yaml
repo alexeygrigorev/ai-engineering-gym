@@ -1,0 +1,80 @@
+id: rag-hallucination-empty-context
+category: theory
+skill: rag
+type: knowledge
+question: "How would you stop a model from hallucinating when no information is found in the retrieved context?"
+difficulty: medium
+status: draft
+source_refs: [proptech-founder-2]
+sources:
+  - title: "K2view — RAG hallucination: what it is and how to avoid it"
+    url: "https://www.k2view.com/blog/rag-hallucination/"
+    supports: "instruct the model to answer only from context and say it doesn't know when context is missing"
+  - title: "Atlan — LLM Hallucinations: Why They Happen and How to Reduce Them"
+    url: "https://atlan.com/know/llm-hallucinations/"
+    supports: "confidence thresholds / graceful abstention and grounded generation to reduce fabrication"
+  - title: "Sharvari Raut (Medium) — How to Stop LLM Hallucinations in RAG"
+    url: "https://sharur7.medium.com/how-to-stop-llm-hallucinations-in-retrieval-augmented-generation-rag-5ef2894f9cd6"
+    supports: "prompt grounding, relevance thresholds, and verification to prevent gap-filling"
+
+answer:
+  short: >
+    The goal is to make "I don't know" a first-class, rewarded answer instead of
+    letting the model fill the gap. Do it in layers. Prompt/instruction: explicitly
+    tell the model to answer *only* from the provided context and to say it can't
+    find the answer when the context doesn't support one. Retrieval gating: put a
+    relevance/similarity threshold (and ideally a reranker score) on retrieval — if
+    the top chunks fall below it, treat retrieval as empty and short-circuit to a
+    graceful "I couldn't find that" rather than passing weak context to the model.
+    Grounded generation: require citations so every claim is tied to a retrieved
+    span; an uncited claim is a red flag. Verification: optionally add a
+    self-check/faithfulness pass (LLM-as-judge or NLI) that checks the answer is
+    entailed by the context and suppresses or flags unsupported answers. And design
+    the UX so abstaining, asking a clarifying question, or escalating to a human is
+    an acceptable outcome.
+  key_points:
+    - "Make abstention a valid answer: instruct the model to answer only from context and to say 'I don't know' when it can't"
+    - "Retrieval gating: similarity/rerank threshold; if nothing clears it, short-circuit instead of feeding weak context"
+    - "Grounded generation with mandatory citations — uncited claims are suspect"
+    - "Verification pass (faithfulness / NLI / LLM-as-judge) to catch answers not entailed by context"
+    - "Fallback UX: clarifying question or human escalation beats a confident fabrication"
+
+follow_ups:
+  - "How do you set the similarity threshold without rejecting good answers?"
+  - "How do you evaluate whether the model actually abstains when it should?"
+  - "What's the difference between a faithfulness check and a relevance check?"
+
+hints:
+  - "The core mindset shift: what should the model be allowed to say when it genuinely has nothing?"
+  - "Attack it at two points — before generation (was anything relevant even retrieved?) and after (is every claim actually grounded?)."
+  - "Instruct 'answer only from context, else say you don't know' + a retrieval relevance threshold that short-circuits on weak hits + mandatory citations + a faithfulness/verification check. Abstaining or escalating is a valid outcome."
+
+exercises:
+  - kind: mcq
+    stem: "The retriever returns only low-similarity chunks for a query. What's the best behavior?"
+    options:
+      - { text: "Short-circuit and tell the user you couldn't find the answer", correct: true }
+      - { text: "Pass the weak chunks in and let the model answer confidently anyway" }
+      - { text: "Answer from the model's parametric memory without saying so" }
+      - { text: "Silently return the single closest chunk verbatim as the answer" }
+    explain: "A relevance threshold should gate retrieval: below it, treat context as empty and abstain gracefully rather than inviting a fabrication from weak or off-topic context."
+
+  - kind: mcq
+    stem: "Which measure most directly makes hallucinated answers detectable after generation?"
+    options:
+      - { text: "Requiring citations and checking every claim is entailed by the retrieved context", correct: true }
+      - { text: "Increasing the model's temperature" }
+      - { text: "Removing the system prompt" }
+      - { text: "Returning more tokens per answer" }
+    explain: "Grounded generation with citations plus a faithfulness/entailment check ties claims to sources; uncited or unentailed claims flag likely hallucinations. Higher temperature increases them."
+
+  - kind: fill
+    template: "Instruct the model to answer only from {0}; if nothing clears the relevance {1}, it should say it doesn't know."
+    blanks: ["context", "threshold"]
+    chips: ["context", "threshold", "temperature", "weights"]
+
+  - kind: recall
+    front: "What single instruction most reduces gap-filling in RAG?"
+    back: "Tell the model to answer only from the provided context and to explicitly say it can't find the answer when the context doesn't support one — backed by a retrieval relevance threshold and grounded, cited generation."
+
+  - kind: explain

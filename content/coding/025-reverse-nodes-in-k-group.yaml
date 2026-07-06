@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "25. Reverse Nodes in k-Group"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Process the list one group of k nodes at a time rather than reversing the whole list in one go."
+  - "For each group, first confirm k nodes actually remain, then reverse just those k nodes in place and reconnect the previous group's tail to the new group's head."
+  - "Remember the node right after the group before reversing so you can continue correctly, and use a dummy head to simplify stitching the first group; this runs in O(n) time and O(1) space."
 status: draft
 answer:
   approach: >

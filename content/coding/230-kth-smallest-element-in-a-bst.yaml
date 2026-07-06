@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "230. Kth Smallest Element in a BST"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "In-order traversal of a BST visits nodes in ascending sorted order."
+  - "Walk the tree in-order while keeping a counter, and stop as soon as the counter reaches k."
+  - "This reaches O(h + k) time using O(h) space, with no need to build the full sorted list."
 status: draft
 answer:
   approach: >

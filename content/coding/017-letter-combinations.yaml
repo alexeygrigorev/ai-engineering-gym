@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "17. Letter Combinations of a Phone Number"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Map each digit to its phone-keypad letters and think of building each combination one digit at a time."
+  - "Use backtracking: recurse on the remaining digits, trying each letter of the current digit and appending it to the prefix built so far before recursing further."
+  - "Emitting the prefix once no digits remain explores all O(4^n) combinations with only O(n) recursion depth."
 status: draft
 answer:
   approach: >

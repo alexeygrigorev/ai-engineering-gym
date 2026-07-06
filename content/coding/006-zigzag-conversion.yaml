@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "6. Zigzag Conversion"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Instead of building a full 2D grid, keep one output string buffer per row of the zigzag."
+  - "Simulate the walk by moving a row pointer down to the last row and then bouncing back up, appending each character to whichever row buffer it currently lands on."
+  - "Concatenating the row buffers at the end gives O(n) time and space; handle numRows == 1 as a special case that returns the string unchanged."
 status: draft
 answer:
   approach: >

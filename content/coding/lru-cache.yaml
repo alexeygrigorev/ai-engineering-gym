@@ -11,6 +11,12 @@ problem: >
   time. When capacity is exceeded, evict the least recently used entry. Both get
   and put count as "using" a key.
 difficulty: medium
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "You need O(1) lookup by key together with O(1) reordering by recency, which no single structure provides alone."
+  - "Combine a hash map from key to node with a doubly linked list ordered by recency, moving a node to the front on every access."
+  - "Use dummy head and tail sentinels to avoid null checks, and evict the node before the tail sentinel when over capacity, for true O(1) get and put."
 status: draft
 source_refs: [devto-xai]
 sources:

@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "238. Product of Array Except Self"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Each answer is a product of everything to the left times everything to the right, so division can be avoided entirely."
+  - "Do a left-to-right pass accumulating prefix products and a right-to-left pass accumulating suffix products, multiplying them into the output."
+  - "Both passes can be folded into the output array itself, giving O(n) time and O(1) extra space."
 status: draft
 answer:
   approach: >

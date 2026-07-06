@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "295. Find Median from Data Stream"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "The median only depends on the boundary between the lower and upper halves of the data."
+  - "Keep a max-heap for the smaller half and a min-heap for the larger half, rebalancing after each insert so the sizes differ by at most one."
+  - "This gives O(log n) inserts and O(1) median lookup from the two heap tops."
 status: draft
 answer:
   approach: >

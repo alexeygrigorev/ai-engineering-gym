@@ -1,0 +1,73 @@
+id: agents-sandbox-tool-execution
+category: theory
+skill: agents
+type: knowledge
+question: "How do you sandbox tool execution safely?"
+difficulty: hard
+status: draft
+source_refs: [techeon, reddit-expdevs-agentic]
+sources:
+  - title: "ARMO — AI Agent Sandboxing & Progressive Enforcement Guide"
+    url: "https://www.armosec.io/blog/ai-agent-sandboxing-progressive-enforcement-guide/"
+    supports: "default-deny filesystem/network policies, least privilege, and layered escape prevention for agent execution"
+  - title: "Northflank — Best code execution sandbox for AI agents (2026)"
+    url: "https://northflank.com/blog/best-code-execution-sandbox-for-ai-agents"
+    supports: "containers vs. microVMs vs. userspace kernels (gVisor/Kata/Firecracker); standard containers share the host kernel"
+  - title: "OpenAI — A Practical Guide to Building Agents (PDF)"
+    url: "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf"
+    supports: "risk-rate tools and require human approval for high-impact actions"
+
+answer:
+  short: >
+    Never run untrusted or LLM-generated code (or high-impact tools) on the host.
+    Isolate execution in a strong sandbox — a container hardened with a userspace
+    kernel (gVisor/Kata) or, better, a microVM (Firecracker/E2B) — because standard
+    containers share the host kernel, so one runtime bug can compromise the host.
+    Apply least privilege: default-deny network and filesystem, allowlist only the
+    egress the tool needs, and hand it scoped, short-lived, revocable credentials.
+    Bound resources with CPU/memory/time quotas and kill switches. Make sandboxes
+    ephemeral — a fresh, disposable environment per run with no persistent secrets.
+    Risk-rate tools and require human approval for high-impact actions (write, spend,
+    delete), and log every action for audit.
+  key_points:
+    - "Isolate: run untrusted/generated code in containers hardened by userspace kernels (gVisor/Kata) or microVMs (Firecracker/E2B), not on the host"
+    - "Standard containers share the host kernel — a single runtime CVE can escape to the host, so prefer stronger isolation"
+    - "Least privilege: default-deny network + filesystem, allowlist egress, scoped short-lived revocable credentials"
+    - "Resource limits: CPU/memory/time quotas and kill switches to bound runaway or abusive execution"
+    - "Ephemeral, disposable envs per run; risk-rate tools, require human approval for high-impact actions, and log everything"
+
+hints:
+  - "Ask where the code runs — is anything untrusted touching the host machine?"
+  - "Think in terms of isolation strength: plain container vs. microVM vs. userspace kernel."
+  - "Beyond isolation, what privileges, resources, and lifetime should the sandbox have?"
+
+follow_ups:
+  - "Why isn't a plain Docker container enough for untrusted code?"
+  - "How do you scope credentials so a compromised tool can't do much?"
+  - "Which tool actions warrant a human approval step?"
+  - "How does sandboxing relate to prompt-injection defense?"
+
+exercises:
+  - kind: mcq
+    stem: "Why is a standard container often insufficient for running untrusted, LLM-generated code?"
+    options:
+      - { text: "It shares the host kernel, so one runtime vulnerability can escape to the host", correct: true }
+      - { text: "It cannot run Python" }
+      - { text: "It has no filesystem" }
+      - { text: "It is slower than running on the host" }
+    explain: "Containers share the host kernel; stronger isolation (microVMs, userspace kernels) shrinks the escape surface."
+
+  - kind: mcq
+    stem: "Which combination best reflects least-privilege sandboxing?"
+    options:
+      - { text: "Default-deny network/filesystem, allowlist egress, and scoped short-lived credentials", correct: true }
+      - { text: "Full network access and the host's root credentials for convenience" }
+      - { text: "A long-lived shared secret reused across all runs" }
+      - { text: "No resource limits so tasks never fail" }
+    explain: "Least privilege means denying by default, allowlisting only what's needed, and using scoped, revocable, short-lived credentials."
+
+  - kind: recall
+    front: "List the layers of a safe tool-execution sandbox."
+    back: "Strong isolation (microVM/userspace kernel, not the host), least-privilege default-deny network/filesystem with scoped short-lived credentials, resource quotas + kill switches, ephemeral per-run envs, and human approval + logging for high-impact actions."
+
+  - kind: explain

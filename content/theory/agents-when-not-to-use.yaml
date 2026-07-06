@@ -1,0 +1,72 @@
+id: agents-when-not-to-use
+category: theory
+skill: agents
+type: knowledge
+question: "When is an agent the wrong solution?"
+difficulty: medium
+status: draft
+source_refs: [techeon, reddit-csuk-agents]
+sources:
+  - title: "Anthropic — Building Effective AI Agents"
+    url: "https://www.anthropic.com/research/building-effective-agents"
+    supports: "find the simplest solution possible; reserve agents for cases where you can't hardcode the path but can verify progress"
+  - title: "OpenAI — A Practical Guide to Building Agents (PDF)"
+    url: "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf"
+    supports: "agents suit open-ended tasks; deterministic, well-defined flows are better as workflows"
+  - title: "Chip Huyen — Agents"
+    url: "https://huyenchip.com/2025/01/07/agents.html"
+    supports: "agent effectiveness and failure modes tied to planning/tool complexity and step efficiency"
+
+answer:
+  short: >
+    An agent is the wrong tool when the task has a known, fixed path — a
+    deterministic workflow or pipeline is more predictable, cheaper, and easier to
+    test and debug. Agents are also wrong when error tolerance is low: reliability
+    doesn't average across steps, it multiplies, so one early mistake propagates
+    downstream. And they're wrong when cost or latency is tight, because each
+    autonomous turn re-calls a large model — the same task can cost several times a
+    plain workflow. Anthropic's rule of thumb: use the simplest thing that passes
+    your eval, and reserve agents for open-ended tasks where you can't hardcode the
+    path but can still verify progress.
+  key_points:
+    - "Known, fixed path → use a workflow/pipeline: more predictable, cheaper, easier to test"
+    - "Low error tolerance → agents are risky: reliability multiplies across steps, early mistakes propagate"
+    - "Cost/latency-sensitive → each autonomous turn re-calls a large model (can be several× a plain workflow)"
+    - "Anthropic: use the simplest solution that passes eval; add autonomy only when needed"
+    - "Reserve agents for open-ended tasks you can't hardcode but can still verify progress on"
+
+hints:
+  - "Ask whether you could write down the exact steps in advance — if yes, do you even need an agent?"
+  - "Think about how errors compound when each step feeds the next."
+  - "Weigh the cost of re-calling a large model at every decision point."
+
+follow_ups:
+  - "What's a concrete task where a workflow beats an agent?"
+  - "How do you decide where on the workflow→agent spectrum to sit?"
+  - "How does multiplying (not averaging) reliability change your design?"
+  - "How would you justify not building an agent to a stakeholder who wants one?"
+
+exercises:
+  - kind: mcq
+    stem: "Which situation most argues AGAINST using an agent?"
+    options:
+      - { text: "The task has a known, fixed sequence of steps and low error tolerance", correct: true }
+      - { text: "The task is open-ended and can't be scripted in advance" }
+      - { text: "You can verify progress but not hardcode the path" }
+      - { text: "The path changes unpredictably with each input" }
+    explain: "A known fixed path with low error tolerance is exactly where a deterministic workflow wins; the others favor agents."
+
+  - kind: mcq
+    stem: "Why does step count matter for agent reliability?"
+    options:
+      - { text: "Errors multiply across steps — each step's output feeds the next, so one early mistake propagates", correct: true }
+      - { text: "More steps always make the model more accurate" }
+      - { text: "Reliability averages out over many steps" }
+      - { text: "Latency is unaffected by the number of steps" }
+    explain: "Agent reliability multiplies rather than averages; an early error poisons everything downstream."
+
+  - kind: recall
+    front: "Give Anthropic's rule of thumb for when to reach for an agent."
+    back: "Use the simplest solution that passes your eval; reserve agents for open-ended tasks where you can't hardcode the path but can still verify progress."
+
+  - kind: explain

@@ -1,0 +1,43 @@
+id: olx-architecture-walkthrough
+category: project-deep-dive
+skill: olx
+type: rehearsal
+your_project: olx
+question: "Walk me through your OLX project end-to-end — what problem it solved and how the system fits together."
+difficulty: easy
+status: draft
+source_refs: [fonzi-ai, exponent-openai, hello-interview]
+sources:
+  - title: "Fonzi AI — What I've learned from sitting in on 50 AI-engineer interviews"
+    url: "https://medium.com/fonzi-ai/what-ive-learned-from-sitting-in-on-50-ai-engineer-interviews-c493696453c4"
+    supports: "open with the business problem and your actual role; frame around impact, not tool names"
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "narrative progression: business problem -> solution -> key decisions -> problems -> outcome; be ready to go multiple levels deep"
+
+probes:
+  - "What business problem were you solving, and who was the customer/user?"
+  - "What was your actual role — what did you personally build versus the team?"
+  - "Trace one request/item through the system from input to output."
+  - "Where are the boundaries between components, and where does the core logic/model live?"
+  - "Which component was the riskiest, and why?"
+
+rubric:
+  - "Architecture is clear: names the components and how a request/item flows end-to-end"
+  - "Frames around the business problem and impact first, not a list of tools"
+  - "Makes the candidate's own ownership and role explicit"
+  - "Can go one level deeper on any component when probed"
+  - "Cites at least one concrete metric (users/items served, latency, accuracy, revenue impact)"
+
+hints:
+  - "Start with the problem and the user before any technology — what breaks if this doesn't exist?"
+  - "Trace a single request/item from input to output; name each hop."
+  - "End on the outcome with a number, not a tool list."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real OLX project details at runtime.
+  1. Business problem: who was affected and why the old way fell short.
+  2. Solution at a high level: the end-to-end shape of the system.
+  3. Request/item trace: input -> core processing/model -> output.
+  4. Your role: the pieces you personally owned and decided.
+  5. Outcome: one metric that shows it worked.

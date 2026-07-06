@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "207. Course Schedule"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Model prerequisites as a directed graph and ask whether that graph contains a cycle."
+  - "Run DFS marking nodes as currently being visited versus fully finished; reaching a node still marked as being visited means you found a back edge."
+  - "Detecting any such cycle runs in O(V + E) time and means the schedule is infeasible."
 status: draft
 answer:
   approach: >

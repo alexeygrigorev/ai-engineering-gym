@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "10. Regular Expression Matching"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Solve match(s, p) recursively, treating '.' as any single character and '*' as zero-or-more copies of the element before it."
+  - "When the pattern's second character is '*', branch into two cases: skip the starred element entirely (zero occurrences), or consume one matching character from s and retry with the same pattern (one-or-more)."
+  - "Plain recursion is exponential in the worst case; memoizing on the (s, p) positions brings it down to an O(n*m) DP."
 status: draft
 answer:
   approach: >

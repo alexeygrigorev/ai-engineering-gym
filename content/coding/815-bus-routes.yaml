@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "815. Bus Routes"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Think of buses, not stops, as the nodes of the graph you should search over."
+  - "Build an index from stop to buses, connect any two buses that share a stop, and add artificial start and end nodes linked to the buses serving S and T."
+  - "A BFS over this bus graph gives the minimum number of buses as the path length minus the two artificial nodes."
 status: draft
 answer:
   approach: >

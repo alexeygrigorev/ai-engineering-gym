@@ -1,0 +1,45 @@
+id: dataops-hardest-tradeoff
+category: project-deep-dive
+skill: dataops
+type: rehearsal
+your_project: dataops
+question: "What was the hardest technical trade-off you made on the DataOps project, and are you still comfortable with it?"
+difficulty: hard
+status: draft
+source_refs: [exponent-openai, hello-interview, prachub-anthropic]
+sources:
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "name the most challenging technical decision and how you made it; explain the 'why', not just the choice"
+  - title: "Hello Interview — OpenAI L5 guide"
+    url: "https://www.hellointerview.com/guides/openai/l5"
+    supports: "state the trade-offs made and whether you'd still make them; handle different requirement/scale constraints"
+  - title: "Prachub — Anthropic behavioral & leadership"
+    url: "https://prachub.com/companies/anthropic/categories/behavioral-and-leadership"
+    supports: "are you still comfortable with the trade-offs; how you communicated the decision to stakeholders"
+
+probes:
+  - "What alternatives did you weigh — e.g. batch vs streaming, ELT vs ETL, managed vs self-hosted?"
+  - "What did that choice cost you — latency, complexity, cost, data freshness?"
+  - "How did you decide? Data, prototype, or judgment call?"
+  - "Are you still comfortable with it today? What would change your mind?"
+  - "How did you explain the decision to data consumers or stakeholders?"
+
+rubric:
+  - "Names a concrete, specific trade-off (not a generic 'speed vs quality')"
+  - "Explains the 'why' behind the decision and the alternative that was rejected"
+  - "Quantifies the cost/benefit with a metric where possible (latency, cost, SLA)"
+  - "Shows honest self-assessment: still comfortable, or would revisit, and why"
+  - "Demonstrates the candidate drove the decision, not just executed it"
+
+hints:
+  - "Pick ONE real fork — batch vs streaming, schema-on-read vs write, build vs buy."
+  - "Say what you gave up, with a number attached."
+  - "Close with whether you'd still make the same call and what would flip it."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real trade-off at runtime.
+  1. The fork: two viable options and the constraint forcing a choice.
+  2. The decision + the 'why': what you optimized for and what you sacrificed.
+  3. Evidence: the number/prototype that justified it.
+  4. Reflection: still comfortable? what signal would make you revisit?

@@ -1,0 +1,56 @@
+id: project-unfeasible-midway
+category: behavioral
+skill: ambiguity
+type: rehearsal
+question: "What would you do if, midway through a project, you realized it was unfeasible? Tell me about a time this happened."
+difficulty: hard
+status: draft
+source_refs: [linkjob-anthropic]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Have Backbone; Deliver Results)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "the courage to challenge a doomed plan and redirect toward what delivers value"
+  - title: "Big Interview — Behavioral Interview Questions and Answers"
+    url: "https://resources.biginterview.com/behavioral-interviews/"
+    supports: "show judgment: recognizing a dead end early and pivoting responsibly"
+
+probes:
+  - "How did you conclude it was actually unfeasible versus just hard?"
+  - "What evidence did you gather before making that call?"
+  - "How did you deliver that news, and to whom?"
+  - "What alternatives did you propose?"
+  - "How did you avoid sunk-cost thinking?"
+  - "What was salvaged, and what did you learn about killing or pivoting projects?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation is a project that hit a real feasibility wall (data unavailable, quality bar unreachable, cost prohibitive)"
+  - "Shows rigor in confirming infeasibility rather than giving up early"
+  - "Action centers on YOUR judgment: gathering evidence, raising it, proposing a pivot or graceful stop"
+  - "Demonstrates courage and stakeholder communication — you didn't hide the bad news"
+  - "Result: value salvaged (pivot, learnings, resources redirected), not just 'we cancelled it'"
+  - "Reflection on avoiding sunk cost and validating feasibility earlier"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A project that, partway in, showed it couldn't meet its goal (e.g.
+     the model couldn't reach the required accuracy, or the data didn't exist).
+  T (Task): What you owned — make the right call and protect the org's time.
+  A (Action): The concrete steps YOU took — validated the wall with evidence,
+     surfaced it early, proposed alternatives (pivot, reduced scope, or stop),
+     redirected the effort.
+  R (Result): What was salvaged and the outcome, plus a one-line lesson on feasibility
+     checks and avoiding sunk-cost traps.
+
+hints:
+  - "Prove the wall was real — show the evidence, not just a gut feeling."
+  - "Emphasize the courage to raise it early and propose a path forward, not just stop."
+  - "Salvage something (learnings, a pivot) so the story ends on judgment, not defeat."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

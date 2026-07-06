@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "7. Reverse Integer"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Work on the absolute value and peel off digits one at a time using mod and integer division by 10."
+  - "Rebuild the reversed number by repeatedly multiplying the accumulator by 10 and adding the next digit, then restore the original sign at the end."
+  - "Guard against 32-bit overflow by checking after each step that dividing the accumulator back by the same power of ten still returns the digit you just added; return 0 if not."
 status: draft
 answer:
   approach: >

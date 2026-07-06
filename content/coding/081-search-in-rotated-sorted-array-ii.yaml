@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "81. Search in Rotated Sorted Array II"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "The array is still two sorted halves around a rotation point, like the version without duplicates, but duplicates can hide which half is actually sorted."
+  - "When the boundary values are equal, shrink the search window from one side until they differ, then run the usual rotated binary search."
+  - "This handles duplicates correctly but degrades to O(n) time in the worst case."
 status: draft
 answer:
   approach: >

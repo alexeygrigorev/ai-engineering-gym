@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "147. Insertion Sort List"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Build the sorted result incrementally, keeping in mind a linked list cannot be indexed like an array."
+  - "Repeatedly scan the unsorted remainder for the current minimum, unlink it, and attach it to the front of the growing sorted portion."
+  - "This selection-sort-over-a-list approach runs in O(n^2) time and O(1) extra space."
 status: draft
 answer:
   approach: >

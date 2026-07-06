@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "152. Maximum Product Subarray"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Negative numbers mean the maximum product ending at a position might actually come from the smallest product at the previous position."
+  - "Track both a running maximum and a running minimum product ending at each index, updating both with the current element."
+  - "Combine the current element with the previous max and min to get the next max and min in O(n) time, O(1) space."
 status: draft
 answer:
   approach: >

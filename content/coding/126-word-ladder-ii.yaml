@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "126. Word Ladder II"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Bucket words by wildcard patterns, replacing one position with a placeholder, so words one letter apart share a bucket and form an implicit graph."
+  - "Run BFS from beginWord but record every predecessor that reaches a word at the shortest distance, not just the first one found."
+  - "DFS backward from endWord through the recorded parent links to reconstruct all shortest paths, after an O(N * L^2) graph build."
 status: draft
 answer:
   approach: >

@@ -17,8 +17,6 @@ sources:
     url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
     supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
 
-prompt: "Tell me about a time you had a conflict with a teammate."
-
 probes:
   - "What did you do differently from the other person, specifically?"
   - "How did you decide when to raise it versus let it go?"
@@ -40,7 +38,7 @@ rubric:
   - "Result is positive and quantified where possible (shipped on time, hours saved, relationship preserved)"
   - "Ends with a reflection: what you learned or would do differently"
 
-example: |
+example_structure: |
   # Optional model STRUCTURE only — NOT a real personal story. Fill with your own.
   S (Situation): Set the scene — the project, the two of you, and the specific
      technical or process disagreement (e.g. two approaches to hitting a deadline).

@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "98. Validate Binary Search Tree"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Recall that visiting a binary search tree in-order produces its values in sorted order."
+  - "Traverse the tree in-order and compare each value to the one visited right before it."
+  - "A single O(n) pass checking for strictly increasing values confirms validity."
 status: draft
 answer:
   approach: >

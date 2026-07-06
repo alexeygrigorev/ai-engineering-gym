@@ -75,6 +75,11 @@ class ContentBase(BaseModel):
     # progressive hints for the Anki-style recall flow: shown one at a time before
     # the answer is revealed ("think about X" → "now consider Y" → …).
     hints: list[str] = Field(default_factory=list)
+    tags: list[str] = Field(default_factory=list)
+    # Is this actually asked in AI-engineering interviews? Generic DSA from the old
+    # leetcode repo is mostly False; field-guide-sourced coding is True. Drives which
+    # coding questions surface first. None = untriaged.
+    ai_relevant: Optional[bool] = None
     source_refs: list[str] = Field(default_factory=list)
     sources: list[Source] = Field(default_factory=list)
 
@@ -190,14 +195,14 @@ class CodingAnswer(BaseModel):
     approach: Optional[str] = None
     pseudocode: Optional[str] = None
     complexity: Optional[Complexity] = None
-    # implementation subtype
+    # implementation subtype (extension_points may be plain strings or {level, ...} objects)
     design_approach: Optional[str] = None
-    extension_points: list[str] = Field(default_factory=list)
+    extension_points: list[Union[str, dict]] = Field(default_factory=list)
 
 
 class Coding(ContentBase):
     type: Literal["coding"] = "coding"
-    subtype: Literal["algorithm", "implementation"] = "algorithm"
+    subtype: Literal["algorithm", "implementation", "ml-coding"] = "algorithm"
     # display field is the inherited `question` (the problem statement)
     answer: CodingAnswer
     follow_ups: list[str] = Field(default_factory=list)

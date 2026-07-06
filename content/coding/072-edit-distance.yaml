@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "72. Edit Distance"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Think about building a table where each cell represents the edit distance between a prefix of one string and a prefix of the other."
+  - "Each cell's value comes from the best of three neighboring cells, representing a substitution, a deletion, and an insertion."
+  - "Fill the table bottom-up in O(n1 * n2) time and space, seeding the first row and column with 0, 1, 2, ..."
 status: draft
 answer:
   approach: >

@@ -1,0 +1,89 @@
+id: eval-detect-mitigate-hallucinations
+category: theory
+skill: evaluation
+type: knowledge
+question: "How do you detect and mitigate hallucinations?"
+difficulty: medium
+status: draft
+source_refs: [process-analysis, reddit-ai-eng-questions, reddit-genai-consulting, hn-41541053, hn-46873753, system-design-handbook, interviewnode]
+sources:
+  - key: nlg-survey
+    title: "Ji et al. — Survey of Hallucination in Natural Language Generation (arXiv:2202.03629)"
+    url: "https://arxiv.org/abs/2202.03629"
+    supports: "canonical definitions — intrinsic vs extrinsic hallucination, and faithfulness vs factuality"
+  - key: selfcheckgpt
+    title: "Manakul et al. — SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection (arXiv:2303.08896)"
+    url: "https://arxiv.org/abs/2303.08896"
+    supports: "self-consistency detection — sample multiple responses; hallucinated facts diverge, factual ones stay consistent"
+  - key: anthropic-reduce-halluc
+    title: "Anthropic — Reduce hallucinations (Claude docs)"
+    url: "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+    supports: "practical mitigations — allow 'I don't know', ground with direct quotes, cite sources, best-of-N verification, restrict to provided context"
+  - key: halluc-survey-2
+    title: "Huang et al. — A Survey on Hallucination in LLMs: Principles, Taxonomy, Challenges (arXiv:2311.05232)"
+    url: "https://arxiv.org/abs/2311.05232"
+    supports: "detection + mitigation taxonomy — RAG grounding, decoding strategies, uncertainty, fine-tuning"
+
+answer:
+  short: >
+    First define what you mean: intrinsic hallucination contradicts the source, extrinsic
+    can't be verified against it; faithfulness means grounded in the provided context,
+    factuality means true about the world — and they need different tests. Detection is a
+    portfolio, not one tool: an LLM-as-judge / faithfulness score, NLI entailment of each
+    claim against evidence, self-consistency sampling (SelfCheckGPT — sample N and check
+    the facts agree), retrieval-grounded groundedness checks, and cheap token-level
+    uncertainty flags from log-probs or entropy. The highest-leverage mitigation is
+    grounding: RAG puts facts in the prompt so the model conditions on evidence instead
+    of recalling from weights, and requiring inline citations makes every claim auditable.
+    Add prompt and decoding controls (explicitly permit "I don't know", instruct
+    "use only the provided context", lower temperature), an output-side verification pass
+    that vetoes ungrounded claims, and human review for high-stakes outputs. Fine-tuning
+    helps but nothing fully eliminates hallucination — so measure the residual rate with
+    an eval set.
+  key_points:
+    - "Distinguish intrinsic (contradicts source) from extrinsic (unverifiable) hallucination, and faithfulness (grounded) from factuality (true) — they need different tests"
+    - "Detection is a portfolio: LLM-as-judge/faithfulness scoring, NLI entailment of claims, self-consistency sampling (SelfCheckGPT), groundedness checks, log-prob/entropy uncertainty"
+    - "Grounding is the highest-leverage mitigation: RAG conditions the answer on retrieved evidence rather than parametric recall"
+    - "Require inline citations so every claim is auditable and retractable"
+    - "Prompt/decoding controls: allow 'I don't know', restrict to provided context, extract verbatim quotes, lower temperature"
+    - "Add an output-side verification pass and human-in-the-loop for high-stakes outputs; fine-tuning helps but never fully eliminates it — measure the residual rate"
+
+follow_ups:
+  - "How would you build an automated eval to measure hallucination rate before/after a mitigation, and what's your ground truth?"
+  - "The LLM-as-judge is itself an LLM — how do you keep the judge from hallucinating, and calibrate it against human labels?"
+  - "When is token-level uncertainty a reliable hallucination signal, and when does it fail (e.g. confidently wrong on memorized-but-false facts)?"
+
+exercises:
+  - kind: mcq
+    stem: "What is the difference between faithfulness and factuality?"
+    options:
+      - { text: "Faithfulness = grounded in the provided context; factuality = true about the world", correct: true }
+      - { text: "They are two names for the same metric" }
+      - { text: "Faithfulness applies only to code, factuality only to text" }
+      - { text: "Factuality measures latency; faithfulness measures cost" }
+    explain: "An answer can be faithful to a wrong source (grounded but not factual) or factual but not grounded in the given context — different failure modes."
+
+  - kind: mcq
+    stem: "How does SelfCheckGPT detect hallucinations without an external knowledge base?"
+    options:
+      - { text: "It samples multiple responses and checks whether the facts stay consistent across them", correct: true }
+      - { text: "It queries a search engine for every claim" }
+      - { text: "It fine-tunes the model on the fly" }
+      - { text: "It counts the number of tokens in the answer" }
+    explain: "Self-consistency sampling assumes factual content is stable across samples while hallucinations diverge/contradict — a zero-resource, black-box signal."
+
+  - kind: order
+    prompt: "Order a hallucination detect-and-mitigate workflow, from grounding to sign-off"
+    steps:
+      - "Ground the answer with RAG-retrieved evidence"
+      - "Require inline citations for each claim"
+      - "Run a faithfulness / NLI entailment check on the output"
+      - "Flag low-confidence or ungrounded claims for review"
+      - "Measure the residual hallucination rate on an eval set"
+
+  - kind: fill
+    template: "A hallucination that contradicts the source is {0}; one that can't be verified against the source is {1}."
+    blanks: ["intrinsic", "extrinsic"]
+    chips: ["intrinsic", "extrinsic", "factual", "faithful"]
+
+  - kind: explain

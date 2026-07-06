@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "1. Two Sum"
 difficulty: easy
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "A hash map lets you check for a needed value in O(1) as you scan."
+  - "For each element a, look for its complement target - a among values seen so far."
+  - "One linear pass storing value->index gets you O(n) time, O(n) space."
 status: draft
 answer:
   approach: >

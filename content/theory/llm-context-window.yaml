@@ -1,0 +1,93 @@
+id: llm-context-window
+category: theory
+skill: llm-practice
+type: knowledge
+question: "What is the context window and what happens when you exceed it? How do you handle long documents?"
+difficulty: medium
+status: draft
+source_refs: [fahd-mirza, exponent-openai-ml, hn-46319888, llmgenai]
+sources:
+  - title: "IBM — What is a context window?"
+    url: "https://www.ibm.com/think/topics/context-window"
+    supports: "definition: max tokens (input + output) an LLM can consider at once; its working memory; must truncate/summarize when exceeded"
+  - title: "Agenta — Top techniques to manage context length in LLMs"
+    url: "https://agenta.ai/blog/top-6-techniques-to-manage-context-length-in-llms"
+    supports: "truncation, summarization, chunking, and RAG as strategies for handling inputs beyond the window"
+  - title: "IBM Research — Why larger LLM context windows are all the rage"
+    url: "https://research.ibm.com/blog/larger-context-window"
+    supports: "larger windows help but attention cost grows and models still degrade / lose info in the middle"
+
+answer:
+  short: >
+    The context window is the maximum amount of text — measured in tokens — that an
+    LLM can attend to at once, covering both the input (prompt, system message, history,
+    retrieved docs) and the tokens it generates. It's the model's working memory: nothing
+    outside it exists to the model. When you exceed it, one of a few things happens
+    depending on the tool: the API returns an error, or the input is silently truncated
+    (usually dropping the oldest tokens), so the model loses earlier instructions or
+    context and quality degrades. Even below the hard limit, very long contexts suffer
+    "lost in the middle" — the model attends best to the start and end and can miss facts
+    buried in the middle, and attention cost grows roughly quadratically. To handle long
+    documents you don't just cram everything in: (1) chunk and use RAG to retrieve only
+    the relevant passages at query time; (2) summarize or compress — hierarchically /
+    map-reduce for very long docs; (3) truncate deliberately, keeping the parts that
+    matter; (4) roll up conversation history into a running summary. RAG is the default
+    for corpora far larger than any window.
+  key_points:
+    - "Context window = max tokens the model can process at once, spanning input + output"
+    - "It is the model's working memory; anything outside it is invisible to the model"
+    - "Exceed it → API error or silent truncation (oldest tokens dropped), losing earlier context and degrading quality"
+    - "Even within the limit, long context degrades: 'lost in the middle', higher latency/cost (attention scales ~quadratically)"
+    - "Handle long docs with RAG (chunk + retrieve only relevant parts) — the default when the corpus exceeds any window"
+    - "Also: summarize/compress (hierarchical/map-reduce), deliberate truncation, and rolling conversation summaries"
+
+follow_ups:
+  - "Why does a 1M-token window not make RAG obsolete?"
+  - "What is the 'lost in the middle' problem and how do you mitigate it?"
+  - "How do you decide chunk size and overlap when splitting a long document?"
+  - "How do you manage a long multi-turn conversation that keeps growing past the window?"
+
+hints:
+  - "Think of it as the model's working memory measured in a specific unit — what unit, and what does it include besides the prompt?"
+  - "Two different failure modes when you go over: a hard one from the API and a quiet one from the tooling. And even under the limit, position matters."
+  - "It's the max tokens (input + output) the model attends to. Exceed it → error or silent truncation; even below it, 'lost in the middle' hurts. Handle long docs with RAG, summarization/compression, and deliberate truncation."
+
+exercises:
+  - kind: mcq
+    stem: "What does the context window measure?"
+    options:
+      - { text: "The maximum number of tokens (input + output) the model can consider at once", correct: true }
+      - { text: "The number of parameters (weights) in the model" }
+      - { text: "How many documents are stored in the vector database" }
+      - { text: "The model's maximum requests per minute" }
+    explain: "The context window is a token budget covering prompt, history, retrieved context, and generated output — the model's working memory. It's unrelated to parameter count or rate limits."
+
+  - kind: mcq
+    stem: "A user pastes a document longer than the model's context window. What is a common consequence?"
+    options:
+      - { text: "The input is truncated (or the API errors), so earlier content is dropped and quality degrades", correct: true }
+      - { text: "The model automatically grows its window to fit the document" }
+      - { text: "The extra tokens are stored as long-term memory for future calls" }
+      - { text: "Nothing changes; models handle any length equally well" }
+    explain: "Beyond the limit you get an error or silent truncation (usually of the oldest tokens), so instructions or context get lost. Models don't auto-expand the window or persist overflow."
+
+  - kind: order
+    prompt: "Order a RAG-style pipeline for answering questions over documents too large for the context window"
+    steps:
+      - "Chunk the documents into passages"
+      - "Embed and index the chunks"
+      - "Embed the user query"
+      - "Retrieve only the top-k relevant chunks"
+      - "Fit those chunks into the context window"
+      - "Generate a grounded answer"
+
+  - kind: fill
+    template: "The context window is measured in {0}; when input exceeds it, the tooling typically {1} the oldest content."
+    blanks: ["tokens", "truncates"]
+    chips: ["tokens", "truncates", "parameters", "caches"]
+
+  - kind: recall
+    front: "Name three ways to handle documents that exceed the context window."
+    back: "RAG (chunk + retrieve only relevant passages), summarization/compression (e.g. hierarchical/map-reduce), and deliberate truncation that keeps the important parts. For growing chats, roll history into a running summary."
+
+  - kind: explain

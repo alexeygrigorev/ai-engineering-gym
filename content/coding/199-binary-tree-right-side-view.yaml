@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "199. Binary Tree Right Side View"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "The rightmost visible node at each depth is simply the last node encountered at that depth during a traversal."
+  - "Do a DFS visiting left before right (or a level-order traversal) while tracking depth, recording values per level."
+  - "Return the last value stored at each level, in O(n) time."
 status: draft
 answer:
   approach: >

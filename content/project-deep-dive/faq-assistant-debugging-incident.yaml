@@ -1,0 +1,43 @@
+id: faq-assistant-debugging-incident
+category: project-deep-dive
+skill: faq-assistant
+type: rehearsal
+your_project: faq-assistant
+question: "Tell me about a bug or production incident on the FAQ Assistant — how did you notice it, debug it, and fix it?"
+difficulty: hard
+status: draft
+source_refs: [linkjob-anthropic, exponent-openai]
+sources:
+  - title: "LinkJob — Anthropic software engineer interview"
+    url: "https://www.linkjob.ai/interview-questions/anthropic-software-engineer-interview/"
+    supports: "how you debug production issues; monitoring and data-quality handling"
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "what went wrong, what was harder than expected, and how you went multiple levels deep to fix it"
+
+probes:
+  - "How did you first notice something was wrong — alert, user report, or metric?"
+  - "What was your hypothesis, and how did you isolate the root cause?"
+  - "Was it a retrieval problem, a prompt problem, a data problem, or infra?"
+  - "What was the fix, and how did you verify it actually worked?"
+  - "What did you add afterward so it wouldn't happen silently again?"
+
+rubric:
+  - "Concrete incident with a clear symptom, not a hypothetical"
+  - "Shows a structured debugging path: observe -> hypothesize -> isolate -> confirm"
+  - "Goes to real technical depth (which layer failed and why)"
+  - "Fix is verified with evidence/metrics, not assumed"
+  - "Closes the loop: added a test, alert, or guardrail so it recurs visibly, not silently"
+
+hints:
+  - "Anchor on the symptom the user or a metric showed you first."
+  - "Walk the layers: input -> retrieval -> prompt -> model -> output; where did it break?"
+  - "End with the safeguard you added so it can't fail silently again."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real incident at runtime.
+  1. Symptom: what you (or a user/metric) observed.
+  2. Investigation: hypotheses and how you narrowed it down.
+  3. Root cause: the specific layer/data that failed.
+  4. Fix + verification: what you changed and how you proved it worked.
+  5. Prevention: the test/alert/guardrail you added.

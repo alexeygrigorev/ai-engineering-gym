@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "204. Count Primes"
 difficulty: medium
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "Instead of testing each number for primality individually, mark composite numbers in bulk."
+  - "Use the Sieve of Eratosthenes: walk upward, and whenever a number is still marked prime, cross out all of its multiples as composite."
+  - "Striking multiples rather than checking each number individually gives O(n log log n) time."
 status: draft
 answer:
   approach: >

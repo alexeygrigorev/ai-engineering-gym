@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "45. Jump Game II"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Picture each index as reachable from any earlier index whose jump range covers it, and think of the minimum jumps as a shortest path in this implicit graph."
+  - "Process indices level by level as in BFS, where each level corresponds to one additional jump, marking each index's distance the first time it becomes reachable."
+  - "This BFS-by-levels (equivalently, greedily extending the current reach) gives the minimum jump count in O(n) time and O(n) space."
 status: draft
 answer:
   approach: >

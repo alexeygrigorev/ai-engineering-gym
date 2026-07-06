@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "652. Find Duplicate Subtrees"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Two subtrees are duplicates exactly when their structure and values match completely."
+  - "Give every subtree a canonical signature built from its value and its children's signatures, then group nodes by that signature."
+  - "Any group with more than one member marks a duplicate; using assigned integer ids instead of raw strings brings the cost down from O(n^2) to O(n)."
 status: draft
 answer:
   approach: >

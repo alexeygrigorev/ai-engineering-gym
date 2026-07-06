@@ -1,0 +1,42 @@
+id: olx-design-vs-alternatives
+category: project-deep-dive
+skill: olx
+type: rehearsal
+your_project: olx
+question: "Why did you choose this design and tech stack for the OLX project over the alternatives you considered?"
+difficulty: medium
+status: draft
+source_refs: [exponent-openai, hello-interview]
+sources:
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "why this approach over alternatives; why this stack; decisions and trade-offs beat tool names"
+  - title: "Hello Interview — OpenAI L5 guide"
+    url: "https://www.hellointerview.com/guides/openai/l5"
+    supports: "justify the choice against alternatives and under different constraints"
+
+probes:
+  - "Why this core approach over the obvious alternative for this problem?"
+  - "What alternatives did you seriously evaluate and reject, and on what criteria?"
+  - "Which constraints drove the choice — cost, latency, data, team skills, existing infra?"
+  - "What would have to be true for the alternative to win?"
+  - "Was any part chosen for pragmatism (what you knew/had) rather than pure fit?"
+
+rubric:
+  - "Justifies the design against named, realistic alternatives — not a strawman"
+  - "Reasoning is constraint-driven (cost, latency, maintainability, team), not tool hype"
+  - "Shows the criteria used to compare, not just the conclusion"
+  - "Honest about pragmatic/'what we had' factors where they applied"
+  - "Demonstrates engineering judgment: states when the alternative would have won"
+
+hints:
+  - "Frame it as 'X over Y because constraint Z' — the constraint is the interesting part."
+  - "Give the rejected option a fair hearing, then say what killed it."
+  - "Name the condition under which you'd flip to the alternative."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real rationale at runtime.
+  1. The choice: your design/stack in one line.
+  2. The alternatives you weighed and the comparison criteria.
+  3. The constraint(s) that decided it.
+  4. The condition under which the alternative would win.

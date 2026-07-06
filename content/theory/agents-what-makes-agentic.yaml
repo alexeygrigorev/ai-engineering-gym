@@ -1,0 +1,76 @@
+id: agents-what-makes-agentic
+category: theory
+skill: agents
+type: knowledge
+question: "What makes an AI system agentic?"
+difficulty: easy
+status: draft
+source_refs: [techeon, reddit-ai-agentic, reddit-devsindia-genai, hn-43884713, hn-42431361, x-aryyann8, process-analysis]
+sources:
+  - title: "Anthropic — Building Effective AI Agents"
+    url: "https://www.anthropic.com/research/building-effective-agents"
+    supports: "workflows (LLMs orchestrated through predefined code paths) vs. agents (the LLM dynamically directs its own process and tool use)"
+  - title: "Lilian Weng — LLM Powered Autonomous Agents"
+    url: "https://lilianweng.github.io/posts/2023-06-23-agent/"
+    supports: "an agent is an LLM 'brain' plus planning, memory, and tool use acting toward a goal"
+  - title: "Google Cloud — What are AI agents?"
+    url: "https://cloud.google.com/discover/what-are-ai-agents"
+    supports: "agents perceive the environment, reason/plan, and take actions through tools, rather than answering a single prompt"
+
+answer:
+  short: >
+    An AI system is agentic when the LLM itself drives the control flow — it decides
+    what to do next, which tools to call, and when the task is done — instead of
+    following a fixed, hard-coded path. Anthropic frames it as a spectrum: workflows
+    orchestrate LLMs and tools through predefined code paths, while agents let the
+    model dynamically direct its own process. The hallmarks are autonomy,
+    goal-directedness, tool use to act on the world, and an iterative
+    perceive → reason/plan → act → observe loop that runs until a goal or stop
+    condition is met. Autonomy is what you gain — and predictability is what you trade away.
+  key_points:
+    - "Autonomy: the model chooses the next step and its own tool use, not a fixed script"
+    - "Goal-directed: given an objective it plans and decomposes into subtasks, not one prompt→one answer"
+    - "Tool use: it acts on and senses the environment (APIs, code, databases) and reacts to results"
+    - "Runs in a loop: perceive → reason/plan → act → observe, iterating until done"
+    - "It's a spectrum: workflow (predefined paths) → agent (open-ended, model-driven); autonomy trades away predictability"
+
+hints:
+  - "Ask who is in control of the next step — hard-coded application code, or the LLM itself?"
+  - "Contrast a single prompt→response with something that loops, plans, and calls tools toward a goal."
+  - "Recall Anthropic's workflow-vs-agent distinction and the perceive→reason→act→observe loop."
+
+follow_ups:
+  - "Where exactly is the line between a workflow and an agent?"
+  - "Is a single LLM call with one tool already an agent?"
+  - "What do you give up as you make a system more autonomous?"
+  - "What are the core components an agent needs beyond the LLM?"
+
+exercises:
+  - kind: mcq
+    stem: "What most distinguishes an agentic system from a fixed LLM pipeline?"
+    options:
+      - { text: "The LLM dynamically directs the control flow and its own tool use", correct: true }
+      - { text: "It uses a larger model with a bigger context window" }
+      - { text: "It always retrieves documents before answering" }
+      - { text: "It never calls any external tools" }
+    explain: "Anthropic's definition: agents let the model dynamically direct its own process and tool use, versus workflows that follow predefined code paths."
+
+  - kind: mcq
+    stem: "Which is NOT a hallmark of an agentic system?"
+    options:
+      - { text: "Every step is hard-coded by the developer in advance", correct: true }
+      - { text: "Goal-directed planning and task decomposition" }
+      - { text: "Tool use to act on the environment" }
+      - { text: "An iterative act-then-observe loop" }
+    explain: "Hard-coding every step is a workflow. Agents decide steps at runtime; the other options are agentic hallmarks."
+
+  - kind: order
+    prompt: "Order one turn of an agent's core loop"
+    steps:
+      - "Perceive the current state / user goal"
+      - "Reason and plan the next action"
+      - "Act by calling a tool"
+      - "Observe the tool's result"
+      - "Decide whether the goal is met or loop again"
+
+  - kind: explain

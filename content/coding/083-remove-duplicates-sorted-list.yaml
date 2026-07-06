@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "83. Remove Duplicates from Sorted List"
 difficulty: easy
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "In a sorted list, equal values sit right next to each other, so duplicates can be spotted locally."
+  - "Keep a pointer at the last kept node and unlink any following node whose value matches it."
+  - "One linear, in-place pass gives O(n) time and O(1) space."
 status: draft
 answer:
   approach: >

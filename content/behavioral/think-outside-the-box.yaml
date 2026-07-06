@@ -1,0 +1,56 @@
+id: think-outside-the-box
+category: behavioral
+skill: ownership
+type: rehearsal
+question: "Tell me about a time when you had to think outside the box to complete a task."
+difficulty: medium
+status: draft
+source_refs: [reddit-ai-eng-questions]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Invent and Simplify; Bias for Action)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "finding novel, simpler solutions and acting on unconventional ideas"
+  - title: "The Muse — How to Use the STAR Method to Ace Your Job Interview"
+    url: "https://www.themuse.com/advice/star-interview-method"
+    supports: "keep the Situation brief; make the outcome measurable"
+
+probes:
+  - "Why did the conventional approach not work?"
+  - "Where did the unconventional idea come from?"
+  - "How did you de-risk it before betting on it?"
+  - "How did you get others comfortable with a non-obvious approach?"
+  - "What was the payoff versus the standard path?"
+  - "Would you use the same creative approach again, or was it situational?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation shows a real constraint where the obvious approach was blocked or too costly"
+  - "Task makes clear what had to be achieved"
+  - "Action reveals a genuinely creative/unconventional solution that was YOURS, plus how you validated it"
+  - "Shows the idea was pragmatic and de-risked, not reckless novelty"
+  - "Result quantifies the payoff of the creative approach over the default"
+  - "Reflection on balancing creativity with sound judgment"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A task where the standard approach was blocked (e.g. no labeled
+     data, a hard latency/cost limit, a missing tool).
+  T (Task): What you owned and needed to deliver.
+  A (Action): The concrete steps YOU took — the unconventional idea (e.g. weak
+     supervision, a clever cache, reusing an existing signal), how you validated it
+     cheaply, and how you got buy-in.
+  R (Result): The payoff versus the default path, quantified, plus a one-line
+     lesson on creative-but-grounded problem solving.
+
+hints:
+  - "Establish why the normal path failed — that's what makes the creativity necessary."
+  - "Make the idea concrete and show you de-risked it; creativity plus judgment is the signal."
+  - "Quantify how the unconventional route beat the obvious one."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

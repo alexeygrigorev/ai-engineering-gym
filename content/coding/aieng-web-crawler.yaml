@@ -1,0 +1,76 @@
+id: aieng-web-crawler
+category: coding
+skill: implementation
+type: coding
+subtype: implementation
+question: >
+  Implement a web crawler. Level 1: single-threaded — fetch a page, extract links,
+  follow them, don't revisit. Level 2: add per-host rate limiting / politeness.
+  Level 3: make it concurrent. Design each level so the next builds on it.
+difficulty: hard
+status: draft
+ai_relevant: true
+source_refs: [linkjob-anthropic]
+answer:
+  design_approach: >
+    A progressive round (reported at Anthropic): you start with a correct
+    single-threaded crawler and evolve it under new requirements, so the seams matter
+    more than the first version. Model it as a work queue (frontier of URLs to visit) +
+    a visited set for dedup + a fetch/parse/enqueue loop. The single most important early
+    decision is URL normalization: strip fragments, resolve relative links against the
+    base, lowercase the host, drop default ports, so the visited set actually dedups.
+    Keep fetch, parse, and the frontier as separate components — that separation is what
+    lets you swap the frontier for a rate-limited one (L2) and the loop for a thread pool
+    (L3) without a rewrite. Clarify scope up front (same domain only? max depth? respect
+    robots.txt?). Handle errors and timeouts gracefully with backoff — real pages fail.
+  extension_points:
+    - level: "L1 — single-threaded crawl"
+      approach: >
+        BFS/DFS over a frontier queue. Loop: pop a URL, skip if in visited, fetch it,
+        add to visited, extract and normalize links, enqueue unseen ones. Bound it by
+        max depth or max pages. Normalize URLs before checking the visited set so
+        `example.com/a` and `example.com/a#top` aren't crawled twice. Wrap fetch in
+        try/except with a per-request timeout.
+    - level: "L2 — rate limiting / politeness"
+      approach: >
+        Be polite per host: at most 1 request per host per interval (configurable), and
+        honor Retry-After on 429/503. Track last-fetch time per domain; if a URL's host
+        was hit too recently, defer it (re-enqueue with a ready-at time, or hold a
+        per-host queue). Add exponential backoff with jitter on failures so retries don't
+        synchronize. The key insight: rate limiting is per-host, not global — you can
+        still be fast overall by interleaving many hosts.
+    - level: "L3 — concurrency"
+      approach: >
+        Run N workers (thread pool for I/O-bound fetching, or asyncio) pulling from a
+        shared, thread-safe frontier. The visited set and per-host timers now need
+        synchronization (a lock, or a concurrent structure) to avoid double-crawling and
+        to keep the per-host limit correct under parallelism. Producers (link extractors)
+        and consumers (fetchers) share the queue; use a sentinel or an in-flight counter
+        to know when the crawl is truly done. Per-host caps + a global worker pool give
+        high aggregate throughput while any single site sees at most 1 req/interval.
+  complexity:
+    time: "O(V + E) in pages and links visited; wall-clock bounded by rate limits and worker count"
+    space: "O(V) for the visited set and frontier"
+hints:
+  - "Model it as frontier queue + visited set + a fetch/parse/enqueue loop. Normalize URLs (strip fragments, resolve relative links) before dedup, or the visited set is useless."
+  - "Rate limiting is per-host, not global: track last-fetch time per domain and defer URLs whose host was hit too recently. Honor Retry-After and back off with jitter."
+  - "For concurrency, share a thread-safe frontier across N workers; the visited set and per-host timers now need locking. Track in-flight work so you know when the crawl finishes."
+follow_ups:
+  - "How do you respect robots.txt and crawl-delay?"
+  - "How would you detect and avoid crawler traps (infinite calendars, session-id URLs)?"
+  - "How do you scale the visited set past memory (bloom filter, sharded store)?"
+  - "How would you distribute this across many machines, and how is the frontier partitioned?"
+  - "Thread pool vs. asyncio here — which fits an I/O-bound crawler and why?"
+sources:
+  - key: hello-crawler
+    title: "Hello Interview — Design a Web Crawler"
+    url: "https://www.hellointerview.com/learn/system-design/problem-breakdowns/web-crawler"
+    supports: "frontier + visited set, URL normalization, politeness and dedup"
+  - key: algomaster-crawler
+    title: "AlgoMaster — Design Multithreaded Web Crawler (concurrency interview)"
+    url: "https://algomaster.io/learn/concurrency-interview/design-multithreaded-web-crawler"
+    supports: "thread pool over a shared frontier, synchronized visited set"
+  - key: linkjob-anthropic
+    title: "linkjob — Anthropic Software Engineer Interview"
+    url: "https://www.linkjob.ai/interview-questions/anthropic-software-engineer-interview/"
+    supports: "reported task: implement a website crawler as a progressive round"

@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "68. Text Justification"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Split the problem into two separate steps: first decide which words belong on each line, then decide how to space the words on each line."
+  - "Greedily pack as many words as fit within max_width (counting single spaces) to form each line, then distribute leftover spaces as evenly as possible across the gaps for non-last lines, giving earlier gaps any extra space; the last line and single-word lines are left-justified with trailing padding."
+  - "This two-phase greedy packing plus careful gap arithmetic processes the text in O(total characters) time and space."
 status: draft
 answer:
   approach: >

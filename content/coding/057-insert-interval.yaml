@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "57. Insert Interval"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Because the existing intervals are already sorted and non-overlapping, you can process them in one left-to-right pass relative to the new interval."
+  - "Copy over intervals ending before the new one starts, then merge the new interval with every following interval it overlaps by extending its end, then copy the remaining intervals unchanged."
+  - "This single linear scan inserts and merges the new interval in O(n) time and O(n) space."
 status: draft
 answer:
   approach: >

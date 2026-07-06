@@ -1,0 +1,88 @@
+id: eval-evaluate-rag-pipeline
+category: theory
+skill: evaluation
+type: knowledge
+question: "How do you evaluate a RAG pipeline?"
+difficulty: medium
+status: draft
+source_refs: [mimansa-jaiswal]
+sources:
+  - key: ragas-metrics
+    title: "Ragas — List of available metrics"
+    url: "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/"
+    supports: "metrics split into retrieval (context precision/recall) and generation (faithfulness, response relevancy, factual correctness)"
+  - key: ragas-faithfulness
+    title: "Ragas — Faithfulness"
+    url: "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/"
+    supports: "faithfulness = every claim in the answer is supported by retrieved context, scored 0-1 via claim decomposition"
+  - key: trulens-triad
+    title: "TruLens — The RAG Triad"
+    url: "https://www.trulens.org/getting_started/core_concepts/rag_triad/"
+    supports: "reference-free triad — context relevance, groundedness, answer relevance — the failing leg tells you which component to fix"
+  - key: ragas-paper
+    title: "Es et al. — RAGAS: Automated Evaluation of Retrieval Augmented Generation (arXiv:2309.15217)"
+    url: "https://arxiv.org/abs/2309.15217"
+    supports: "original reference-free RAG evaluation framework (faithfulness, answer relevance, context relevance)"
+
+answer:
+  short: >
+    Evaluate retrieval and generation separately so you can localize failures — a bad
+    answer is either a retrieval problem (the right information wasn't surfaced) or a
+    generation problem (it was surfaced but ignored or hallucinated over). For retrieval,
+    use rank-unaware metrics (hit rate / recall@k, precision) and rank-aware ones (MRR,
+    nDCG), plus LLM-graded context precision (are retrieved chunks relevant) and context
+    recall (does the context contain everything needed). For generation, use faithfulness
+    / groundedness (every claim traceable to context), answer relevance (does it address
+    the question), and answer correctness (matches a reference when you have one). The
+    RAG triad — context relevance, groundedness, answer relevance — is reference-free, so
+    it runs both offline in CI and on live production traffic; the failing leg points at
+    the component to fix. Build a golden dataset of {question, ground-truth context,
+    reference answer}, and do component eval (unit-test the retriever with IR metrics)
+    alongside end-to-end eval so improving one stage doesn't silently regress the whole
+    pipeline.
+  key_points:
+    - "Evaluate retrieval and generation separately so you can localize whether a bad answer is a retrieval or a generation failure"
+    - "Retrieval metrics: rank-unaware (recall@k / hit rate, precision) and rank-aware (MRR, nDCG), plus context precision and context recall"
+    - "Generation metrics: faithfulness/groundedness, answer relevance, and answer correctness (when a reference exists)"
+    - "The RAG triad (context relevance, groundedness, answer relevance) is reference-free, so it runs offline and on live traffic; the failing leg points at the fix"
+    - "Build a golden dataset of {question, ground-truth context/chunks, reference answer}; reference-based metrics need it, triad metrics don't"
+    - "Do component eval (unit-test the retriever in isolation) AND end-to-end eval to catch both regressions and interaction effects"
+
+follow_ups:
+  - "End-to-end answer quality is low but faithfulness is high — how do you diagnose whether it's retrieval or the question set?"
+  - "How do you construct a golden dataset for RAG, and how do you handle questions with multiple valid supporting chunks?"
+  - "Faithfulness and answer-relevance are both LLM-judged — how do you validate that the judge itself is trustworthy?"
+
+exercises:
+  - kind: mcq
+    stem: "Why evaluate retrieval and generation separately in a RAG pipeline?"
+    options:
+      - { text: "To localize a bad answer to either the retriever or the generator", correct: true }
+      - { text: "Because retrieval and generation use the same metric" }
+      - { text: "So you never need a golden dataset" }
+      - { text: "To reduce the embedding dimension" }
+    explain: "A confidently-wrong answer can stem from missing context (retrieval) or ignoring good context (generation); separate metrics tell you which to fix."
+
+  - kind: mcq
+    stem: "Which property of the RAG triad lets it run on live production traffic without labels?"
+    options:
+      - { text: "It is reference-free (no ground-truth answer required)", correct: true }
+      - { text: "It only uses BLEU score" }
+      - { text: "It requires a fine-tuned judge" }
+      - { text: "It ignores the retrieved context" }
+    explain: "Context relevance, groundedness, and answer relevance are all judged from the query, context, and answer alone — no reference answer needed."
+
+  - kind: match
+    prompt: "Match each RAG metric to the component it evaluates"
+    pairs:
+      - { left: "Context recall", right: "retrieval — did we fetch all the needed evidence" }
+      - { left: "Context precision", right: "retrieval — are the top-k chunks relevant" }
+      - { left: "Faithfulness", right: "generation — are the answer's claims grounded in context" }
+      - { left: "Answer relevance", right: "generation — does the answer address the question" }
+
+  - kind: fill
+    template: "{0} measures whether every claim in the answer is grounded in retrieved context; {1} rank-aware metrics like MRR and nDCG measure retrieval ordering."
+    blanks: ["Faithfulness", "Retrieval"]
+    chips: ["Faithfulness", "Retrieval", "Latency", "Toxicity"]
+
+  - kind: explain

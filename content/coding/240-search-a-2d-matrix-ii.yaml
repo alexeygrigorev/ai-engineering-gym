@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "240. Search a 2D Matrix II"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Rows and columns are each sorted, so a full scan of every cell is wasteful."
+  - "Narrow down to candidate rows whose value range could contain the target, then search within a row."
+  - "Starting from the top-right corner and stepping left or down based on the comparison reaches O(m+n) time."
 status: draft
 answer:
   approach: >

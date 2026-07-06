@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "139. Word Break"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Think of segmenting the string as making jumps from a start index whose lengths equal matching dictionary words."
+  - "Recursively try each dictionary word matching at the current start index and recurse on the remainder, memoizing start indices already known to fail."
+  - "Bucketing dictionary words by their first letter avoids checking every word at each position, keeping it close to O(n^2)."
 status: draft
 answer:
   approach: >

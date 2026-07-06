@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "236. Lowest Common Ancestor of a Binary Tree"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Think recursively about which subtree(s) the two target nodes fall into."
+  - "Recurse into both children, returning the node itself if it equals a target, and treat a node whose two children both report a find as the split point."
+  - "Propagate whichever single non-null result bubbles up otherwise, giving O(n) time and O(h) space."
 status: draft
 answer:
   approach: >

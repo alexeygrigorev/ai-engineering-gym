@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "15. 3Sum"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Sort the array first, then fix one element and look for the remaining pair using two pointers moving toward each other from the ends of the rest."
+  - "With the array sorted, move the left pointer right when the two-pointer sum is too small, move the right pointer left when it's too big, and skip past duplicate values on both the fixed element and the pointers to avoid repeated triplets."
+  - "Sorting once plus this two-pointer sweep for each fixed element gives O(n^2) time overall."
 status: draft
 answer:
   approach: >

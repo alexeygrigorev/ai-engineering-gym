@@ -1,0 +1,65 @@
+id: aieng-rle-encoding
+category: coding
+skill: algorithms
+type: coding
+subtype: algorithm
+question: >
+  Implement run-length encoding (RLE): compress a string by replacing each run of
+  identical consecutive characters with the character followed by its count (e.g.
+  "aaabbc" -> "a3b2c1"). Also write the matching decoder.
+difficulty: easy
+status: draft
+ai_relevant: true
+answer:
+  approach: >
+    RLE is a single linear scan. Walk the string tracking the current character and a
+    run counter; when the next character differs (or you reach the end), emit the
+    character and its count, then reset. The only subtlety is flushing the final run
+    after the loop — a classic off-by-one. Decoding is the inverse: read a character,
+    read its count, repeat the character that many times. Watch the ambiguity when the
+    data itself contains digits (real RLE variants escape counts or use fixed markers);
+    for the interview version, state the assumption (alphabetic input, or counts always
+    emitted even for runs of length 1) so encode/decode round-trip exactly.
+  pseudocode: |
+    def encode(s):
+        if not s: return ""
+        out, prev, count = [], s[0], 1
+        for c in s[1:]:
+            if c == prev:
+                count += 1
+            else:
+                out.append(prev + str(count))
+                prev, count = c, 1
+        out.append(prev + str(count))     # flush the last run
+        return "".join(out)
+
+    def decode(s):
+        out, i = [], 0
+        while i < len(s):
+            ch = s[i]; i += 1
+            num = ""
+            while i < len(s) and s[i].isdigit():
+                num += s[i]; i += 1
+            out.append(ch * int(num))
+        return "".join(out)
+  complexity:
+    time: "O(n) to encode and O(output length) to decode"
+    space: "O(n) for the output (RLE can expand incompressible input, so it isn't in-place)"
+hints:
+  - "One pass: track the current char and a run count; emit (char, count) each time the char changes."
+  - "Don't forget to flush the final run after the loop ends — that's the usual off-by-one bug."
+  - "Decoding must parse multi-digit counts (a run of 12 is 'a12'), and state your assumption about digits in the input so encode/decode round-trip."
+follow_ups:
+  - "How do you handle input that already contains digits without breaking the decoder?"
+  - "When does RLE make the output larger, and how would you guard against that?"
+  - "How would you encode runs of length 1 more compactly?"
+  - "How would you adapt RLE to a byte stream / binary image rather than a string?"
+sources:
+  - key: techiedelight-rle
+    title: "Techie Delight — Run Length Encoding (RLE) Data Compression Algorithm"
+    url: "https://www.techiedelight.com/run-length-encoding-rle-data-compression-algorithm/"
+    supports: "RLE encode/decode algorithm, linear scan, and expansion caveat"
+  - key: dipperstein-rle
+    title: "Michael Dipperstein — Run Length Encoding (RLE) Discussion and Implementation"
+    url: "https://michaeldipperstein.github.io/rle.html"
+    supports: "run detection, count emission, and handling of digit ambiguity"

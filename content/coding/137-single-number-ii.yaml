@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "137. Single Number II"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Every value except one appears exactly three times, so you need a way to detect a count that never reaches three."
+  - "A hash map counting occurrences, deleting a key as soon as it hits three, leaves only the answer behind."
+  - "For O(1) extra space instead, sum each bit position across all numbers modulo 3."
 status: draft
 answer:
   approach: >

@@ -1,0 +1,54 @@
+id: learn-new-technology-quickly
+category: behavioral
+skill: ambiguity
+type: rehearsal
+question: "Describe a time you had to quickly learn a new technology or methodology."
+difficulty: easy
+status: draft
+source_refs: [interviewnode, x-allie-miller]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Learn and Be Curious)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "self-directed learning and adapting quickly to new domains"
+  - title: "Indeed — How To Use the STAR Interview Response Technique"
+    url: "https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-interview-response-technique"
+    supports: "structure an adaptability story around a concrete situation and result"
+
+probes:
+  - "Why did you have to learn it fast — new project, a gap on the team?"
+  - "How did you approach learning it efficiently?"
+  - "How did you get productive before you were an expert?"
+  - "Where did you get stuck and how did you get unstuck?"
+  - "How well did the result hold up, and would experts agree with your choices?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation names a specific new technology/methodology and why speed mattered (highly relevant in fast-moving AI)"
+  - "Task shows what you needed to deliver with it"
+  - "Action reveals YOUR learning strategy: docs, prototypes, experts, small experiments, learning by shipping"
+  - "Shows you became productive quickly without faking expertise"
+  - "Result: delivered with the new tech, quantified, and the skill stuck"
+  - "Reflection on how you approach ramping on anything new"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A project needed a technology you didn't yet know (e.g. a new
+     framework, a vector DB, an agent orchestration library) on a short timeline.
+  T (Task): What you owned — ship using it despite the learning curve.
+  A (Action): The concrete steps YOU took — found the fastest reliable sources,
+     built a small prototype, leaned on experts/community, validated as you went.
+  R (Result): Delivered with the new tech, quantified, plus a one-line lesson on
+     how you ramp fast.
+
+hints:
+  - "This maps to adaptability — foreground your learning method, which transfers to anything."
+  - "Show 'learning by doing': a prototype or spike beats 'I read the docs'."
+  - "Prove you got real results and can name your repeatable ramp-up approach."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

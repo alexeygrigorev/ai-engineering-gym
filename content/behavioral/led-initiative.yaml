@@ -1,0 +1,55 @@
+id: led-initiative
+category: behavioral
+skill: leadership
+type: rehearsal
+question: "Tell me about a time you led an initiative or took ownership of a challenging task."
+difficulty: medium
+status: draft
+source_refs: [igotanoffer-openai, interviewnode]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Ownership, Bias for Action)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "ownership means acting beyond your remit and thinking long-term"
+  - title: "The Muse — How to Use the STAR Method to Ace Your Job Interview"
+    url: "https://www.themuse.com/advice/star-interview-method"
+    supports: "keep the Situation brief; make the outcome measurable"
+
+probes:
+  - "Why did you step up — were you asked, or did you take it on?"
+  - "How did you get others aligned or bought in?"
+  - "What was the hardest obstacle and how did you get through it?"
+  - "What did you own end-to-end versus delegate?"
+  - "How did you measure success?"
+  - "What would you do differently leading it again?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation shows a real gap or challenge you chose to own, ideally beyond your formal role"
+  - "Task makes the stakes and scope clear"
+  - "Action centers on YOUR leadership: aligning people, unblocking, making decisions, driving to done"
+  - "Shows initiative — you did not wait to be told"
+  - "Result is concrete and quantified (shipped, adoption, revenue, time saved) and credits the team appropriately"
+  - "Reflection on what you learned about leading"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A stalled or ambiguous problem no one clearly owned (e.g. an AI
+     feature with no eval pipeline, or a cross-team dependency).
+  T (Task): What you decided to own and why it mattered.
+  A (Action): The concrete steps YOU took — defined the goal, rallied contributors,
+     broke the work down, unblocked issues, drove decisions and follow-through.
+  R (Result): The measurable outcome (delivered, adopted, metric moved) plus a
+     one-line lesson on leading an initiative.
+
+hints:
+  - "Make clear you chose to step up — the 'ownership' signal is the point of this question."
+  - "Balance 'I' and 'we': you led, but great leaders credit the team."
+  - "Quantify the result and name the leadership lesson explicitly."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

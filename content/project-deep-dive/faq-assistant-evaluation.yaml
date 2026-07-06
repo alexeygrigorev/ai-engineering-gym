@@ -1,0 +1,46 @@
+id: faq-assistant-evaluation
+category: project-deep-dive
+skill: faq-assistant
+type: rehearsal
+your_project: faq-assistant
+question: "How did you evaluate the FAQ Assistant — was there a real eval framework, or was it vibes-based? What metrics did you track?"
+difficulty: hard
+status: draft
+source_refs: [exponent-openai, linkjob-anthropic, igotanoffer]
+sources:
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "interviewers probe whether there is an actual eval framework or it's vibes-based; did it work and how do you know"
+  - title: "LinkJob — Anthropic software engineer interview"
+    url: "https://www.linkjob.ai/interview-questions/anthropic-software-engineer-interview/"
+    supports: "post-deployment monitoring for drift/degradation; handling data quality"
+  - title: "IGotAnOffer — Generative AI system design interview"
+    url: "https://igotanoffer.com/en/advice/generative-ai-system-design-interview"
+    supports: "offline eval sets + online feedback loops; groundedness/faithfulness metrics for RAG-style answers"
+
+probes:
+  - "What was your golden/test set, and how did you build it?"
+  - "Which metrics — retrieval quality, groundedness/faithfulness, answer correctness, user feedback?"
+  - "Did you use LLM-as-judge? How did you trust it?"
+  - "How did you catch a regression before it reached users?"
+  - "How did you monitor quality post-deployment for drift?"
+
+rubric:
+  - "Describes a real evaluation approach, not 'it looked good' — offline set and/or online signal"
+  - "Names specific metrics tied to the FAQ use case (retrieval hit rate, groundedness, deflection, thumbs up/down)"
+  - "Cites actual numbers/outcomes where possible"
+  - "Addresses regression detection and post-deploy monitoring, not just a one-time check"
+  - "Acknowledges limits of the eval (LLM-judge bias, small set) — honest self-assessment"
+
+hints:
+  - "Separate offline eval (a fixed test set) from online signal (real user feedback)."
+  - "Name at least one retrieval metric and one answer-quality metric."
+  - "Say how you'd know if quality drifted after launch."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real eval details at runtime.
+  1. Offline: how you built a test/golden set and what you scored on it.
+  2. Metrics: retrieval quality + answer quality (+ how you judged them).
+  3. Online: the feedback signal you watched in production.
+  4. Regression + drift: how you caught problems before/after launch.
+  5. Honest caveat: where the eval was weak.

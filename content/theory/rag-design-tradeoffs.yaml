@@ -1,0 +1,87 @@
+id: rag-design-tradeoffs
+category: theory
+skill: rag
+type: knowledge
+question: "What are the key tradeoffs when designing a RAG system?"
+difficulty: hard
+status: draft
+source_refs: [reddit-genai-product]
+sources:
+  - title: "The New Stack — Eliminating the Precision-Latency Trade-Off in Large-Scale RAG"
+    url: "https://thenewstack.io/eliminating-the-precision-latency-trade-off-in-large-scale-rag/"
+    supports: "core precision vs latency vs cost tension in RAG retrieval"
+  - title: "Atlan — Chunking Strategies for RAG: Methods, Trade-offs & Best Practices"
+    url: "https://atlan.com/know/chunking-strategies-rag/"
+    supports: "chunk size trade-off: small = precise but fragmented, large = context but noisy/costly"
+  - title: "Ragie — The Architect's Guide to Production RAG"
+    url: "https://www.ragie.ai/blog/the-architects-guide-to-production-rag-navigating-challenges-and-building-scalable-ai"
+    supports: "reranking, top-k, and retrieval-depth trade-offs against cost and latency"
+
+answer:
+  short: >
+    Almost every RAG design decision is a knob on the same triangle: retrieval
+    quality (recall/precision) vs latency vs cost — with freshness and complexity as
+    extra axes. Chunk size: small chunks give precise retrieval but fragment context
+    and inflate the index; large chunks preserve context but add noise, tokens, and
+    cost. Top-k: retrieving more raises recall but stuffs the prompt, raising latency,
+    token cost, and distraction; too few risks missing the answer. Reranking: a
+    cross-encoder reranker sharply improves precision but adds a compute/latency step
+    — worth it for high-value queries, overkill for cheap ones. Retrieval method:
+    keyword is cheap and exact, vector captures meaning, hybrid is best quality but
+    more moving parts. Index type: exact search is accurate but doesn't scale; ANN is
+    fast but trades some recall; heavy compression saves memory at recall cost.
+    Freshness vs cost: frequent re-indexing keeps answers current but costs compute.
+    Advanced tricks (contextual retrieval, hierarchical chunking) lift accuracy but
+    add ingestion cost and latency. There's no globally right setting — you tune to
+    the product's quality bar, latency budget, and cost ceiling, and validate with
+    eval.
+  key_points:
+    - "Central tension: retrieval quality (recall/precision) vs latency vs cost; freshness and complexity are extra axes"
+    - "Chunk size: small = precise but fragmented + bigger index; large = more context but noisier + costlier"
+    - "Top-k: more = higher recall but more tokens/latency/distraction; fewer = risk of missing the answer"
+    - "Reranking: big precision gain, extra latency/compute — worth it for high-value queries"
+    - "Retrieval method (keyword/vector/hybrid) and index (exact vs ANN vs compressed) trade accuracy against speed/scale/memory"
+    - "Freshness vs cost: re-indexing frequency; no universal optimum — tune to quality bar, latency budget, cost ceiling, and eval it"
+
+follow_ups:
+  - "You have a strict latency budget. Which knobs do you turn first?"
+  - "When is reranking not worth the added latency?"
+  - "How does chunk size interact with top-k and the context window?"
+
+hints:
+  - "Most answers collapse into one triangle. What three things are you constantly trading against each other in retrieval?"
+  - "Go knob by knob — chunk size, top-k, reranking, retrieval method, index type — and for each say what you gain and what you pay."
+  - "It's quality vs latency vs cost (plus freshness/complexity). Small vs large chunks, high vs low top-k, rerank or not, keyword/vector/hybrid, exact vs ANN index, re-index often or not. No universal optimum — tune to the product and validate with eval."
+
+exercises:
+  - kind: mcq
+    stem: "What's the trade-off of increasing top-k (retrieving more chunks per query)?"
+    options:
+      - { text: "Higher recall, but more prompt tokens, latency, cost, and model distraction", correct: true }
+      - { text: "Higher recall with no downside at all" }
+      - { text: "It fine-tunes the model on the retrieved chunks" }
+      - { text: "It reduces the index size" }
+    explain: "More chunks raise the chance the answer is present (recall) but stuff the context window — increasing tokens, latency, cost, and the risk the model is distracted by irrelevant passages."
+
+  - kind: mcq
+    stem: "Which best describes the chunk-size trade-off?"
+    options:
+      - { text: "Small chunks = precise retrieval but fragmented context; large chunks = more context but noisier and costlier", correct: true }
+      - { text: "Larger chunks always retrieve more precisely" }
+      - { text: "Chunk size has no effect on retrieval quality" }
+      - { text: "Smaller chunks always reduce total cost" }
+    explain: "Small chunks localize the match but can split key context and bloat the index; large chunks keep context together but add noise and tokens. It's a balance, not a strict better/worse."
+
+  - kind: match
+    prompt: "Match each RAG knob to its main trade-off"
+    pairs:
+      - { left: "Reranking", right: "better precision, added latency/compute" }
+      - { left: "ANN index", right: "faster/scalable, small recall loss vs exact" }
+      - { left: "Large top-k", right: "higher recall, more tokens/latency/distraction" }
+      - { left: "Frequent re-indexing", right: "fresher answers, more compute cost" }
+
+  - kind: recall
+    front: "The one sentence that frames RAG design trade-offs?"
+    back: "Nearly every knob (chunk size, top-k, reranking, retrieval method, index type, re-index frequency) trades retrieval quality against latency and cost — there's no universal optimum, so tune to the product's quality bar and budget and validate with eval."
+
+  - kind: explain

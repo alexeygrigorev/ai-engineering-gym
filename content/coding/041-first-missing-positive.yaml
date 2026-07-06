@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "41. First Missing Positive"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "The answer for an array of n elements must always lie between 1 and n+1, so only values in that range matter."
+  - "Use a boolean array of size n to mark which values from 1 to n are actually present in the input."
+  - "One pass to mark, one pass to find the first unset slot gives O(n) time and O(n) space; think about how you could reuse the input array itself to get O(1) extra space."
 status: draft
 answer:
   approach: >

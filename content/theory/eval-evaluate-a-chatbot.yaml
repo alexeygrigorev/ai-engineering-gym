@@ -1,0 +1,94 @@
+id: eval-evaluate-a-chatbot
+category: theory
+skill: evaluation
+type: knowledge
+question: "How do you evaluate a chatbot?"
+difficulty: medium
+status: draft
+source_refs: [process-analysis, reddit-clear-genai, exponent-openai, reddit-grilled-rag]
+sources:
+  - key: confident-chatbot
+    title: "Confident AI (DeepEval) — LLM Chatbot Evaluation Explained"
+    url: "https://www.confident-ai.com/blog/llm-chatbot-evaluation-explained-top-chatbot-evaluation-metrics-and-testing-techniques"
+    supports: "turn-level vs conversation-level metrics — completeness, relevancy, role adherence, knowledge retention — scored with LLM-as-judge"
+  - key: hamel-multiturn
+    title: "Hamel Husain — Multi-Turn Chat Evals"
+    url: "https://hamel.dev/notes/llm/officehours/evalmultiturn.html"
+    supports: "error-analysis-first workflow, binary pass/fail over Likert scales, domain-expert review before automating"
+  - key: eugene-judge
+    title: "Eugene Yan — Evaluating the Effectiveness of LLM-Evaluators (LLM-as-Judge)"
+    url: "https://eugeneyan.com/writing/llm-evaluators/"
+    supports: "aligning judges to human labels; direct scoring vs pairwise; position/verbosity biases"
+  - key: decagon-containment
+    title: "Decagon — What is Chatbot Containment Rate?"
+    url: "https://decagon.ai/glossary/what-is-chatbot-containment-rate"
+    supports: "support-bot business KPIs — containment/deflection rate, escalation rate, CSAT"
+
+answer:
+  short: >
+    Split evaluation into offline and online, and score at two granularities. Offline,
+    run curated golden conversations in CI, judged by an LLM-as-judge plus reference
+    answers or rubrics. Online, use A/B tests, thumbs up/down, CSAT, and implicit signals
+    like escalation and retry rate. Evaluate turn-level quality (relevance, correctness,
+    tone/safety of a single response given prior context) and conversation-level quality
+    (goal completion, coherence across turns, role/persona adherence, knowledge
+    retention). The primary outcome metric is task success / goal completion — did the
+    conversation resolve the user's intent — expressed as a binary judgment, not a fuzzy
+    1-5. Start with error analysis: sample real transcripts, open-code failure modes,
+    then turn frequent failures into targeted evals. LLM-as-judge is the scalable
+    workhorse but degrades on long transcripts and must be aligned to human labels. For
+    support bots, translate quality into business KPIs (containment/deflection,
+    escalation, first-contact resolution, cost per conversation, CSAT), and gate release
+    on safety/tone guardrails.
+  key_points:
+    - "Separate offline eval (golden conversations in CI, LLM-judge + references) from online eval (A/B tests, thumbs/CSAT, escalation/retry signals)"
+    - "Evaluate at two granularities: turn-level (relevance, correctness, tone/safety) and conversation-level (goal completion, coherence, role adherence, knowledge retention)"
+    - "The primary outcome is task success / goal completion, expressed as a binary pass/fail rather than a fuzzy 1-5"
+    - "Do error analysis first — sample transcripts, open-code failure modes, then build targeted evals from frequent failures"
+    - "LLM-as-judge scales scoring but degrades on long conversations and must be aligned to human labels before you trust it"
+    - "For support bots, translate quality into business KPIs (containment/deflection, escalation, first-contact resolution, CSAT) and gate on safety/tone guardrails"
+
+hints:
+  - "Think about two splits: offline vs online, and single-turn vs whole-conversation."
+  - "What is the one outcome that matters most, and how would you phrase the judgment?"
+  - "Offline golden conversations in CI (LLM-judge) + online A/B tests and CSAT; turn-level and conversation-level; goal completion as pass/fail; support bots add containment/escalation KPIs."
+
+follow_ups:
+  - "Your LLM judge gives high scores but users are unhappy — how do you debug the gap between offline scores and online satisfaction?"
+  - "How would you design an A/B test to prove a new chatbot version is better, and what guardrail metrics would you watch?"
+  - "How do you build and maintain a golden multi-turn test set without it going stale as the product changes?"
+
+exercises:
+  - kind: mcq
+    stem: "What is the single most important outcome metric for a task-oriented chatbot?"
+    options:
+      - { text: "Task success / goal completion — did it resolve the user's intent", correct: true }
+      - { text: "Average number of tokens per reply" }
+      - { text: "How grammatically fluent each reply is" }
+      - { text: "The model's parameter count" }
+    explain: "A fluent, on-topic bot that never resolves the user's goal has failed; goal completion is the north-star outcome, ideally scored as pass/fail."
+
+  - kind: mcq
+    stem: "For a customer-support bot, 'containment rate' measures..."
+    options:
+      - { text: "The share of conversations resolved by the bot without human escalation", correct: true }
+      - { text: "The number of tokens stored in the context window" }
+      - { text: "How often the bot repeats itself" }
+      - { text: "The embedding similarity between turns" }
+    explain: "Containment/deflection rate is the business KPI for how many conversations the bot handles end-to-end; escalation rate is its complement."
+
+  - kind: order
+    prompt: "Order a practical chatbot evaluation workflow"
+    steps:
+      - "Sample real conversation transcripts"
+      - "Error-analyze and open-code failure modes"
+      - "Turn frequent failures into turn- and conversation-level evals"
+      - "Run the golden set offline in CI with an aligned LLM-judge"
+      - "A/B test online and watch CSAT and escalation rate"
+
+  - kind: fill
+    template: "Judging a single reply given prior context is {0} evaluation; judging goal completion across the whole dialogue is {1} evaluation."
+    blanks: ["turn-level", "conversation-level"]
+    chips: ["turn-level", "conversation-level", "offline", "reference-based"]
+
+  - kind: explain

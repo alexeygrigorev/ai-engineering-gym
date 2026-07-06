@@ -1,0 +1,90 @@
+id: eval-debug-rag-confident-wrong
+category: theory
+skill: evaluation
+type: knowledge
+question: "How do you debug a RAG chatbot giving confident but wrong answers?"
+difficulty: hard
+status: draft
+source_refs: [process-analysis, datainterview-mistral]
+sources:
+  - key: ragas-metrics
+    title: "Ragas — List of available metrics"
+    url: "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/"
+    supports: "the four decomposition metrics — faithfulness + response relevancy (generation) and context precision + context recall (retrieval)"
+  - key: evidently-rag
+    title: "Evidently AI — A complete guide to RAG evaluation"
+    url: "https://www.evidentlyai.com/llm-guide/rag-evaluation"
+    supports: "frames the debug question as 'did retrieval fail or did the model hallucinate on good context?' and evaluates the two separately"
+  - key: deepchecks-rag
+    title: "Deepchecks — Retrieval Quality vs. Answer Quality: Why RAG Evaluation Fails"
+    url: "https://deepchecks.com/retrieval-vs-answer-quality-rag-evaluation/"
+    supports: "the isolation test — feed known-good context; if the answer is now right, it's retrieval, else generation"
+  - key: confident-rag
+    title: "Confident AI (DeepEval) — RAG Evaluation Metrics: Answer Relevancy, Faithfulness, and More"
+    url: "https://www.confident-ai.com/blog/rag-evaluation-metrics-answer-relevancy-faithfulness-and-more"
+    supports: "mapping metrics to components — retriever (contextual recall/precision) vs generator (faithfulness, answer relevancy)"
+
+answer:
+  short: >
+    Decompose the pipeline first: the same confidently-wrong output can come from a
+    retrieval failure (wrong or missing chunks) or a generation failure (right context,
+    but the model ignored or misused it) — and these have different fixes. Run the
+    isolation test: manually inject known-good context and re-run generation; a correct
+    answer means retrieval is the culprit, still wrong means generation/prompt is. Diagnose
+    retrieval with context recall (was the needed evidence retrieved at all?) and context
+    precision (is the top-k mostly relevant?) — common root causes are bad chunking, weak
+    or mismatched embeddings, and missing reranking. Diagnose generation with faithfulness
+    / groundedness (is every claim entailed by the retrieved context, or hallucinated?)
+    and answer relevance; low faithfulness on good context points at the prompt or model
+    behavior. Add citations/attribution so you can instantly see whether the answer traces
+    to a retrieved span — confident-but-wrong with no supporting span is hallucination,
+    with a wrong span is retrieval. Instrument every stage (query → embeddings → retrieved
+    chunks → prompt → answer) with tracing, and run a labeled golden set so you localize
+    where failures concentrate instead of debugging anecdotally.
+  key_points:
+    - "Decompose first: a confidently-wrong answer is either a retrieval failure (wrong/missing chunks) or a generation failure (good context ignored)"
+    - "Isolation test: inject known-good context and re-run — correct now = retrieval fault; still wrong = generation/prompt fault"
+    - "Diagnose retrieval with context recall and precision; common causes are bad chunking, weak/mismatched embeddings, and missing reranking"
+    - "Diagnose generation with faithfulness/groundedness and answer relevance; low faithfulness on good context means a prompt/model problem"
+    - "Add citations/attribution: no supporting span = hallucination; wrong span = retrieval problem"
+    - "Instrument each stage with tracing and use a labeled golden set to localize failures instead of debugging anecdotally"
+
+follow_ups:
+  - "Retrieval recall is fine but faithfulness is low — walk me through the prompt- and generation-side fixes you'd try, in order."
+  - "How would you build the golden/eval set to attribute failures to retrieval vs generation, and what do you label?"
+  - "The correct chunk is retrieved but ranked #8 and truncated out of the prompt — how do you detect and fix that (reranking, chunk size, top-k, context ordering)?"
+
+exercises:
+  - kind: mcq
+    stem: "A RAG bot gives a confident, wrong answer. What is the fastest way to tell whether retrieval or generation is at fault?"
+    options:
+      - { text: "Inject known-good context and re-run — correct now means retrieval was the problem", correct: true }
+      - { text: "Increase the temperature and see if the answer changes" }
+      - { text: "Switch to a bigger model and re-ask" }
+      - { text: "Delete the vector index and rebuild it blindly" }
+    explain: "The isolation test controls for retrieval: if a correct answer appears once the right context is supplied, retrieval was failing; if it's still wrong, generation is."
+
+  - kind: mcq
+    stem: "The right context WAS retrieved, but the answer still contradicts it. Which metric captures this, and what's the likely fix area?"
+    options:
+      - { text: "Low faithfulness/groundedness — fix the prompt or model behavior", correct: true }
+      - { text: "Low context recall — fix the embeddings" }
+      - { text: "High latency — fix the index" }
+      - { text: "Low precision — fix the chunk size" }
+    explain: "Faithfulness measures whether claims are entailed by the retrieved context; low faithfulness on good context is a generation-side (prompt/model) problem."
+
+  - kind: order
+    prompt: "Order the steps to debug a confidently-wrong RAG answer"
+    steps:
+      - "Trace the failing query end to end"
+      - "Inspect the retrieved chunks (recall/precision)"
+      - "Inject known-good context and re-run (isolation test)"
+      - "Score faithfulness of the answer against context"
+      - "Fix the localized component and re-check on the golden set"
+
+  - kind: fill
+    template: "If the answer cites no supporting span it is a {0}; if the top-k chunks are irrelevant it is a {1} failure."
+    blanks: ["hallucination", "retrieval"]
+    chips: ["hallucination", "retrieval", "latency", "tokenization"]
+
+  - kind: explain

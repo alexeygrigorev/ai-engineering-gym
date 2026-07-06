@@ -1,0 +1,80 @@
+id: agents-code-review-agent
+category: theory
+skill: agents
+type: knowledge
+question: "How would you build an agent that reviews code and suggests improvements?"
+difficulty: medium
+status: draft
+source_refs: [promptlayer]
+sources:
+  - title: "PromptLayer — The Agentic System Design Interview"
+    url: "https://blog.promptlayer.com/the-agentic-system-design-interview-how-to-evaluate-ai-engineers/"
+    supports: "how agentic build/design questions are framed and evaluated in interviews"
+  - title: "Sourcegraph — 13 Best Automated Code Review Tools in 2026 (AI and Static Analysis Compared)"
+    url: "https://sourcegraph.com/blog/automated-code-review-tools"
+    supports: "hybrid static-analysis + LLM review, PR summaries plus line-level comments"
+  - title: "Anthropic — Building Effective AI Agents"
+    url: "https://www.anthropic.com/research/building-effective-agents"
+    supports: "start simple, give the agent scoped tools/context, keep a human as the decision-maker"
+
+answer:
+  short: >
+    Trigger on a pull request and give the agent the diff plus just enough context —
+    the changed files, related tests, and the team's style/guidelines — so it
+    reviews the change, not the whole repo. Combine deterministic tools with LLM
+    reasoning: run cheap static analysis, linters, SAST, and the test suite first to
+    catch obvious issues and cut cost and false positives, then have the LLM reason
+    about correctness, security, performance, and readability. Optionally split into
+    focused checks/sub-agents (bugs, security, style, perf). Post a structured PR
+    summary plus line-level comments, each grounded in the code and citing the rule
+    or reason — and suppress nitpicks. Keep a human as the approver, integrate it as
+    a CI step, and evaluate it on comment precision (useful vs. noisy) and
+    false-positive rate.
+  key_points:
+    - "Trigger on the PR/diff and scope context to changed files + tests + guidelines — review the diff, not the whole repo"
+    - "Hybrid: run linters/static analysis/SAST/tests first (cheap, deterministic), then LLM reasoning over what's left"
+    - "Cover multiple aspects — correctness/bugs, security, performance, style — optionally via focused sub-agents"
+    - "Output a structured summary + line-level comments grounded in the code and citing the rule/why; avoid nitpicks"
+    - "Human stays the approver; ship as a CI step; evaluate on comment precision and false-positive rate"
+
+hints:
+  - "What should you feed the reviewer — the whole repository, or just the change?"
+  - "Which checks are better done by deterministic tools than by the LLM?"
+  - "How do you keep the review useful instead of a wall of nitpicks?"
+
+follow_ups:
+  - "How do you keep the false-positive/nitpick rate low?"
+  - "Where does static analysis end and LLM reasoning begin?"
+  - "How would you evaluate the reviewer's usefulness over time?"
+  - "Should the agent ever block a merge, or only comment?"
+
+exercises:
+  - kind: mcq
+    stem: "What context should the code-review agent primarily work from?"
+    options:
+      - { text: "The PR diff plus related files, tests, and style guidelines", correct: true }
+      - { text: "The entire repository history on every run" }
+      - { text: "Only the commit message" }
+      - { text: "A random sample of files in the repo" }
+    explain: "Scoping to the diff and directly relevant context keeps the review focused, cheaper, and more accurate."
+
+  - kind: mcq
+    stem: "Why run linters and static analysis before the LLM step?"
+    options:
+      - { text: "They cheaply and deterministically catch obvious issues, cutting cost and false positives", correct: true }
+      - { text: "They replace the need for any LLM reasoning" }
+      - { text: "They increase the model's temperature" }
+      - { text: "They make the diff larger" }
+    explain: "A hybrid pipeline lets deterministic tools handle what they do best, so the LLM focuses on higher-level reasoning at lower cost."
+
+  - kind: order
+    prompt: "Order the code-review agent workflow"
+    steps:
+      - "Trigger on the pull request / diff"
+      - "Gather scoped context (changed files, tests, guidelines)"
+      - "Run linters / static analysis / SAST / tests"
+      - "LLM reasons about correctness, security, performance, style"
+      - "Post a summary + grounded line-level comments"
+      - "Human approves; run as a CI step and track precision"
+
+  - kind: explain

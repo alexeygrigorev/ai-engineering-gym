@@ -1,0 +1,73 @@
+id: aieng-in-memory-db
+category: coding
+skill: implementation
+type: coding
+subtype: implementation
+question: >
+  Design an in-memory SQL-like database (cf. LeetCode 2408, "Design SQL"). Support
+  creating tables with a fixed number of columns, inserting rows with auto-increment
+  ids, deleting rows by id, selecting a single cell, and exporting a table as CSV.
+  Then extend it under follow-ups (filtering, indexing).
+difficulty: hard
+status: draft
+ai_relevant: true
+source_refs: [hello-interview]
+answer:
+  design_approach: >
+    A machine-coding / multi-level OOP round: they judge data-model choices and how
+    cleanly you extend, not clever algorithms. Model each table as an object holding its
+    column count, a rows container, and a next-id counter. The crucial spec detail people
+    miss: ids auto-increment and never reuse — deleting a row does NOT decrement the
+    counter, and the next insert still gets last_id + 1 even if that row was deleted. So
+    store rows in a dict keyed by id (not a list), which makes delete O(1) and keeps ids
+    stable and sparse. Keep a top-level dict of table_name -> Table. Validate inputs
+    (right number of columns, table exists, 1-based column index) and decide error
+    behavior explicitly. Talk through the model before coding; clarify whether column
+    types/names matter or columns are positional.
+  extension_points:
+    - level: "L1 — schema + insert with auto-increment"
+      approach: >
+        create_table(name, n_columns) makes a Table with rows = {} and next_id = 1.
+        insert_row(name, values) asserts len(values) == n_columns, stores
+        rows[next_id] = values, then increments next_id. The counter increments on every
+        insert regardless of later deletes — that stable, monotonic id is the property
+        the problem is really testing.
+    - level: "L2 — delete + select cell"
+      approach: >
+        delete_row(name, id) pops the id from the dict (O(1)); next_id is untouched, so
+        ids never get reused. select_cell(name, id, column) returns rows[id][column-1]
+        (columns are 1-indexed in the problem). Using a dict keyed by id makes both O(1)
+        and correct after arbitrary deletes, where a plain list would misalign indices.
+    - level: "L3 — CSV export + query extensions"
+      approach: >
+        export_csv(name) iterates rows in id order, joining each row's cells, optionally
+        with a header. For richer follow-ups: filtering (WHERE) is a linear scan with a
+        predicate; to make repeated equality lookups fast, add a secondary index — a dict
+        column_value -> set(ids) maintained on insert/delete — which is exactly how a real
+        DB index turns an O(n) scan into O(1). Order-by is a sort of the selected ids.
+  complexity:
+    time: "O(1) insert/delete/select-cell; O(n) export or full-table scan; O(1) indexed equality lookup"
+    space: "O(rows * columns), plus O(rows) per secondary index"
+hints:
+  - "Store rows in a dict keyed by id, not a list. The spec's trick is that ids auto-increment forever — deleting a row must not reuse or shift ids."
+  - "The id counter increments on every insert and is never rolled back by a delete. A dict keyed by id keeps delete and select-cell O(1) and ids stable."
+  - "For CSV export, iterate rows in id order. For fast WHERE lookups under follow-ups, add a secondary index (column value -> set of ids) maintained on insert/delete."
+follow_ups:
+  - "How would you add WHERE filtering, and when is a full scan acceptable vs. needing an index?"
+  - "How do you keep a secondary index consistent across inserts and deletes?"
+  - "How would you support a simple JOIN between two tables?"
+  - "How would you add transactions with rollback?"
+  - "What changes if a single table grows too large to hold in memory?"
+sources:
+  - key: hello-designsql
+    title: "Hello Interview — LeetCode 2408 Design SQL"
+    url: "https://www.hellointerview.com/community/questions/design-sql-2408/cm5eguhah03va838ozuanzsde"
+    supports: "reported task and the auto-increment-id / delete semantics"
+  - key: algomonster-2408
+    title: "algo.monster — 2408. Design SQL In-Depth Explanation"
+    url: "https://algo.monster/liteproblems/2408"
+    supports: "table-as-dict data model, insert/delete/select/export operations"
+  - key: leetcode-ood-db
+    title: "LeetCode Discuss — In-memory SQL-like Database (OOD / Machine Coding)"
+    url: "https://leetcode.com/discuss/interview-question/949850/in-memory-sql-like-database-ood-machine-coding/"
+    supports: "OOD framing and query/index extensions"

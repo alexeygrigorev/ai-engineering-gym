@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "42. Trapping Rain Water"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "The water trapped above any bar depends only on the tallest bar to its left and the tallest bar to its right."
+  - "Sweep inward from both ends toward the position of the global maximum, tracking a running left_max and right_max as you go."
+  - "This two-pointer sweep computes the total trapped water in a single O(n) time, O(1) space pass."
 status: draft
 answer:
   approach: >

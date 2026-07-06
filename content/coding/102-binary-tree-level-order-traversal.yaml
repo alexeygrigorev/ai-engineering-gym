@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "102. Binary Tree Level Order Traversal"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Each node belongs to a specific depth, so group node values by their level."
+  - "Traverse the tree while tracking the current depth, appending each node's value into that level's bucket."
+  - "One O(n) traversal, starting a new bucket the first time a depth is reached, produces the level-order lists."
 status: draft
 answer:
   approach: >

@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "76. Minimum Window Substring"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "A sliding window paired with a frequency count of the target characters tells you how much of the target is still missing."
+  - "Expand the window's right edge until it covers every needed character, then shrink from the left while it stays valid."
+  - "One pass with two pointers and running counts achieves O(n + m) time."
 status: draft
 answer:
   approach: >

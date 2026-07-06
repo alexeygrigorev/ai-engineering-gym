@@ -1,0 +1,54 @@
+id: aieng-cosine-similarity-numpy
+category: coding
+skill: ml-coding
+type: coding
+subtype: ml-coding
+question: >
+  Implement cosine similarity in NumPy. Start with two 1-D vectors, then generalize
+  to computing the full pairwise similarity matrix between two batches of embeddings.
+difficulty: easy
+status: draft
+ai_relevant: true
+source_refs: [reddit-amazon-genai]
+answer:
+  approach: >
+    Cosine similarity is the dot product of two vectors divided by the product of
+    their L2 norms: cos(a, b) = (a·b) / (||a|| ||b||). It measures the angle between
+    vectors and ignores magnitude, which is exactly why it's the default metric for
+    comparing embeddings (query vs. document, sentence vs. sentence). For the batched
+    case, the clean trick is to L2-normalize every row once, then a single matrix
+    multiply A_norm @ B_norm.T gives the entire pairwise similarity matrix — no Python
+    loops. Guard against divide-by-zero for zero vectors (add a tiny epsilon to the
+    norm). Note: if the embeddings are already unit-normalized (many models return
+    normalized vectors), cosine similarity reduces to a plain dot product.
+  pseudocode: |
+    # single pair
+    def cosine(a, b, eps=1e-8):
+        return (a @ b) / (norm(a) * norm(b) + eps)
+
+    # batched: A is (m, d), B is (n, d) -> (m, n) similarity matrix
+    def cosine_matrix(A, B, eps=1e-8):
+        A_norm = A / (np.linalg.norm(A, axis=1, keepdims=True) + eps)
+        B_norm = B / (np.linalg.norm(B, axis=1, keepdims=True) + eps)
+        return A_norm @ B_norm.T
+  complexity:
+    time: "O(d) for a single pair; O(m*n*d) for the (m,n) pairwise matrix"
+    space: "O(1) extra for a pair; O(m*n) for the similarity matrix"
+hints:
+  - "Cosine = dot product divided by the product of the two L2 norms. It's scale-invariant, which is why it's used for embeddings."
+  - "For the batch version, don't loop. Normalize each row of both matrices once, then a single A_norm @ B_norm.T produces every pairwise score."
+  - "Add a small epsilon to the norm so a zero vector doesn't divide by zero. If inputs are already unit vectors, it collapses to a plain matmul."
+follow_ups:
+  - "Why is cosine preferred over Euclidean distance for high-dimensional embeddings?"
+  - "How does cosine similarity relate to the dot product when vectors are already L2-normalized?"
+  - "How would you find the top-k most similar rows efficiently instead of the full matrix?"
+  - "What changes if the batches are too large to fit the (m,n) matrix in memory?"
+sources:
+  - key: gfg-cosine
+    title: "GeeksforGeeks — How to Calculate Cosine Similarity in Python"
+    url: "https://www.geeksforgeeks.org/python/how-to-calculate-cosine-similarity-in-python/"
+    supports: "NumPy dot product / np.linalg.norm implementation of cosine similarity"
+  - key: reddit-amazon-genai
+    title: "Reddit — ML Engineer GenAI Amazon (phone screen: cosine similarity in NumPy)"
+    url: "https://www.reddit.com/r/datascience/comments/1jrdrpx/ml_engineer_genai_amazon/"
+    supports: "reported task: implement cosine similarity in NumPy in a phone screen"

@@ -1,0 +1,43 @@
+id: dataops-architecture-walkthrough
+category: project-deep-dive
+skill: dataops
+type: rehearsal
+your_project: dataops
+question: "Walk me through your DataOps project end-to-end — what problem it solved and how the pipeline and its components fit together."
+difficulty: easy
+status: draft
+source_refs: [fonzi-ai, exponent-openai, hello-interview]
+sources:
+  - title: "Fonzi AI — What I've learned from sitting in on 50 AI-engineer interviews"
+    url: "https://medium.com/fonzi-ai/what-ive-learned-from-sitting-in-on-50-ai-engineer-interviews-c493696453c4"
+    supports: "open with the business problem and your actual role; frame around impact, not tool names"
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "narrative progression: business problem -> solution -> key decisions -> problems -> outcome; be ready to go multiple levels deep"
+
+probes:
+  - "What business problem were you solving, and who consumed the data/output?"
+  - "What was your actual role — which parts of the pipeline did you personally build?"
+  - "Trace one record from source through to the final consumer."
+  - "Where are the boundaries: ingestion, transformation, storage, orchestration, serving?"
+  - "Which stage was the riskiest or most fragile, and why?"
+
+rubric:
+  - "Architecture is clear: names the pipeline stages and how data flows end-to-end"
+  - "Frames around the business problem and impact first, not a stack of tools (Airflow/Spark/etc.)"
+  - "Makes the candidate's own ownership and role explicit"
+  - "Can go one level deeper on any stage when probed (ingestion, transform, orchestration)"
+  - "Cites at least one concrete metric (volume, freshness/SLA, records processed, cost)"
+
+hints:
+  - "Start with the problem and the data consumer before any technology."
+  - "Trace a single record from source to destination; name each stage."
+  - "End on the outcome with a number (throughput, SLA met, hours saved)."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real DataOps details at runtime.
+  1. Business problem: what decision/product depended on this data, and the old pain.
+  2. Solution at a high level: the end-to-end pipeline shape.
+  3. Record trace: source -> ingest -> transform -> store -> serve.
+  4. Your role: the stages you personally owned and decided.
+  5. Outcome: one metric that shows it worked.

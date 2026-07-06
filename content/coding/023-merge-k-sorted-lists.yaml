@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "23. Merge k Sorted Lists"
 difficulty: hard
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "A min-heap lets you always know which of the k list heads currently holds the smallest value."
+  - "Seed the heap with each list's head node, repeatedly pop the smallest, append it to the output, and push its successor back into the heap if one exists."
+  - "Since the heap never holds more than k nodes at once, this processes all N nodes in O(N log k) time."
 status: draft
 answer:
   approach: >

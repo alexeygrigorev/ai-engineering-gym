@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "69. Sqrt(x)"
 difficulty: easy
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "The function g -> g*g is monotonic over non-negative g, which means you can bracket the true root instead of testing every candidate."
+  - "Binary search over the range from 1 to x, narrowing the bounds based on whether the midpoint squared is smaller or larger than x."
+  - "Stop once the guess is close enough and take the floor of it, giving O(log x) time and O(1) space."
 status: draft
 answer:
   approach: >

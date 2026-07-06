@@ -1,0 +1,91 @@
+id: eval-consistent-accurate-output
+category: theory
+skill: evaluation
+type: knowledge
+question: "How do you ensure the output from an LLM is consistent and accurate?"
+difficulty: medium
+status: draft
+source_refs: [proptech-founder-1]
+sources:
+  - key: openai-structured-outputs
+    title: "OpenAI — Structured Outputs guide"
+    url: "https://developers.openai.com/api/docs/guides/structured-outputs"
+    supports: "schema-constrained decoding guarantees valid JSON matching a supplied schema, so the output shape is reliable"
+  - key: hamel-judge
+    title: "Hamel Husain — Using LLM-as-a-Judge for Evaluation: A Complete Guide"
+    url: "https://hamel.dev/blog/posts/llm-judge/"
+    supports: "binary pass/fail judges aligned to a domain expert give trustworthy automated accuracy checks"
+  - key: hamel-evals-faq
+    title: "Hamel Husain & Shreya Shankar — LLM Evals FAQ"
+    url: "https://hamel.dev/blog/posts/evals-faq/"
+    supports: "a small versioned regression eval set (100+ cases) run on every change catches quality drops before shipping"
+  - key: chip-llm-prod
+    title: "Chip Huyen — Building LLM applications for production"
+    url: "https://huyenchip.com/2023/04/11/llm-engineering.html"
+    supports: "prompts are versioned under git and gated by (input, expected output) tests because small prompt changes swing results"
+
+answer:
+  short: >
+    You treat consistency and accuracy as engineering problems, not free properties.
+    LLM decoding is non-deterministic, so lower temperature (temperature=0 / greedy)
+    to shrink variance, but don't expect bit-identical output — batching and
+    floating-point still cause drift. Constrain the output surface with structured
+    outputs or function calling so the shape is guaranteed, then add deterministic
+    validators (schema/business rules) with bounded retries on failure. Improve
+    accuracy with prompt engineering, retrieval grounding, and self-consistency
+    (sample N, take the majority) for high-stakes calls. Verify with an LLM-as-judge
+    that has been calibrated against human labels, and lock everything in with a
+    versioned regression eval set in CI so prompt- and model-version changes can't
+    silently degrade quality.
+  key_points:
+    - "LLM decoding is non-deterministic; temperature=0 reduces variance but does not guarantee identical output (batching, floating-point, no stable seed)"
+    - "Constrain the output surface: structured outputs / JSON-schema-constrained decoding or function calling guarantees the shape"
+    - "Add deterministic post-processing: schema and business-rule validators with bounded retries / re-ask on failure"
+    - "Raise accuracy with prompt engineering, retrieval grounding, and self-consistency (sample N, majority vote) for high-stakes answers"
+    - "Verify content with an LLM-as-judge that is validated against human labels and kept as a binary decision"
+    - "Lock it in with evals in CI: a versioned regression dataset that gates prompt and model-version changes"
+
+hints:
+  - "Think about the two axes separately: consistency (variance) and accuracy (correctness)."
+  - "What can you constrain about the output shape, and what deterministic checks run after generation?"
+  - "Temperature, structured outputs + validators/retries, self-consistency, a calibrated LLM-judge, and a regression eval set in CI."
+
+follow_ups:
+  - "Temperature 0 still produced two different answers in production — why, and how would you mitigate it?"
+  - "How do you validate that your LLM-as-judge is itself correct, and stop it drifting when you swap the underlying model?"
+  - "Structured outputs guarantees valid JSON, but the content was wrong — which layers catch that?"
+
+exercises:
+  - kind: mcq
+    stem: "Setting temperature=0 makes an LLM's output..."
+    options:
+      - { text: "Lower-variance / more repeatable, but not guaranteed bit-identical", correct: true }
+      - { text: "Perfectly deterministic and always identical across calls" }
+      - { text: "More accurate on every task by definition" }
+      - { text: "Immune to prompt changes" }
+    explain: "Greedy decoding shrinks variance, but batching, floating-point, and provider routing still cause drift, and low temperature does not fix correctness."
+
+  - kind: mcq
+    stem: "Structured outputs (schema-constrained decoding) primarily guarantees..."
+    options:
+      - { text: "The shape/format of the output (valid JSON matching the schema)", correct: true }
+      - { text: "That the facts in the output are correct" }
+      - { text: "That the model never refuses" }
+      - { text: "Lower token cost" }
+    explain: "Schema constraints guarantee a valid shape; semantic correctness still needs validators, grounding, and evals on top."
+
+  - kind: order
+    prompt: "Order a reliability pipeline for an LLM feature, from generation to release gate"
+    steps:
+      - "Set a low temperature to reduce variance"
+      - "Constrain output with a schema / function calling"
+      - "Validate the parsed output; retry on failure"
+      - "Score correctness with a calibrated LLM-as-judge"
+      - "Gate the change on a versioned CI eval set"
+
+  - kind: fill
+    template: "Sampling N answers and taking the majority is called {0}; grounding answers in retrieved context is called {1}."
+    blanks: ["self-consistency", "RAG"]
+    chips: ["self-consistency", "RAG", "quantization", "distillation"]
+
+  - kind: explain

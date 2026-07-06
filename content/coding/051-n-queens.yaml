@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "51. N-Queens"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Since exactly one queen goes in each row, think of placing queens row by row and tracking which columns and diagonals are already under attack."
+  - "Backtrack: at each row try every free column, mark the cells that queen attacks (its column and both diagonals), and recurse into the next row before undoing the choice."
+  - "Reaching row n with a valid placement means a full board is found; this exponential backtracking is bounded by the number of ways to place n non-attacking queens."
 status: draft
 answer:
   approach: >

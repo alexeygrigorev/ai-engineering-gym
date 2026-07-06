@@ -1,0 +1,83 @@
+id: ml-supervised-vs-unsupervised
+category: theory
+skill: ml-fundamentals
+type: knowledge
+question: "What's the difference between supervised and unsupervised learning?"
+difficulty: easy
+status: draft
+source_refs: []
+sources:
+  - title: "IBM — Supervised vs. Unsupervised Learning: What's the Difference?"
+    url: "https://www.ibm.com/think/topics/supervised-vs-unsupervised-learning"
+    supports: "supervised uses labeled data to predict; unsupervised finds structure in unlabeled data"
+  - title: "Google Cloud — Supervised vs. unsupervised learning"
+    url: "https://cloud.google.com/discover/supervised-vs-unsupervised-learning"
+    supports: "task types (classification/regression vs clustering/dimensionality reduction) and examples"
+  - title: "Alexey Grigorev — Data Science Interviews (theoretical questions)"
+    url: "https://github.com/alexeygrigorev/data-science-interviews"
+    supports: "canonical ML-fundamentals interview question set this item is drawn from"
+
+answer:
+  short: >
+    The difference is whether the training data has labels. Supervised learning trains
+    on labeled examples — each input paired with the correct output — and learns a mapping
+    from inputs to outputs so it can predict labels for new data. Its two main tasks are
+    classification (discrete labels, e.g. spam/not-spam) and regression (continuous values,
+    e.g. house price). You can measure accuracy directly because you have ground truth.
+    Unsupervised learning trains on unlabeled data and looks for hidden structure — no
+    target to predict. Its main tasks are clustering (group similar points, e.g. customer
+    segments), dimensionality reduction (compress features, e.g. PCA), and anomaly
+    detection. Evaluation is fuzzier because there's no ground-truth label to check
+    against. Rule of thumb: use supervised learning when you have labels and a clear
+    prediction target; use unsupervised learning to explore, segment, or reduce data when
+    labels are unavailable or expensive. (Semi-supervised and self-supervised sit in
+    between, using a little labeled data or labels derived from the data itself.)
+  key_points:
+    - "Core difference: supervised uses labeled data; unsupervised uses unlabeled data"
+    - "Supervised goal: learn input→output mapping to predict labels on new data"
+    - "Supervised tasks: classification (discrete) and regression (continuous)"
+    - "Unsupervised goal: discover hidden structure with no target variable"
+    - "Unsupervised tasks: clustering, dimensionality reduction, anomaly detection"
+    - "Supervised is easy to evaluate against ground truth; unsupervised evaluation is harder (no labels)"
+    - "Semi-supervised / self-supervised are middle grounds"
+
+follow_ups:
+  - "Give an example task for each and the algorithm you'd reach for."
+  - "How do you evaluate an unsupervised model without labels?"
+  - "Where does self-supervised learning (as in LLM pretraining) fit in?"
+  - "What is semi-supervised learning and when is it useful?"
+
+hints:
+  - "The whole distinction hinges on one property of the training data."
+  - "If every example comes with the 'right answer', you're in one regime; if you only have raw inputs and must find patterns yourself, you're in the other."
+  - "Supervised = labeled data, predict a target (classification/regression). Unsupervised = unlabeled data, find structure (clustering, dimensionality reduction)."
+
+exercises:
+  - kind: mcq
+    stem: "You have 50,000 emails each tagged 'spam' or 'not spam' and want to classify new emails. What kind of learning is this?"
+    options:
+      - { text: "Supervised learning (classification)", correct: true }
+      - { text: "Unsupervised learning (clustering)" }
+      - { text: "Reinforcement learning" }
+      - { text: "Dimensionality reduction" }
+    explain: "The data is labeled and the goal is to predict a discrete label for new inputs — that's supervised classification."
+
+  - kind: mcq
+    stem: "Which task is a classic example of unsupervised learning?"
+    options:
+      - { text: "Clustering customers into segments with no predefined labels", correct: true }
+      - { text: "Predicting tomorrow's temperature from labeled historical data" }
+      - { text: "Classifying images as cat or dog using a labeled training set" }
+      - { text: "Forecasting a house's sale price from past sales" }
+    explain: "Clustering discovers structure in unlabeled data with no target variable. The other options all have labels/targets, making them supervised."
+
+  - kind: fill
+    template: "{0} learning trains on labeled data to predict a target; {1} learning finds structure in unlabeled data."
+    blanks: ["Supervised", "Unsupervised"]
+    chips: ["Supervised", "Unsupervised", "Reinforcement", "Federated"]
+
+  - kind: recall
+    front: "Supervised vs unsupervised — what decides which one you're doing?"
+    back: "Whether your data is labeled. Labeled + predicting a target = supervised (classification/regression). Unlabeled + finding hidden structure = unsupervised (clustering, dimensionality reduction, anomaly detection)."
+
+  - kind: explain

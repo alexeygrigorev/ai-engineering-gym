@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "20. Valid Parentheses"
 difficulty: easy
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "A stack naturally tracks which opening brackets are still waiting to be closed."
+  - "Push every opening bracket; on a closing bracket, check the stack's top is the matching opener and pop it, failing immediately if the stack is empty or the pair doesn't match."
+  - "One linear pass with this stack is valid only if the stack ends up empty at the end, giving O(n) time and O(n) space."
 status: draft
 answer:
   approach: >

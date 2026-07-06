@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "97. Interleaving String"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Track how many characters have been consumed from each of the two source strings as you match against the target."
+  - "At each pair of consumption counts, the next target character can only come from one of the two strings, so build a table of reachable states."
+  - "A 2D table over prefixes of the two source strings solves it in O(n*m) time."
 status: draft
 answer:
   approach: >

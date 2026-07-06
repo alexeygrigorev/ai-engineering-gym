@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "297. Serialize and Deserialize Binary Tree"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "A tree can be fully captured by a preorder traversal as long as you also record where children are null."
+  - "Serialize by recursively writing each node's value and its children with a sentinel marker for null, then deserialize by parsing that same order with a position cursor."
+  - "Both directions run in O(n) time and O(n) space."
 status: draft
 answer:
   approach: >

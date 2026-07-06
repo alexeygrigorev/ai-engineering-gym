@@ -1,0 +1,84 @@
+id: ml-precision-vs-recall
+category: theory
+skill: ml-fundamentals
+type: knowledge
+question: "What's the difference between precision and recall, and when do you optimize for each?"
+difficulty: medium
+status: draft
+source_refs: []
+sources:
+  - title: "Google for Developers — Classification: Accuracy, recall, precision, and related metrics"
+    url: "https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall"
+    supports: "precision = TP/(TP+FP), recall = TP/(TP+FN); why accuracy misleads on imbalanced data"
+  - title: "DataCamp — F1 Score: A Balanced Metric for Precision and Recall"
+    url: "https://www.datacamp.com/tutorial/f1-score"
+    supports: "F1 as harmonic mean of precision and recall; use on imbalanced classification"
+  - title: "Alexey Grigorev — Data Science Interviews (theoretical questions)"
+    url: "https://github.com/alexeygrigorev/data-science-interviews"
+    supports: "canonical ML-fundamentals interview question set this item is drawn from"
+
+answer:
+  short: >
+    Both come from the confusion matrix and answer different questions about the positive
+    class. Precision = TP / (TP + FP): of everything the model flagged positive, what
+    fraction really was — it punishes false positives. Recall (sensitivity) = TP / (TP + FN):
+    of all the actual positives, what fraction did the model catch — it punishes false
+    negatives. There's a tradeoff: pushing the decision threshold to catch more positives
+    (higher recall) usually lets in more false alarms (lower precision), and vice versa.
+    Which you optimize depends on the cost of each error type. Optimize recall when missing
+    a positive is expensive — disease screening, fraud detection, security — you'd rather
+    tolerate false alarms than miss a real case. Optimize precision when a false positive
+    is costly or annoying — spam filtering, recommending content, flagging accounts for
+    suspension — you don't want to wrongly act on negatives. When you need one number that
+    balances both, use the F1 score (harmonic mean of precision and recall), which is far
+    more informative than accuracy on imbalanced data, where a majority-class baseline can
+    look "accurate" while catching none of the minority class.
+  key_points:
+    - "Precision = TP / (TP + FP): correctness of positive predictions; penalizes false positives"
+    - "Recall = TP / (TP + FN): coverage of actual positives; penalizes false negatives"
+    - "Precision-recall tradeoff: moving the threshold trades one for the other"
+    - "Optimize recall when false negatives are costly (disease, fraud, security)"
+    - "Optimize precision when false positives are costly (spam, recommendations, account suspension)"
+    - "F1 = harmonic mean of precision and recall — one balanced number"
+    - "On imbalanced data, accuracy is misleading; precision/recall/F1 are the right lens"
+
+follow_ups:
+  - "How does moving the classification threshold change precision and recall?"
+  - "When would you use the F1 score versus AUC-ROC versus PR-AUC?"
+  - "Why is accuracy a bad metric for a 99%-negative dataset?"
+  - "What is the difference between recall and specificity?"
+
+hints:
+  - "Both focus on the positive class but count different mistakes — one cares about false positives, the other about false negatives."
+  - "Ask 'of what I flagged, how much was right?' versus 'of all the real positives, how many did I catch?' — those are the two metrics."
+  - "Precision = TP/(TP+FP), penalizes false positives. Recall = TP/(TP+FN), penalizes false negatives. Optimize recall when misses hurt (fraud/disease), precision when false alarms hurt (spam). F1 balances both."
+
+exercises:
+  - kind: mcq
+    stem: "A cancer-screening model must avoid missing sick patients, even at the cost of some false alarms. Which metric do you prioritize?"
+    options:
+      - { text: "Recall", correct: true }
+      - { text: "Precision" }
+      - { text: "Raw accuracy" }
+      - { text: "Training loss" }
+    explain: "A missed sick patient (false negative) is the costly error, so you maximize recall — catching as many true positives as possible, tolerating extra false positives."
+
+  - kind: mcq
+    stem: "Precision is defined as:"
+    options:
+      - { text: "TP / (TP + FP) — of predicted positives, the fraction actually positive", correct: true }
+      - { text: "TP / (TP + FN) — of actual positives, the fraction caught" }
+      - { text: "(TP + TN) / total — overall correctness" }
+      - { text: "FP / (FP + TN) — the false-positive rate" }
+    explain: "Precision measures how many flagged positives were correct: TP / (TP + FP). TP / (TP + FN) is recall."
+
+  - kind: fill
+    template: "{0} = TP / (TP + FP) and penalizes false positives; {1} = TP / (TP + FN) and penalizes false negatives."
+    blanks: ["Precision", "Recall"]
+    chips: ["Precision", "Recall", "Accuracy", "Specificity"]
+
+  - kind: recall
+    front: "When do you optimize for recall over precision?"
+    back: "When a false negative (a missed positive) is more costly than a false alarm — e.g. disease screening, fraud, security. Optimize precision instead when false positives are the expensive error (spam filtering, recommendations)."
+
+  - kind: explain

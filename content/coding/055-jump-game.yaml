@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "55. Jump Game"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "You do not need to track every possible jump sequence, just the farthest index reachable so far."
+  - "Walk the array left to right, updating the farthest reachable index at each step, but only while the current index is still within that reachable range."
+  - "This greedy single pass tells you in O(n) time and O(1) space whether the last index can ever be reached."
 status: draft
 answer:
   approach: >

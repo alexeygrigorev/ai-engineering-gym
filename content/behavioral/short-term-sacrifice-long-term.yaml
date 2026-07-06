@@ -1,0 +1,54 @@
+id: short-term-sacrifice-long-term
+category: behavioral
+skill: ownership
+type: rehearsal
+question: "Tell me about a time when you made short-term sacrifices for long-term gain."
+difficulty: medium
+status: draft
+source_refs: [exponent-behavioral]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Ownership; Are Right, A Lot)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "ownership means thinking long-term and not sacrificing lasting value for short-term results"
+  - title: "Indeed — How To Use the STAR Interview Response Technique"
+    url: "https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-interview-response-technique"
+    supports: "structure the trade-off decision around a concrete situation and result"
+
+probes:
+  - "What was the short-term cost, and who felt it?"
+  - "How confident were you the long-term payoff would materialize?"
+  - "How did you get others to accept the short-term hit?"
+  - "How did you know it was the right call versus over-investing?"
+  - "Did the long-term gain actually land? How did you measure it?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation frames a real trade-off between a quick win and durable value (e.g. paying down tech debt, building an eval harness, refactoring before scaling)"
+  - "Task shows you owned the judgment call"
+  - "Action centers on YOUR decision and how you justified the short-term cost to stakeholders"
+  - "Shows sound reasoning about risk, not reckless perfectionism"
+  - "Result demonstrates the long-term payoff, quantified (velocity, reliability, cost avoided)"
+  - "Reflection on balancing short- and long-term thinking"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): Pressure to ship fast, but a shortcut would create lasting cost
+     (e.g. no evaluation pipeline, brittle data handling).
+  T (Task): What you owned — decide whether to invest now or later.
+  A (Action): The concrete steps YOU took — quantified the future cost, made the
+     case to stakeholders, absorbed a short-term delay to build the durable thing.
+  R (Result): The long-term payoff that arrived (faster iteration, fewer incidents,
+     lower cost) plus a one-line lesson on trade-off judgment.
+
+hints:
+  - "Name both the short-term pain and the long-term prize concretely."
+  - "Show you sold the trade-off to others — ownership includes bringing people along."
+  - "Prove the payoff with a number and note how you'd judge the call again."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

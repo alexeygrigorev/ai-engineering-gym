@@ -1,0 +1,73 @@
+id: agents-infinite-loops
+category: theory
+skill: agents
+type: knowledge
+question: "How do you detect and stop infinite planning loops in an agent?"
+difficulty: medium
+status: draft
+source_refs: [techeon, reddit-csuk-agents, reddit-expdevs-agentic]
+sources:
+  - title: "Inkog — AI Agent Infinite Loop Detection & Prevention"
+    url: "https://inkog.io/glossary/infinite-loop-ai-agent"
+    supports: "max-iteration guards, action deduplication by hashing (tool, args), and no-progress 'stuck' detection"
+  - title: "Anthropic — Building Effective AI Agents"
+    url: "https://www.anthropic.com/research/building-effective-agents"
+    supports: "each autonomous turn adds latency/cost and risk; agents need stopping conditions and a clear ground-truth for done"
+  - title: "OpenAI — A Practical Guide to Building Agents (PDF)"
+    url: "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf"
+    supports: "run limits and escalation to a human when the agent cannot make progress"
+
+answer:
+  short: >
+    Don't trust the model to stop itself — wrap it in external, deterministic
+    guardrails. Put a hard cap on steps (max_iterations) and a budget on tokens,
+    cost, and wall-clock time per run. Detect repetition by hashing each
+    (tool, arguments) call and breaking when the same action recurs k times. Detect
+    stalls with no-progress checks: if the agent's state hasn't advanced in k steps,
+    fire a "stuck" handler. Make the "done" signal explicit in the prompt and ensure
+    the termination check can actually return true. When a guard trips, fail
+    gracefully — stop, return best-effort, or escalate to a human — and log it for
+    later evaluation. Runaway loops burn real money fast, so these limits aren't
+    optional.
+  key_points:
+    - "Hard caps: max_iterations/step limit plus token, cost, and wall-clock budgets per run"
+    - "Repetition detection: hash each (tool, args) call; break if the same action repeats k times"
+    - "No-progress detection: if state hasn't changed in k steps, trigger a 'stuck' handler"
+    - "Explicit 'done' signal in the prompt and a termination check that can actually return true"
+    - "On trip: fail gracefully (stop / best-effort / escalate to human) and log for eval — loops burn cost fast"
+
+hints:
+  - "Should the model itself be trusted to decide when to stop? What external checks can you add?"
+  - "Think about how you'd notice the agent repeating the exact same action or making no progress."
+  - "Consider the cost angle — why is an unbounded loop dangerous?"
+
+follow_ups:
+  - "What do you do when a loop guard trips — retry, stop, or escalate?"
+  - "How do you tell 'stuck in a loop' apart from 'legitimately doing many steps'?"
+  - "How is stopping a loop different from a general termination condition?"
+  - "How would you surface loop incidents in monitoring?"
+
+exercises:
+  - kind: mcq
+    stem: "Which is the most reliable way to guarantee an agent stops?"
+    options:
+      - { text: "An external, deterministic max-iteration / time / cost cap that overrides the agent", correct: true }
+      - { text: "Trusting the LLM to decide when it's finished" }
+      - { text: "A larger context window" }
+      - { text: "A lower temperature setting" }
+    explain: "External deterministic guards override faulty internal logic; the model deciding for itself is exactly what fails."
+
+  - kind: mcq
+    stem: "How would you detect the agent repeating the same action forever?"
+    options:
+      - { text: "Hash each (tool, arguments) call and break if it recurs k times", correct: true }
+      - { text: "Increase the number of tools available" }
+      - { text: "Raise top-p sampling" }
+      - { text: "Add more few-shot examples" }
+    explain: "Action deduplication — hashing (tool, args) and counting repeats — catches loops that hard caps alone would let run to the limit."
+
+  - kind: recall
+    front: "Name three guardrails that stop an agent from looping forever."
+    back: "A hard step/iteration cap (plus token/cost/time budget), action deduplication by hashing (tool, args), and no-progress 'stuck' detection — then fail gracefully or escalate."
+
+  - kind: explain

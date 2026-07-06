@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "53. Maximum Subarray"
 difficulty: easy
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "Think about the best subarray sum ending exactly at each index, and how that value relates to the one ending at the previous index."
+  - "If the best sum ending at the previous index is negative, it can only drag down the current element, so it is better to restart the running sum at the current element; otherwise keep extending it."
+  - "This is Kadane's algorithm: track a running current sum and a global best in a single O(n) time, O(1) space pass."
 status: draft
 answer:
   approach: >

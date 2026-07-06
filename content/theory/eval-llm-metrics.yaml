@@ -1,0 +1,90 @@
+id: eval-llm-metrics
+category: theory
+skill: evaluation
+type: knowledge
+question: "What metrics do you consider when evaluating LLM performance?"
+difficulty: easy
+status: draft
+source_refs: [proptech-founder-1, fahd-mirza, reddit-genai-product, reddit-llm-interview-prep]
+sources:
+  - key: ragas-metrics
+    title: "Ragas — List of available metrics"
+    url: "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/"
+    supports: "RAG metrics split retrieval quality (context precision/recall) from generation quality (faithfulness, answer relevancy)"
+  - key: confident-metrics
+    title: "Confident AI (DeepEval) — LLM Evaluation Metrics: The Ultimate Guide"
+    url: "https://www.confident-ai.com/blog/llm-evaluation-metrics-everything-you-need-for-llm-evaluation"
+    supports: "taxonomy of statistical (BLEU/ROUGE), model-based (BERTScore), and LLM-as-judge (G-Eval) scorers, plus safety metrics"
+  - key: eugene-abstractive
+    title: "Eugene Yan — Evaluation & Hallucination Detection for Abstractive Summaries"
+    url: "https://eugeneyan.com/writing/abstractive/"
+    supports: "reference-based n-gram metrics fail for open-ended generation; use reference-free / model-based evaluation"
+  - key: chip-llm-prod
+    title: "Chip Huyen — Building LLM applications for production"
+    url: "https://huyenchip.com/2023/04/11/llm-engineering.html"
+    supports: "operational metrics matter — cost is dominated by inference and latency scales with output tokens"
+
+answer:
+  short: >
+    Pick metrics by task type, and always cover quality, operations, and safety.
+    For classification/extraction use accuracy, precision/recall, F1, exact match;
+    for ranking/retrieval use recall@k, MRR, nDCG. For generated text, reference-based
+    overlap metrics (BLEU, ROUGE, METEOR) are cheap but weak because they measure
+    n-gram overlap, not meaning; BERTScore adds semantic similarity but still needs a
+    reference. For open-ended output, use a reference-free LLM-as-judge (e.g. G-Eval),
+    which correlates far better with humans — but validate it against human labels. RAG
+    needs decomposed metrics: faithfulness and answer relevance for generation, context
+    precision and context recall for retrieval. Always add operational metrics (latency
+    p50/p95, cost per request, throughput) and safety metrics (toxicity, bias,
+    hallucination rate), and keep human eval as the calibration gold standard.
+  key_points:
+    - "Choose metrics by task: accuracy/precision/recall/F1/exact-match for classification-extraction; recall@k, MRR, nDCG for retrieval/ranking"
+    - "Reference-based text metrics (BLEU, ROUGE, METEOR) measure n-gram overlap, not meaning; BERTScore adds semantic similarity but still needs a reference"
+    - "For open-ended output use reference-free LLM-as-judge (G-Eval), which correlates better with humans — but validate the judge against human labels"
+    - "RAG needs decomposed metrics: faithfulness + answer relevance (generation) and context precision + context recall (retrieval)"
+    - "Always include operational metrics: latency (p50/p95), cost per request/token, throughput"
+    - "Include safety metrics — toxicity, bias, hallucination rate — and keep human eval as the calibration gold standard"
+
+hints:
+  - "Metrics depend on the task — start by grouping by task type (classification, retrieval, generation)."
+  - "Don't forget the non-quality axes an interviewer wants to hear about."
+  - "Task metrics (F1/exact-match, recall@k/MRR/nDCG), generation (BLEU/ROUGE/BERTScore, LLM-as-judge), RAG (faithfulness, context precision/recall), plus latency, cost, and safety."
+
+follow_ups:
+  - "BLEU/ROUGE are high but users say the answers are wrong — what's happening, and what would you measure instead?"
+  - "Your RAG answer-relevance is high but faithfulness is low — what does that tell you, and where do you fix it?"
+  - "How do you trade off answer quality against latency and cost when choosing a production model?"
+
+exercises:
+  - kind: mcq
+    stem: "Why are BLEU and ROUGE weak metrics for open-ended LLM generation?"
+    options:
+      - { text: "They measure n-gram overlap with a reference, not semantic meaning", correct: true }
+      - { text: "They require a GPU to compute" }
+      - { text: "They only work for classification tasks" }
+      - { text: "They cannot be computed without human annotators" }
+    explain: "BLEU/ROUGE reward surface overlap with a reference; a correct paraphrase can score low and a wrong answer can score high."
+
+  - kind: mcq
+    stem: "Which metric set is appropriate for the RETRIEVAL half of a RAG system?"
+    options:
+      - { text: "Context precision and context recall (recall@k, MRR, nDCG)", correct: true }
+      - { text: "BLEU and ROUGE" }
+      - { text: "Faithfulness and answer relevance" }
+      - { text: "Latency and cost per token" }
+    explain: "Retrieval quality is measured with context precision/recall and ranking metrics; faithfulness/answer-relevance measure the generation half."
+
+  - kind: match
+    prompt: "Match each metric to what it measures"
+    pairs:
+      - { left: "F1", right: "balance of precision and recall on a classification/extraction task" }
+      - { left: "nDCG", right: "rank-aware quality of a retrieved/ordered list" }
+      - { left: "Faithfulness", right: "whether the answer's claims are grounded in the retrieved context" }
+      - { left: "p95 latency", right: "operational responsiveness at the tail" }
+
+  - kind: fill
+    template: "{0} metrics compare against a gold reference; {1} metrics (like an LLM-as-judge) need no reference and suit open-ended output."
+    blanks: ["Reference-based", "Reference-free"]
+    chips: ["Reference-based", "Reference-free", "Operational", "Statistical"]
+
+  - kind: explain

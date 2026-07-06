@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "32. Longest Valid Parentheses"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Think about tracking, for each opening bracket, the index where its matching closing bracket occurs, using a stack of indices."
+  - "After recording all matches with a single left-to-right stack pass, chain together consecutive matched pairs starting from each position to measure contiguous valid runs."
+  - "A single O(n) pass with a stack and an array of match endpoints gets you the answer in O(n) time and O(n) space."
 status: draft
 answer:
   approach: >

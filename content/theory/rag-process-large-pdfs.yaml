@@ -1,0 +1,88 @@
+id: rag-process-large-pdfs
+category: theory
+skill: rag
+type: knowledge
+question: "You're building a system over huge PDF reports. How would you process them?"
+difficulty: hard
+status: draft
+source_refs: [proptech-founder-1]
+sources:
+  - title: "LlamaIndex — Mastering PDFs: extracting sections, headings, paragraphs and tables"
+    url: "https://www.llamaindex.ai/blog/mastering-pdfs-extracting-sections-headings-paragraphs-and-tables-with-cutting-edge-parser-faea18870125"
+    supports: "layout-aware parsing that recognizes sections/hierarchy and handles tables separately"
+  - title: "Koreadeep — Layout-Aware Chunking for RAG: Why Document Structure Decides Retrieval"
+    url: "https://koreadeep.com/en/blog/layout-aware-chunking-rag"
+    supports: "chunk along structural boundaries (sections, headings, tables) instead of fixed token counts"
+  - title: "PremAI — Building Production RAG: Architecture, Chunking, Evaluation & Monitoring"
+    url: "https://blog.premai.io/building-production-rag-architecture-chunking-evaluation-monitoring-2026-guide/"
+    supports: "most RAG failures trace to ingestion/chunking; parse-chunk-embed-retrieve-answer layers"
+
+answer:
+  short: >
+    Big PDFs are a data-engineering problem before they're a retrieval problem —
+    most RAG failures trace back to ingestion, not the LLM. First, parse
+    layout-aware: use a parser (LlamaParse, Unstructured, a layout model) that
+    distinguishes body text from headings, tables, figures and captions, and keeps
+    section hierarchy — not raw PyPDF2 text dumps that scramble multi-column pages.
+    Handle tables specially: extract them as structured markdown/HTML rather than
+    flattening them into prose, which retrieves poorly. Then chunk semantically along
+    structural boundaries (sections/subsections, ~300-800 tokens with overlap) rather
+    than by blind fixed length, and attach metadata to every chunk — source file,
+    page number, section heading — for filtering and citations. Embed and index the
+    chunks (hybrid keyword + vector helps for report jargon and figures). At query
+    time, retrieve top-k, optionally rerank, and generate with citations back to
+    page/section. For very long reports also consider hierarchical / parent-child
+    retrieval so you can retrieve a precise child chunk but hand the model the wider
+    parent context.
+  key_points:
+    - "Ingestion is the bottleneck: parse quality decides retrieval quality, not the LLM"
+    - "Layout-aware parsing (LlamaParse/Unstructured/layout model): keep headings, sections, hierarchy; don't raw-dump multi-column text"
+    - "Extract tables as structured markdown/HTML, not flattened prose"
+    - "Semantic/structure-aware chunking (~300-800 tokens, overlap) beats blind fixed-size splits"
+    - "Attach metadata per chunk: source, page, section — for filtering and citations"
+    - "Hierarchical / parent-child retrieval gives precise match + wider context for long reports"
+
+follow_ups:
+  - "How would you handle scanned PDFs or images/charts inside the report?"
+  - "How do you pick a chunk size, and why does it matter here?"
+  - "How do you cite the exact page and section a claim came from?"
+
+hints:
+  - "Where do most RAG systems actually fail on messy documents — the model, or the step before it?"
+  - "Think about the pipeline order and what makes PDFs hard specifically: multi-column layout, tables, section hierarchy, huge length."
+  - "Layout-aware parse (keep structure, tables as tables) -> structure-aware chunking with metadata -> embed/index (hybrid) -> retrieve + rerank -> generate with page/section citations. Consider parent-child retrieval for long reports."
+
+exercises:
+  - kind: mcq
+    stem: "Why prefer a layout-aware parser over PyPDF2/pdfminer raw text for big report PDFs?"
+    options:
+      - { text: "It preserves headings, sections, and tables instead of scrambling multi-column layout", correct: true }
+      - { text: "It fine-tunes the LLM on the PDF automatically" }
+      - { text: "It removes the need to chunk or embed the documents" }
+      - { text: "It is always faster than any other parser" }
+    explain: "Layout-aware parsers keep document structure (sections, tables, hierarchy), which is what raw text extractors destroy on complex PDFs. They don't replace chunking/embedding or touch model weights."
+
+  - kind: mcq
+    stem: "What's the recommended way to handle tables inside the reports?"
+    options:
+      - { text: "Extract them as structured markdown/HTML and keep them intact", correct: true }
+      - { text: "Flatten each table into a sentence of prose before embedding" }
+      - { text: "Drop all tables — they never contain useful information" }
+      - { text: "Store tables only as images and never index them" }
+    explain: "Tables embedded as flattened prose retrieve poorly; keeping them structured preserves the row/column relationships that make them answerable."
+
+  - kind: order
+    prompt: "Order an ingestion pipeline for large PDF reports"
+    steps:
+      - "Layout-aware parse (sections, tables, hierarchy)"
+      - "Structure-aware chunk with metadata (page, section)"
+      - "Embed chunks and build the index"
+      - "Retrieve top-k for a query"
+      - "Rerank candidates"
+      - "Generate answer with page/section citations"
+
+  - kind: recall
+    front: "What is the single most important lever for quality when ingesting huge PDFs?"
+    back: "Parsing/chunking quality. Most RAG failures come from ingestion, not the LLM: layout-aware parsing that keeps structure and tables, then structure-aware chunking with metadata, sets the ceiling on retrieval quality."
+
+  - kind: explain

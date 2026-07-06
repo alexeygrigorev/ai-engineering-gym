@@ -1,0 +1,75 @@
+id: aieng-debug-embeddings
+category: coding
+skill: ml-coding
+type: coding
+subtype: ml-coding
+question: |
+  Debug this embeddings-handling snippet. It's supposed to embed a batch of query
+  strings, compare each against a matrix of stored document embeddings, and return
+  the best-matching document per query. It runs without crashing but returns wrong
+  matches. Find and fix the bugs.
+
+      import numpy as np
+
+      def best_match(queries, doc_embeddings, model):
+          results = []
+          for q in queries:
+              q_emb = model.embed(q)                 # returns shape (1, 768)
+              # cosine similarity vs every document
+              sims = doc_embeddings @ q_emb          # doc_embeddings is (N, 768)
+              best = np.argmax(sims)
+              results.append(best)
+          return results
+difficulty: medium
+status: draft
+ai_relevant: true
+source_refs: [promptlayer]
+answer:
+  approach: >
+    The snippet has three classic embedding bugs. (1) Shape mismatch: model.embed(q)
+    returns (1, 768) but the code treats q_emb as a 1-D (768,) vector. doc_embeddings
+    (N, 768) @ q_emb (1, 768) fails or, after an implicit reshape, produces the wrong
+    shape — you must squeeze q_emb to (768,) (or transpose so it's (768, 1) and then
+    flatten the result). Assert dimensions at the boundary rather than trusting them.
+    (2) It's not cosine similarity, it's a raw dot product. Cosine requires dividing by
+    the norms; a raw dot product is dominated by vector magnitude, so a long document
+    vector wins regardless of direction. Either L2-normalize both sides first, or divide
+    by the norm product. (3) Recomputing/normalizing inconsistently: if the stored
+    doc_embeddings were normalized at index time but the query isn't (or vice versa),
+    the scores are meaningless — both sides must live in the same space. The robust fix
+    normalizes both and does one matrix multiply, and returns argmax over a proper 1-D
+    score vector.
+  pseudocode: |
+    def best_match(queries, doc_embeddings, model, eps=1e-8):
+        # normalize stored docs ONCE (must match how they were indexed)
+        docs = doc_embeddings / (np.linalg.norm(doc_embeddings, axis=1,
+                                                keepdims=True) + eps)
+        results = []
+        for q in queries:
+            q_emb = model.embed(q).reshape(-1)          # (1,768) -> (768,)
+            assert q_emb.shape[0] == docs.shape[1], "embedding dim mismatch"
+            q_emb = q_emb / (np.linalg.norm(q_emb) + eps)
+            sims = docs @ q_emb                          # (N,) cosine scores
+            results.append(int(np.argmax(sims)))
+        return results
+  complexity:
+    time: "O(len(queries) * N * d)"
+    space: "O(N*d) for the (normalized) document matrix"
+hints:
+  - "Print the shapes. model.embed returns (1, 768) but the code uses it as if it were (768,). That alone makes the matmul produce the wrong thing."
+  - "A raw dot product is not cosine similarity — it's biased by vector magnitude. You need to divide by the L2 norms (or normalize both sides first)."
+  - "Query and documents must be normalized the same way. Normalize the doc matrix once, reshape and normalize the query, then one matmul gives a clean 1-D score array to argmax over."
+follow_ups:
+  - "How would asserting shapes at each boundary have caught the first bug immediately?"
+  - "Why does a raw dot product favor high-magnitude vectors, and when is that actually what you want?"
+  - "How would you batch all queries into one matrix multiply instead of a Python loop?"
+  - "What if the query embedding model differs from the one used to build the index?"
+sources:
+  - key: zilliz-dim-mismatch
+    title: "Zilliz — Why do I see a dimension mismatch when using Sentence Transformer embeddings?"
+    url: "https://zilliz.com/ai-faq/why-do-i-see-a-dimension-mismatch-or-shape-error-when-using-embeddings-from-a-sentence-transformer-in-another-tool-or-network"
+    supports: "embedding shape/dimension mismatch and batch-vs-1D pitfalls"
+  - key: promptlayer
+    title: "PromptLayer — The Agentic System Design Interview"
+    url: "https://blog.promptlayer.com/the-agentic-system-design-interview-how-to-evaluate-ai-engineers/"
+    supports: "reported task: debug code handling embeddings"

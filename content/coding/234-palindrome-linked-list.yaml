@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "234. Palindrome Linked List"
 difficulty: easy
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "A palindrome check just means comparing the list to its own reverse."
+  - "Copy the list in reverse, or find the midpoint and reverse the second half, then walk both halves in lockstep comparing values."
+  - "The midpoint-reverse approach reaches O(n) time with O(1) extra space."
 status: draft
 answer:
   approach: >

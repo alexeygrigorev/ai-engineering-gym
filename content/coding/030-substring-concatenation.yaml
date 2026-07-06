@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "30. Substring with Concatenation of All Words"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Since every word has the same fixed length, precompute for each position in the string which of the words, if any, starts there."
+  - "For each candidate start index, try to greedily consume the required words with backtracking, tracking how many of each distinct word are still needed and undoing a choice when it leads nowhere."
+  - "Restricting attempts to starts whose total span fits, and stopping early at positions with no matching word, keeps this close to O(n * total words) in typical cases."
 status: draft
 answer:
   approach: >

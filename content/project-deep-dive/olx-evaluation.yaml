@@ -1,0 +1,43 @@
+id: olx-evaluation
+category: project-deep-dive
+skill: olx
+type: rehearsal
+your_project: olx
+question: "How did you evaluate the OLX project — was there a real eval framework, or was it vibes-based? What metrics did you track?"
+difficulty: hard
+status: draft
+source_refs: [exponent-openai, linkjob-anthropic]
+sources:
+  - title: "Exponent / OpenAI — What it's actually like to interview at OpenAI"
+    url: "https://medium.com/exponent/what-its-actually-like-to-interview-at-openai-in-2026-03a646c9436c"
+    supports: "interviewers probe whether there is an actual eval framework or it's vibes-based; did it work and how do you know"
+  - title: "LinkJob — Anthropic software engineer interview"
+    url: "https://www.linkjob.ai/interview-questions/anthropic-software-engineer-interview/"
+    supports: "post-deployment monitoring for drift/degradation; handling data quality"
+
+probes:
+  - "What was your test/validation set or offline benchmark, and how did you build it?"
+  - "Which metrics — offline (accuracy/precision/recall) and online (business KPI)?"
+  - "How did you connect an offline metric to a real business outcome?"
+  - "How did you catch a regression before it reached users?"
+  - "How did you monitor for drift or degradation after deployment?"
+
+rubric:
+  - "Describes a real evaluation approach, not 'it looked good' — offline and/or online"
+  - "Names specific metrics and ties model/system metrics to a business KPI"
+  - "Cites actual numbers/outcomes where possible"
+  - "Addresses regression detection and post-deploy monitoring, not just a one-time check"
+  - "Acknowledges limits of the eval (biased set, proxy metric) — honest self-assessment"
+
+hints:
+  - "Separate offline eval (fixed benchmark) from online signal (A/B or live KPI)."
+  - "Name the business metric your technical metric was a proxy for."
+  - "Say how you'd know if quality drifted after launch."
+
+example_structure: |
+  # Model STRUCTURE only — fill with your real eval details at runtime.
+  1. Offline: the benchmark/validation set and what you scored on it.
+  2. Metrics: technical metric(s) + the business KPI they map to.
+  3. Online: the A/B test or live signal you watched.
+  4. Regression + drift: how you caught problems before/after launch.
+  5. Honest caveat: where the eval was weak.

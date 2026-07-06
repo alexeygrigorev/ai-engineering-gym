@@ -1,0 +1,55 @@
+id: technical-misjudgment-delay
+category: behavioral
+skill: failure
+type: rehearsal
+question: "Tell me about a time when a technical misjudgment led to a project delay. What did you learn?"
+difficulty: medium
+status: draft
+source_refs: [linkjob-anthropic]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Earn Trust; Are Right, A Lot)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "owning mistakes openly and being self-critical builds trust"
+  - title: "Big Interview — Behavioral Interview Questions and Answers"
+    url: "https://resources.biginterview.com/behavioral-interviews/"
+    supports: "failure answers need real ownership, recovery, and a concrete lesson"
+
+probes:
+  - "What was the misjudgment, exactly, and why did you make that call at the time?"
+  - "When and how did you realize it was wrong?"
+  - "What was the impact of the delay?"
+  - "What did you do once you saw the problem?"
+  - "How did you communicate it to stakeholders?"
+  - "What did you change so it wouldn't happen again?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation names a real technical decision that turned out wrong (e.g. underestimating data quality work, wrong model/architecture bet)"
+  - "Takes clear ownership — 'I misjudged', not 'the requirements changed'"
+  - "Action shows how you detected it, contained the damage, and communicated honestly"
+  - "Demonstrates recovery, not just admission of fault"
+  - "Result includes the concrete lesson AND a change you made (process, checkpoint, spike) that stuck"
+  - "Tone is self-aware and constructive, not self-flagellating or defensive"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A technical call you made that proved wrong (e.g. assumed an
+     approach would scale, or underestimated the data work).
+  T (Task): What you owned and what the misjudgment put at risk.
+  A (Action): The concrete steps YOU took once you saw it — owned it, communicated
+     the delay early, re-planned, corrected course.
+  R (Result): How it resolved, the impact honestly stated, and the specific change
+     you made so it wouldn't recur (e.g. a de-risking spike before committing).
+
+hints:
+  - "Pick a real misjudgment with genuine stakes — a trivial one signals you're hiding."
+  - "Own it in the first person, then spend your airtime on the recovery and the fix."
+  - "End on a concrete, durable change to your process, not a vague 'I learned to be careful'."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

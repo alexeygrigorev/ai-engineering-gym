@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "480. Sliding Window Median"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "This extends the streaming two-heap median idea, but now an element must also be removed when it leaves the window."
+  - "Use two balanced multisets, not plain heaps, split around the median so the outgoing value can be removed from whichever side holds it, then rebalance."
+  - "Each slide costs O(log k), giving O(n log k) overall."
 status: draft
 answer:
   approach: >

@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "235. Lowest Common Ancestor of a Binary Search Tree"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "BST ordering tells you which subtree both target nodes must lie in at each step."
+  - "Starting at the root, move left if both values are smaller and right if both are larger, until the point where they diverge or one matches the current node."
+  - "That first split point is the LCA, found in O(h) time and O(1) space."
 status: draft
 answer:
   approach: >

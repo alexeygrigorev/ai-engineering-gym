@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "479. Largest Palindrome Product"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "You are looking for the largest product of two n-digit numbers that happens to be a palindrome, so the order you search in matters."
+  - "Iterate candidate factors from the largest n-digit numbers downward, pruning combinations that cannot produce the needed trailing digits."
+  - "Return the first palindrome found, modulo 1337, since a top-down search finds the largest one first."
 status: draft
 answer:
   approach: >

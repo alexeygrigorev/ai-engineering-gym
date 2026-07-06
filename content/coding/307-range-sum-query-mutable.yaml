@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "307. Range Sum Query - Mutable"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Both point updates and range-sum queries need to be faster than recomputing from scratch each time."
+  - "Store the array in a segment tree where each node holds the sum of its range, so updating a leaf only touches its O(log n) ancestors."
+  - "A range query then combines O(log n) tree nodes, giving O(log n) update and query after an O(n) build."
 status: draft
 answer:
   approach: >

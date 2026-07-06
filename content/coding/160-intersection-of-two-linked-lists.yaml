@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "160. Intersection of Two Linked Lists"
 difficulty: easy
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "If two lists intersect, they share the exact same tail from the intersection node onward."
+  - "Measure both lengths, then advance the longer list's pointer by the difference so both pointers are equally far from the end."
+  - "Move both pointers together one step at a time; they meet exactly at the intersection node in O(n+m) time, O(1) space."
 status: draft
 answer:
   approach: >

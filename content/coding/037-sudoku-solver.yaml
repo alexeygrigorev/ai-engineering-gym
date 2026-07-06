@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "37. Sudoku Solver"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "For every empty cell, precompute the set of candidate digits allowed by its row, column, and box, plus the list of other empty cells sharing a unit with it."
+  - "Backtrack by always filling the empty cell with the fewest remaining candidates first, propagating each placement by removing it from peers' candidate sets and pruning if any peer hits zero candidates."
+  - "This constraint-propagation plus most-constrained-cell backtracking is exponential worst case but fast in practice; undo placements and candidate removals on failure."
 status: draft
 answer:
   approach: >

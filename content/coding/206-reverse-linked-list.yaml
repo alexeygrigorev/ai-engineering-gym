@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "206. Reverse Linked List"
 difficulty: easy
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "Reversing means flipping each node's next pointer to point backward instead of forward."
+  - "Walk the list with a prev pointer, saving each node's next before overwriting node.next to point at prev."
+  - "One pass with O(n) time and O(1) space; prev becomes the new head once the cursor runs off the end."
 status: draft
 answer:
   approach: >

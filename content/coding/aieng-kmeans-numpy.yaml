@@ -1,0 +1,58 @@
+id: aieng-kmeans-numpy
+category: coding
+skill: ml-coding
+type: coding
+subtype: ml-coding
+question: >
+  Implement k-means clustering from scratch in NumPy (Lloyd's algorithm). Given a
+  data matrix X and k, return cluster assignments and centroids.
+difficulty: medium
+status: draft
+ai_relevant: true
+answer:
+  approach: >
+    K-means (Lloyd's algorithm) alternates two steps until convergence. Assignment:
+    put each point in the cluster whose centroid is nearest by squared Euclidean
+    distance. Update: move each centroid to the mean of the points assigned to it.
+    Repeat until assignments stop changing (or centroids move less than a tolerance,
+    or you hit max_iter). The vectorized assignment computes an (n_points, k) distance
+    matrix and takes argmin along the centroid axis — no per-point loop. Three details
+    interviewers probe: initialization (random points as centroids is fine to start;
+    mention k-means++ for better seeds and fewer bad local minima), the objective it
+    minimizes (within-cluster sum of squares / inertia, and that it only reaches a
+    local optimum, so you run several restarts and keep the best), and the empty-cluster
+    edge case (reseed a centroid to the farthest point if a cluster loses all members).
+  pseudocode: |
+    def kmeans(X, k, max_iter=100, tol=1e-4):
+        centroids = X[random_choice(len(X), k, replace=False)]   # k-means++ is better
+        for _ in range(max_iter):
+            # assignment: (n, k) squared distances, then argmin
+            d = ((X[:, None, :] - centroids[None, :, :]) ** 2).sum(axis=2)
+            labels = d.argmin(axis=1)
+            # update: mean of assigned points (reseed empty clusters)
+            new_centroids = stack([X[labels == j].mean(axis=0) if any(labels == j)
+                                    else X[random_index()] for j in range(k)])
+            if norm(new_centroids - centroids) < tol: break
+            centroids = new_centroids
+        return labels, centroids
+  complexity:
+    time: "O(iters * n * k * d) for n points, k clusters, d dimensions"
+    space: "O(n*k) for the distance matrix (or O(n) if you loop over clusters)"
+hints:
+  - "It's two alternating steps: assign each point to its nearest centroid, then recompute each centroid as the mean of its members. Repeat until assignments stabilize."
+  - "Vectorize the assignment: build an (n_points, k) squared-distance matrix and take argmin along axis 1. Avoid a Python loop over points."
+  - "K-means only finds a local optimum, so seeding matters — mention k-means++ and multiple restarts. Handle the empty-cluster case by reseeding a centroid."
+follow_ups:
+  - "How does k-means++ initialization work and why does it help?"
+  - "How would you choose k (elbow method, silhouette score)?"
+  - "Why does k-means assume roughly spherical, equal-size clusters, and when does that break?"
+  - "How would you scale this to data that doesn't fit in memory (minibatch k-means)?"
+sources:
+  - key: mmuratarat-kmeans
+    title: "Mustafa Murat ARAT — Implementing K-means Clustering from Scratch in Python"
+    url: "https://mmuratarat.github.io/2019-07-23/kmeans_from_scratch"
+    supports: "Lloyd's algorithm assignment/update steps with NumPy argmin"
+  - key: towardsai-kmeans
+    title: "Towards AI — K-Means Clustering from Scratch"
+    url: "https://medium.com/towards-artificial-intelligence/k-means-clustering-from-scratch-4e357ac4716f"
+    supports: "centroid initialization, convergence, and inertia objective"

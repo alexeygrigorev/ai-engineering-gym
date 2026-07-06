@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "78. Subsets"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Each subset corresponds to a unique choice of include or exclude for every element."
+  - "Represent that choice as an n-bit number and enumerate every value from 0 to 2^n - 1."
+  - "For each mask, build the subset from the set bits, giving an O(n * 2^n) solution."
 status: draft
 answer:
   approach: >

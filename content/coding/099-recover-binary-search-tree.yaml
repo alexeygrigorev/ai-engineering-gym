@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "99. Recover Binary Search Tree"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Two nodes were swapped, so an in-order traversal is sorted everywhere except near the swap points."
+  - "Scan the in-order sequence for the first place the order breaks and the last place it breaks - those two nodes were swapped."
+  - "Swap their values back in a single O(n) traversal (O(1) extra space is possible with Morris traversal)."
 status: draft
 answer:
   approach: >

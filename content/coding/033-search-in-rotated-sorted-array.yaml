@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "33. Search in Rotated Sorted Array"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Even after rotation, at least one half of any subarray you look at is still sorted."
+  - "At each step figure out which half (left or right of the midpoint) is sorted, then check whether the target falls inside that sorted half to decide which side to search."
+  - "A modified binary search that discards half the range each step gives O(log n) time."
 status: draft
 answer:
   approach: >

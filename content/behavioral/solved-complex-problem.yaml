@@ -1,0 +1,55 @@
+id: solved-complex-problem
+category: behavioral
+skill: ownership
+type: rehearsal
+question: "Tell me about a time when you solved a complex problem and how you went about it."
+difficulty: medium
+status: draft
+source_refs: [exponent-behavioral]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Dive Deep; Invent and Simplify)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "getting to root cause, simplifying, and owning the outcome of a hard problem"
+  - title: "The Muse — How to Use the STAR Method to Ace Your Job Interview"
+    url: "https://www.themuse.com/advice/star-interview-method"
+    supports: "keep the Situation brief; make the outcome measurable"
+
+probes:
+  - "What made the problem complex — scale, ambiguity, competing constraints?"
+  - "How did you break it down and where did you start?"
+  - "What was your root-cause or key insight?"
+  - "What did you try that didn't work?"
+  - "How did you validate the solution?"
+  - "What was the measurable impact and what did you learn?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation frames a genuinely hard, multi-constraint problem (e.g. a subtle production bug, a scaling wall, a quality regression)"
+  - "Task shows your ownership of solving it"
+  - "Action reveals YOUR problem-solving process: decomposition, hypotheses, experiments, root-cause analysis"
+  - "Shows rigor and honesty about dead ends, not a lucky guess"
+  - "Result quantifies the fix (latency, accuracy, cost, incidents) and confirms it held"
+  - "Reflection on a transferable problem-solving approach"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A complex, high-stakes problem (e.g. degrading retrieval quality,
+     a hard-to-reproduce failure, a cost or latency wall).
+  T (Task): What you owned — diagnose and fix it.
+  A (Action): The concrete steps YOU took — decomposed the problem, formed and
+     tested hypotheses, isolated the root cause, designed and validated the fix.
+  R (Result): The measurable improvement and that it stuck, plus a one-line lesson
+     on your problem-solving method.
+
+hints:
+  - "Make the reasoning visible — interviewers grade the process, not just the fix."
+  - "Include a hypothesis you ruled out; it shows rigor over luck."
+  - "Quantify the before/after and name the method you'd reuse."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

@@ -1,0 +1,89 @@
+id: eval-summarization-factual-errors
+category: theory
+skill: evaluation
+type: knowledge
+question: "How would you prevent factual errors in a summarization system?"
+difficulty: hard
+status: draft
+source_refs: [interviewnode]
+sources:
+  - key: summac
+    title: "Laban et al. — SummaC: Re-Visiting NLI-based Models for Inconsistency Detection in Summarization (arXiv:2111.09525)"
+    url: "https://arxiv.org/abs/2111.09525"
+    supports: "NLI-based faithfulness at sentence granularity — each summary sentence should be entailed by the source"
+  - key: qags
+    title: "Wang, Cho, Lewis — Asking and Answering Questions to Evaluate Factual Consistency of Summaries (QAGS, arXiv:2004.04228)"
+    url: "https://arxiv.org/abs/2004.04228"
+    supports: "QA-based factual-consistency metric — the same questions should get the same answers from summary and source"
+  - key: eugene-abstractive
+    title: "Eugene Yan — Evaluation & Hallucination Detection for Abstractive Summaries"
+    url: "https://eugeneyan.com/writing/abstractive/"
+    supports: "eval dimensions (fluency/coherence/relevance/consistency) and the metric landscape (FactCC, SummaC, QAGS, G-Eval, SelfCheckGPT)"
+  - key: factcc
+    title: "Kryściński et al. — Evaluating the Factual Consistency of Abstractive Text Summarization (FactCC, arXiv:1910.12840)"
+    url: "https://arxiv.org/abs/1910.12840"
+    supports: "framing factual-consistency checking of summaries as an NLI-style entailment classifier"
+
+answer:
+  short: >
+    The core objective is faithfulness / groundedness of the summary to its source, which
+    is distinct from ROUGE-style overlap or general "quality" — a fluent summary can still
+    invent facts. Extractive vs abstractive is a design lever: extractive or heavily
+    quote-constrained summaries are far less prone to fabrication, while abstractive gains
+    fluency at the cost of hallucination risk. Measure factual consistency explicitly with
+    purpose-built metrics: NLI-based checks (SummaC, FactCC) that verify each summary
+    sentence is entailed by the source, and QA-based checks (QAGS, QuestEval) that verify
+    the same questions get the same answers from summary and source. An LLM-as-judge for
+    faithfulness scales this, but validate it against human labels and the classic
+    benchmarks. Constrain generation to the source (instruct the model to use only the
+    provided text, add citations/attribution back to source spans, lower temperature),
+    add a post-hoc verification pass that flags or removes unsupported claims, handle long
+    documents with chunking plus hierarchical/map-reduce summarization, and keep human
+    review for high-stakes summaries.
+  key_points:
+    - "The objective is faithfulness/groundedness of the summary to its source — distinct from ROUGE overlap or fluency"
+    - "Extractive / quote-constrained summaries fabricate far less; abstractive trades fluency for hallucination risk"
+    - "Measure factual consistency explicitly: NLI-based entailment (SummaC, FactCC) and QA-based agreement (QAGS, QuestEval)"
+    - "Use an LLM-as-judge for faithfulness to scale, but validate it against human labels and benchmark datasets"
+    - "Constrain generation to the source: 'use only the provided text', add citations to source spans, lower temperature, add a post-hoc unsupported-claim filter"
+    - "Handle long documents with chunking + hierarchical/map-reduce summarization, and keep human review for high-stakes cases"
+
+follow_ups:
+  - "The summarizer must compress and paraphrase — how do you tell legitimate abstraction apart from a hallucinated fact when scoring faithfulness?"
+  - "How do you evaluate faithfulness when the source exceeds the model's (or the judge's) context window?"
+  - "What about factual errors that are in the source itself — should the summary faithfully repeat them, and how does that interact with factuality vs faithfulness?"
+
+exercises:
+  - kind: mcq
+    stem: "Why is ROUGE a poor guard against factual errors in a summary?"
+    options:
+      - { text: "It rewards n-gram overlap with a reference, not whether claims are entailed by the source", correct: true }
+      - { text: "It requires a GPU to compute" }
+      - { text: "It measures latency instead of quality" }
+      - { text: "It only works on extractive summaries" }
+    explain: "A summary can overlap heavily with a reference yet still assert a fact the source never supports; you need entailment- or QA-based consistency checks."
+
+  - kind: mcq
+    stem: "Which design choice most directly reduces fabricated facts in summaries?"
+    options:
+      - { text: "Prefer extractive / quote-constrained generation grounded in source spans", correct: true }
+      - { text: "Raise the temperature for more creative phrasing" }
+      - { text: "Remove citations to keep summaries short" }
+      - { text: "Optimize purely for ROUGE" }
+    explain: "Extractive or quote-constrained summaries pull text directly from the source, sharply limiting invented content; abstractive fluency raises hallucination risk."
+
+  - kind: order
+    prompt: "Order a faithfulness-first summarization pipeline"
+    steps:
+      - "Chunk long source documents"
+      - "Summarize per chunk grounded in the text"
+      - "Add citations back to source spans"
+      - "Run an NLI/QA factual-consistency check"
+      - "Route flagged summaries to human review"
+
+  - kind: fill
+    template: "{0}-based checks like SummaC test whether each summary sentence is entailed by the source; {1}-based checks like QAGS compare answers drawn from summary and source."
+    blanks: ["NLI", "QA"]
+    chips: ["NLI", "QA", "ROUGE", "BLEU"]
+
+  - kind: explain

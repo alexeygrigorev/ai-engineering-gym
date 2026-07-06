@@ -1,0 +1,79 @@
+id: agents-support-ticket-agent
+category: theory
+skill: agents
+type: knowledge
+question: "How would you design an agent to analyze customer support tickets, draft responses, and escalate complex issues?"
+difficulty: medium
+status: draft
+source_refs: [promptlayer]
+sources:
+  - title: "PromptLayer — The Agentic System Design Interview"
+    url: "https://blog.promptlayer.com/the-agentic-system-design-interview-how-to-evaluate-ai-engineers/"
+    supports: "how agentic support/design questions are evaluated in interviews"
+  - title: "DevRev — AI support ticket triaging: the enterprise playbook (2026)"
+    url: "https://devrev.ai/blog/ai-support-ticket-triaging"
+    supports: "classify/route tickets, draft replies, and confidence-threshold escalation to humans"
+  - title: "OpenAI — Guardrails and human review"
+    url: "https://developers.openai.com/api/docs/guides/agents/guardrails-approvals"
+    supports: "draft-and-approve human-in-the-loop pattern and risk-based escalation"
+
+answer:
+  short: >
+    Model it as a triage pipeline with a human-in-the-loop, not a fully autonomous
+    responder. Ingest the ticket, then classify it (intent, category, priority,
+    sentiment). Retrieve context — RAG over the knowledge base plus read-only
+    account/order data from the CRM. Draft a reply grounded in that context, then run
+    a confidence/quality self-check: above threshold, send or queue for a quick human
+    approve/edit; below threshold, or high-stakes/angry/high-value, escalate to a
+    human with the full context attached. Give it least-privilege tools (KB
+    retrieval, read-only CRM), log every action, and keep writes gated. Then close
+    the loop with evaluation and monitoring: resolution rate, escalation accuracy,
+    CSAT, and draft faithfulness/hallucination — and iterate.
+  key_points:
+    - "Pipeline: ingest → classify/triage (intent, category, priority, sentiment) → retrieve context → draft → self-check → send or escalate"
+    - "Human-in-the-loop: draft-and-approve; a confidence threshold decides autonomous send vs. escalate"
+    - "Tools with least privilege: KB retrieval (RAG) and read-only CRM/account lookups; log every action, gate writes"
+    - "Escalation logic: route complex / low-confidence / angry / high-value tickets to a human with full context and SLA rules"
+    - "Evaluate + monitor: resolution rate, escalation accuracy, CSAT, and draft faithfulness/hallucination; iterate"
+
+hints:
+  - "Break the job into stages — what has to happen before a reply can be drafted?"
+  - "Decide what the agent sends on its own versus what a human must approve."
+  - "Don't forget how you'd measure whether it's actually working in production."
+
+follow_ups:
+  - "How do you set the confidence threshold for auto-send vs. escalate?"
+  - "How do you keep drafted replies grounded and avoid hallucinated policies?"
+  - "What context do you attach when escalating to a human?"
+  - "Which metrics tell you the agent is helping, not just deflecting?"
+
+exercises:
+  - kind: mcq
+    stem: "What decides whether the agent sends a reply itself or escalates to a human?"
+    options:
+      - { text: "A confidence/quality threshold, with complex or high-stakes tickets routed to a human", correct: true }
+      - { text: "Whichever is cheaper in tokens" }
+      - { text: "The alphabetical order of the customer's name" }
+      - { text: "The current server load" }
+    explain: "A confidence threshold plus risk/complexity routing is the standard human-in-the-loop escalation control."
+
+  - kind: mcq
+    stem: "Why give the agent read-only CRM access rather than full write access?"
+    options:
+      - { text: "Least privilege limits damage from mistakes or prompt injection", correct: true }
+      - { text: "Read-only access is faster to type" }
+      - { text: "Write access would improve draft grammar" }
+      - { text: "It removes the need for evaluation" }
+    explain: "Least-privilege tools shrink the blast radius; writes should be gated behind approval."
+
+  - kind: order
+    prompt: "Order the support-ticket agent pipeline"
+    steps:
+      - "Ingest the incoming ticket"
+      - "Classify: intent, priority, sentiment"
+      - "Retrieve context (KB + read-only account data)"
+      - "Draft a grounded reply"
+      - "Self-check confidence/quality"
+      - "Send/approve, or escalate to a human with context"
+
+  - kind: explain

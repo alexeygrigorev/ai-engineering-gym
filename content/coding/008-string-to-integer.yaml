@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "8. String to Integer (atoi)"
 difficulty: medium
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Walk the string as a small state machine: first skip leading spaces, then read an optional sign character."
+  - "Consume digits while building result = result * 10 + digit, stopping as soon as you hit a non-digit character."
+  - "Detect 32-bit overflow immediately after each multiply-and-add and clamp to INT_MAX or INT_MIN based on the sign, giving an O(n) single pass."
 status: draft
 answer:
   approach: >

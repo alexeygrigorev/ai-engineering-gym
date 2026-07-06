@@ -1,0 +1,82 @@
+id: ml-l1-l2-regularization
+category: theory
+skill: ml-fundamentals
+type: knowledge
+question: "What is regularization, and what's the difference between L1 (Lasso) and L2 (Ridge)?"
+difficulty: medium
+status: draft
+source_refs: []
+sources:
+  - title: "Built In — L1 and L2 Regularization Methods, Explained"
+    url: "https://builtin.com/data-science/l2-regularization"
+    supports: "L1 adds absolute-value penalty (Lasso), L2 adds squared penalty (Ridge); L1 induces sparsity"
+  - title: "Towards Data Science — Understanding L1 and L2 Regularization"
+    url: "https://towardsdatascience.com/understanding-l1-and-l2-regularization-93918a5ac8d0/"
+    supports: "geometry of why L1 drives coefficients to exactly zero while L2 shrinks smoothly"
+  - title: "Alexey Grigorev — Data Science Interviews (theoretical questions)"
+    url: "https://github.com/alexeygrigorev/data-science-interviews"
+    supports: "canonical ML-fundamentals interview question set this item is drawn from"
+
+answer:
+  short: >
+    Regularization fights overfitting by adding a penalty on model complexity to the
+    loss, so the optimizer is discouraged from learning large weights that fit noise. You
+    minimize (training loss + λ · penalty), where λ controls the strength: too small does
+    nothing, too large underfits. L1 (Lasso) penalizes the sum of the absolute values of
+    the coefficients. Its geometry (a diamond-shaped constraint with corners on the axes)
+    tends to push some coefficients to exactly zero — so L1 performs automatic feature
+    selection and yields sparse models, which is great when you have many features and
+    suspect most are irrelevant. L2 (Ridge) penalizes the sum of the squared coefficients.
+    It shrinks all weights smoothly toward zero but rarely to exactly zero, spreading
+    weight across correlated features and stabilizing the solution — good when many
+    features are useful or highly correlated. In short: L1 → sparsity/selection, L2 →
+    smooth shrinkage/stability. Elastic Net combines both. Either way you regularize to
+    trade a bit of bias for a meaningful drop in variance.
+  key_points:
+    - "Regularization adds a complexity penalty to the loss to reduce overfitting: minimize (loss + λ · penalty)"
+    - "λ (regularization strength) tunes the tradeoff: too high underfits, too low doesn't help"
+    - "L1 (Lasso): penalizes sum of |coefficients| → drives some to exactly zero → sparsity + feature selection"
+    - "L2 (Ridge): penalizes sum of coefficients² → shrinks all weights smoothly toward (not to) zero"
+    - "L1 is good with many irrelevant features; L2 is good with correlated/useful features and stabilizes the solution"
+    - "Elastic Net blends L1 and L2; conceptually you trade a little bias for lower variance"
+
+follow_ups:
+  - "Why does L1's geometry produce exactly-zero coefficients while L2 doesn't?"
+  - "You have thousands of features and suspect most are noise — which penalty and why?"
+  - "How do you choose λ in practice?"
+  - "What is Elastic Net and when would you use it over pure L1 or L2?"
+
+hints:
+  - "Both add a term to the loss that punishes big weights — the difference is how they measure 'big'."
+  - "One measures with absolute values, the other with squares. That single choice is why one zeroes coefficients out and the other just shrinks them."
+  - "L1/Lasso = sum of absolute values → sparse, does feature selection. L2/Ridge = sum of squares → smooth shrinkage, keeps all features. λ tunes strength."
+
+exercises:
+  - kind: mcq
+    stem: "Which regularizer tends to drive some coefficients to exactly zero, effectively selecting features?"
+    options:
+      - { text: "L1 (Lasso)", correct: true }
+      - { text: "L2 (Ridge)" }
+      - { text: "Neither — both only shrink coefficients slightly" }
+      - { text: "Both zero out coefficients equally" }
+    explain: "L1's absolute-value penalty has corners on the axes, so the optimum often lands with some coefficients at exactly zero — automatic feature selection. L2 shrinks smoothly but keeps them non-zero."
+
+  - kind: mcq
+    stem: "What is the primary purpose of adding a regularization penalty to the loss?"
+    options:
+      - { text: "Reduce overfitting by discouraging overly large/complex weights", correct: true }
+      - { text: "Speed up training by using fewer epochs" }
+      - { text: "Increase model capacity to fit the training data better" }
+      - { text: "Guarantee the model reaches zero training error" }
+    explain: "Regularization penalizes complexity to lower variance and improve generalization — the opposite of maximizing training fit."
+
+  - kind: fill
+    template: "{0} regularization adds the sum of absolute values and yields sparse models; {1} regularization adds the sum of squares and shrinks weights smoothly."
+    blanks: ["L1", "L2"]
+    chips: ["L1", "L2", "Dropout", "L0"]
+
+  - kind: recall
+    front: "L1 vs L2: which gives sparsity and which gives smooth shrinkage?"
+    back: "L1 (Lasso) penalizes absolute values and drives some coefficients to exactly zero → sparsity and feature selection. L2 (Ridge) penalizes squares and shrinks all weights smoothly toward zero without eliminating them."
+
+  - kind: explain

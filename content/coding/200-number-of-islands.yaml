@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "200. Number of Islands"
 difficulty: medium
+tags: [dsa]
+ai_relevant: true
+hints:
+  - "Think of each island as a connected component of land cells in the grid."
+  - "Scan every cell, and when you find an unvisited land cell, flood-fill outward over its four neighbors marking all connected land visited."
+  - "Increment the island count once per flood-fill; each cell is visited only once, giving O(rows * cols) time."
 status: draft
 answer:
   approach: >

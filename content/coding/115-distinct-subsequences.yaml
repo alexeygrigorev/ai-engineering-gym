@@ -5,6 +5,12 @@ type: coding
 subtype: algorithm
 question: "115. Distinct Subsequences"
 difficulty: hard
+tags: [dsa]
+ai_relevant: false
+hints:
+  - "Think about counting matches between prefixes of the source string and prefixes of the target rather than the whole strings at once."
+  - "Build a table where each cell adds the ways that skip the current source character plus, when characters match, the ways that use it to complete the target."
+  - "Filling this 2D table bottom-up gives an O(n*m) time and space solution."
 status: draft
 answer:
   approach: >

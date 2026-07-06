@@ -1,0 +1,50 @@
+id: aieng-softmax-numpy
+category: coding
+skill: ml-coding
+type: coding
+subtype: ml-coding
+question: >
+  Implement the softmax function from scratch in NumPy so it is numerically stable
+  and works row-wise on a 2-D batch of logits.
+difficulty: easy
+status: draft
+ai_relevant: true
+answer:
+  approach: >
+    Softmax turns a vector of logits into a probability distribution:
+    softmax(x)_i = exp(x_i) / sum_j exp(x_j). The naive formula overflows: exp of a
+    large logit (roughly > 710 in float64) returns inf and you get nan. The fix — the
+    "max trick" — is to subtract the row maximum before exponentiating. Because
+    softmax is shift-invariant (subtracting a constant c from every logit multiplies
+    numerator and denominator by exp(-c), which cancels), this changes nothing
+    mathematically but keeps the largest exponent at exp(0)=1. For a batch, operate
+    along the last axis with keepdims=True so the max and sum broadcast correctly per
+    row. This is the same routine that sits inside attention and every classification
+    head, so interviewers use it to check you know why the subtraction is there.
+  pseudocode: |
+    def softmax(x, axis=-1):
+        # subtract per-row max for numerical stability (shift-invariance)
+        z = x - np.max(x, axis=axis, keepdims=True)
+        e = np.exp(z)
+        return e / np.sum(e, axis=axis, keepdims=True)
+  complexity:
+    time: "O(n) in the number of logits (one pass for max, one for exp, one for sum)"
+    space: "O(n) for the exponentiated array"
+hints:
+  - "The definition is exp(x_i) / sum(exp(x_j)). Try it directly on a logit like 1000 and watch it overflow to nan."
+  - "Softmax is shift-invariant: subtracting any constant from all logits leaves the output unchanged. Subtract the max so the biggest exponent becomes exp(0) = 1."
+  - "For a 2-D batch, reduce along axis=-1 with keepdims=True so both the max subtraction and the sum division broadcast per row."
+follow_ups:
+  - "Why is softmax shift-invariant but not scale-invariant?"
+  - "How would you compute log-softmax stably, and why prefer it for cross-entropy?"
+  - "How does the temperature parameter change the output distribution?"
+  - "Where does this exact function appear inside scaled dot-product attention?"
+sources:
+  - key: delft-softmax
+    title: "Delft Stack — NumPy Softmax in Python"
+    url: "https://www.delftstack.com/howto/numpy/numpy-softmax/"
+    supports: "numerically stable softmax by subtracting the max before exponentiating"
+  - key: conaway-softmax
+    title: "Nolan Conaway — A softmax function for numpy"
+    url: "https://nolanbconaway.github.io/blog/2017/softmax-numpy.html"
+    supports: "axis handling with keepdims for row-wise batched softmax"

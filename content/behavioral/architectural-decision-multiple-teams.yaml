@@ -1,0 +1,56 @@
+id: architectural-decision-multiple-teams
+category: behavioral
+skill: leadership
+type: rehearsal
+question: "Describe a time you drove an architectural decision that affected multiple teams."
+difficulty: hard
+status: draft
+source_refs: [hellointerview-openai-l5]
+sources:
+  - title: "MIT CAPD — Using the STAR Method for Behavioral Interviews"
+    url: "https://capd.mit.edu/resources/the-star-method-for-behavioral-interviews/"
+    supports: "STAR = Situation, Task, Action, Result; weight the answer toward Action"
+  - title: "Amazon — Leadership Principles (Think Big; Have Backbone, Disagree and Commit)"
+    url: "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"
+    supports: "driving cross-team decisions requires influence, clear trade-offs, and commitment"
+  - title: "Big Interview — Behavioral Interview Questions and Answers"
+    url: "https://resources.biginterview.com/behavioral-interviews/"
+    supports: "senior stories should show scope, stakeholders, and measurable impact"
+
+probes:
+  - "What was the decision and what were the competing options?"
+  - "Which teams were affected and how did their interests differ?"
+  - "How did you build alignment across teams with no direct authority?"
+  - "What trade-offs did you make explicit, and how did you document them?"
+  - "How did you handle the teams that pushed back?"
+  - "What was the long-term impact, and did any of your assumptions prove wrong?"
+
+scaffold:
+  format: STAR
+  slots: [Situation, Task, Action, Result]
+
+rubric:
+  - "Situation involves a genuinely cross-cutting technical decision (e.g. shared model-serving platform, data contract, retrieval infra)"
+  - "Shows scope and the conflicting interests of multiple teams"
+  - "Action centers on YOUR technical leadership: framing options, running a design review, documenting trade-offs, driving consensus or a decision"
+  - "Demonstrates influence without authority and handling of dissent"
+  - "Result shows adoption across teams and measurable impact (latency, cost, reuse, reliability)"
+  - "Reflection on the trade-offs and what you would revisit"
+
+example_structure: |
+  # STAR SKELETON — NOT a real personal story. Fill with your own.
+  S (Situation): A shared architecture choice several teams depended on (e.g.
+     one model gateway vs. per-team integrations, or a common vector store).
+  T (Task): What you owned — drive a decision the whole org could commit to.
+  A (Action): The concrete steps YOU took — enumerated options, wrote a design
+     doc with trade-offs, ran a review with the affected teams, resolved the
+     dissent, secured a decision.
+  R (Result): The architecture that shipped and its cross-team impact, quantified
+     (reuse, cost, latency), plus a one-line lesson on driving alignment.
+
+hints:
+  - "Establish scope early: name the teams and why their needs conflicted."
+  - "Show the mechanism you used to align — a design doc, a review, a clear trade-off table."
+  - "Own the outcome honestly, including any assumption that later needed revisiting."
+
+# The user's own answer is captured per-user at runtime, NOT stored in this file.

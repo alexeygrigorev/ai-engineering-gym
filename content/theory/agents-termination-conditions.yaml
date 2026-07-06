@@ -1,0 +1,73 @@
+id: agents-termination-conditions
+category: theory
+skill: agents
+type: knowledge
+question: "How do you implement termination conditions in long-running agents?"
+difficulty: medium
+status: draft
+source_refs: [techeon]
+sources:
+  - title: "OpenAI — A Practical Guide to Building Agents (PDF)"
+    url: "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf"
+    supports: "run limits, guardrails, and human-in-the-loop approval as exit and pause conditions"
+  - title: "OpenAI — Guardrails and human review"
+    url: "https://developers.openai.com/api/docs/guides/agents/guardrails-approvals"
+    supports: "approvals pause a run for high-stakes tool calls; the run halts until approved or rejected"
+  - title: "Inkog — AI Agent Infinite Loop Detection & Prevention"
+    url: "https://inkog.io/glossary/infinite-loop-ai-agent"
+    supports: "external, deterministic step/time limits and stuck-handlers as hard termination mechanisms"
+
+answer:
+  short: >
+    Define explicit exits for every way a run can end — success, budget, and
+    failure — and enforce them outside the model. Success: a completion check
+    (verifiable criteria or a validator, optionally with the model's
+    self-assessment) marks the goal met. Budget: max steps, max tokens/cost, and max
+    wall-clock time bound how long it may run. Failure/abort: repeated errors, an
+    unrecoverable tool failure, or a guardrail violation stop the run and escalate.
+    For high-stakes actions, a human-in-the-loop approval gate pauses the run until
+    approved or rejected. Prefer external, deterministic checks over trusting the
+    model to stop itself, and always log why it stopped.
+  key_points:
+    - "Success exit: an explicit completion check (verifiable criteria/validator, optionally + model self-assessment)"
+    - "Budget exits: max steps, max tokens/cost, and max wall-clock time"
+    - "Failure/abort exits: repeated errors, unrecoverable tool failure, or guardrail violation → stop and escalate"
+    - "Human-in-the-loop approval gates pause the run for high-stakes actions until approved/rejected"
+    - "Enforce externally and deterministically, not by trusting the model; log the reason it stopped"
+
+hints:
+  - "List every way a run could legitimately end — not just 'it finished'."
+  - "Separate 'the goal is met' from 'we ran out of budget' from 'something went wrong'."
+  - "Think about where a human should be able to pause or approve."
+
+follow_ups:
+  - "How do you verify the goal is actually met rather than the model claiming it?"
+  - "How is a termination condition different from loop detection?"
+  - "Where do you insert human approval gates?"
+  - "How do you log and monitor why runs terminate?"
+
+exercises:
+  - kind: mcq
+    stem: "Which set best covers the ways a long-running agent should be able to terminate?"
+    options:
+      - { text: "Goal-satisfied, budget exhausted (steps/tokens/time), and failure/abort", correct: true }
+      - { text: "Only when the user closes the browser tab" }
+      - { text: "Only when the model outputs the word 'done'" }
+      - { text: "Only when the API rate limit is hit" }
+    explain: "Robust agents define success, budget, and failure exits — not a single condition, and not solely the model's say-so."
+
+  - kind: mcq
+    stem: "For a high-stakes action like sending a payment, the right termination-related control is:"
+    options:
+      - { text: "A human-in-the-loop approval gate that pauses the run until approved or rejected", correct: true }
+      - { text: "Raising the temperature so the model is more careful" }
+      - { text: "Removing all step limits so it can retry freely" }
+      - { text: "Letting the model auto-approve to save latency" }
+    explain: "Approvals pause the run for high-stakes tool calls; the model may still request the action but a human confirms it."
+
+  - kind: fill
+    template: "Bound a run with a max {0} count and a max {1} budget, and stop on unrecoverable failures."
+    blanks: ["step", "cost"]
+    chips: ["step", "cost", "vector", "prompt"]
+
+  - kind: explain

@@ -1,0 +1,77 @@
+id: agents-tool-selection
+category: theory
+skill: agents
+type: knowledge
+question: "How do agents decide which tool to use?"
+difficulty: medium
+status: draft
+source_refs: [techeon, reddit-csuk-agents, reddit-aiagents-prep]
+sources:
+  - title: "APXML — LLM Agent Tool Selection Methods"
+    url: "https://apxml.com/courses/building-advanced-llm-agent-tools/chapter-3-llm-tool-selection-orchestration/agent-tool-selection"
+    supports: "ReAct-style iterative tool selection and a router that dispatches to the right tool/sub-agent"
+  - title: "Anthropic — Writing effective tools for AI agents"
+    url: "https://www.anthropic.com/engineering/writing-tools-for-agents"
+    supports: "clear tool names/descriptions and a minimal, non-overlapping tool set drive reliable selection"
+  - title: "Chip Huyen — Agents"
+    url: "https://huyenchip.com/2025/01/07/agents.html"
+    supports: "tool selection is critical and requires balancing capability against complexity"
+
+answer:
+  short: >
+    Each tool is exposed to the model with a name, a natural-language description,
+    and a typed parameter schema (function/tool calling). The model matches the
+    current task to the best-fitting tool from those descriptions and emits a
+    structured call. In the ReAct pattern it interleaves reasoning ("thought") with
+    actions: think, pick a tool, observe the result, then re-decide — same tool with
+    new args, a different tool, or finish. With many tools, a router/dispatcher LLM
+    call first narrows to a specialized tool or sub-agent. Selection quality hinges
+    on clear, non-overlapping descriptions and a minimal tool set — bloated or
+    ambiguous tools are a top cause of wrong choices.
+  key_points:
+    - "Tools are described to the model with names, descriptions, and typed parameter schemas (function/tool calling)"
+    - "ReAct: interleave reasoning and acting — thought → action → observation → re-decide"
+    - "Pure function calling emits a structured tool call directly; the reasoning is internal to the model"
+    - "Router/dispatcher pattern for large tool sets: a first call routes to a specialized tool or sub-agent"
+    - "Selection quality depends on clear, non-overlapping tool descriptions and a minimal viable tool set"
+
+hints:
+  - "Think about what information the model actually sees about each tool before it picks one."
+  - "Recall the ReAct loop — reasoning is interleaved with the choice of action."
+  - "Consider what goes wrong when many tools have overlapping or vague descriptions."
+
+follow_ups:
+  - "How do you handle an agent that has 100+ tools available?"
+  - "What do you do when the agent keeps picking the wrong tool?"
+  - "How would you force or constrain a specific tool choice?"
+  - "How do you evaluate tool-selection quality?"
+
+exercises:
+  - kind: mcq
+    stem: "What does the model primarily rely on to choose a tool?"
+    options:
+      - { text: "The tool's name, description, and parameter schema", correct: true }
+      - { text: "The tool's source-code line count" }
+      - { text: "The order tools were registered, alphabetically" }
+      - { text: "The temperature setting alone" }
+    explain: "Tools are surfaced via names, descriptions, and typed schemas; the model matches the task to the best-described tool."
+
+  - kind: mcq
+    stem: "A common cause of poor tool selection is:"
+    options:
+      - { text: "A bloated set of tools with overlapping or ambiguous descriptions", correct: true }
+      - { text: "Using typed parameter schemas" }
+      - { text: "Giving each tool a clear, distinct description" }
+      - { text: "Keeping the tool set small" }
+    explain: "Anthropic notes bloated, ambiguous tool sets create unclear decision points; a curated minimal set improves reliability."
+
+  - kind: order
+    prompt: "Order one ReAct tool-use cycle"
+    steps:
+      - "Reason about the sub-goal (thought)"
+      - "Select a tool and its arguments (action)"
+      - "Execute the tool"
+      - "Read the result (observation)"
+      - "Decide: call again, switch tool, or finish"
+
+  - kind: explain
