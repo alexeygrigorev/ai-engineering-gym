@@ -559,15 +559,25 @@ def build_router(store: Store) -> APIRouter:
                 f"{difficulty_tag(it)}<span class=\"pill\">{esc(it.type)}</span></a>"
             )
 
-        # coding: split AI-relevant vs the rest
+        # coding: split into named sub-groups by skill, each independently practiceable
         if s["category"] == "coding":
-            relevant = [i for i in items if i.content.get("ai_relevant") is True]
-            rest = [i for i in items if i.content.get("ai_relevant") is not True]
-            body = head + practice_btn
-            if relevant:
-                body += '<div class="section-label">AI-engineering relevant</div>' + "".join(row(i) for i in relevant)
-            if rest:
-                body += f'<div class="section-label">General DSA ({len(rest)})</div>' + "".join(row(i) for i in rest)
+            groups = [
+                ("ml-coding", "ML Coding", "Implement ML/AI primitives in NumPy"),
+                ("implementation", "Implementation Rounds", "Progressive build &amp; extend"),
+                ("algorithms", "Algorithms &amp; DSA", "LeetCode-style problem solving"),
+            ]
+            body = head
+            for gskill, gname, gblurb in groups:
+                gitems = practice_order([i for i in items if i.skill == gskill])
+                if not gitems:
+                    continue
+                practice_n = min(len(gitems), PRACTICE_SIZE)
+                body += (
+                    f'<div class="section-label">{gname} · {len(gitems)}</div>'
+                    f'<p class="sub">{gblurb}</p>'
+                    f'<a class="cta" href="/practice/coding?skill={gskill}">Practice {gname} ({practice_n})</a>'
+                    + "".join(row(i) for i in gitems)
+                )
             return page(s["title"], body)
 
         return page(s["title"], head + practice_btn + "".join(row(i) for i in items))
@@ -599,17 +609,20 @@ def build_router(store: Store) -> APIRouter:
 
     # -- practice: start a session --
     @r.get("/practice/{key}")
-    def practice_start(request: Request, key: str):
+    def practice_start(request: Request, key: str, skill: str = None):
         s = STAGE_BY_KEY.get(key)
         if not s:
             return RedirectResponse("/", status_code=303)
-        items = practice_order(items_for(s["category"]))[:PRACTICE_SIZE]
+        pool = items_for(s["category"])
+        if skill:  # optional sub-group filter (e.g. coding -> ml-coding)
+            pool = [i for i in pool if i.skill == skill]
+        items = practice_order(pool)[:PRACTICE_SIZE]
         if not items:
             return RedirectResponse(f"/stage/{key}", status_code=303)
         session = Session(
             id=uuid.uuid4().hex,
             user_id=USER,
-            skill=s["category"],
+            skill=key,  # store the STAGE KEY for exit/again nav (not the category)
             item_ids=[i.id for i in items],
         )
         store.put_session(session)
