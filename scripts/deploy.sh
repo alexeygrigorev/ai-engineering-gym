@@ -14,6 +14,14 @@ ACCOUNT="$(aws sts get-caller-identity --query Account --output text)"
 BUCKET="ai-eng-gym-deploy-${ACCOUNT}-${REGION}"
 KEY="lambda/build-$(date +%s).zip"
 SESSION_SECRET="${SESSION_SECRET:-$(uv run python -c 'import secrets;print(secrets.token_hex(32))')}"
+AUTH_STACK="${AUTH_STACK:-dtcdev-shared-auth}"
+auth_output() {
+  aws cloudformation describe-stacks --region us-east-1 --stack-name "$AUTH_STACK" \
+    --query "Stacks[0].Outputs[?OutputKey=='$1'].OutputValue" --output text
+}
+AUTH_CLIENT_ID="${AUTH_CLIENT_ID:-$(auth_output GymClientId)}"
+AUTH_ISSUER="${AUTH_ISSUER:-$(auth_output IssuerUrl)}"
+AUTH_JWKS_URL="${AUTH_JWKS_URL:-$(auth_output JwksUrl)}"
 
 echo "==> building package with uv"
 rm -rf build && mkdir -p build/pkg
@@ -39,7 +47,8 @@ aws cloudformation deploy --region "$REGION" --stack-name "$STACK" \
   --parameter-overrides \
     CodeBucket="$BUCKET" CodeKey="$KEY" \
     Passphrase="$PASSPHRASE" SessionSecret="$SESSION_SECRET" \
-    DomainName="$DOMAIN" HostedZoneId="$ZONE"
+    DomainName="$DOMAIN" HostedZoneId="$ZONE" \
+    AuthClientId="$AUTH_CLIENT_ID" AuthIssuer="$AUTH_ISSUER" AuthJwksUrl="$AUTH_JWKS_URL"
 
 echo "==> outputs"
 aws cloudformation describe-stacks --region "$REGION" --stack-name "$STACK" \

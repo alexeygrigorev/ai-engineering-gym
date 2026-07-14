@@ -39,6 +39,7 @@ CONTENT_DIR = os.environ.get("CONTENT_DIR", "content")
 CONTENT_BUNDLE = os.environ.get("CONTENT_BUNDLE", "content_bundle.json")
 INCLUDE_DRAFTS = os.environ.get("INGEST_INCLUDE_DRAFTS", "").lower() in ("1", "true", "yes")
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "dev-insecure-secret-change-me")
+SESSION_HTTPS_ONLY = os.environ.get("SESSION_HTTPS_ONLY", "").lower() in ("1", "true", "yes")
 
 
 def bootstrap(content_dir: str = CONTENT_DIR) -> None:
@@ -65,7 +66,7 @@ app.add_middleware(
     SessionMiddleware,
     secret_key=SESSION_SECRET,
     same_site="lax",
-    https_only=False,
+    https_only=SESSION_HTTPS_ONLY,
     max_age=60 * 60 * 24 * 365,  # remember the login for a year (stable SESSION_SECRET)
 )
 

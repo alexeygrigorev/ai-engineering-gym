@@ -20,6 +20,7 @@ import os
 import random
 import uuid
 from datetime import timedelta
+from urllib.parse import quote
 
 import markdown as _markdown
 
@@ -29,6 +30,7 @@ from pydantic import BaseModel
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.models import Progress, Session, SessionResult, _now
+from app import oidc
 from app.store import Store
 
 
@@ -37,7 +39,7 @@ class ReviewIn(BaseModel):
     comment: str = ""
 
 PASSPHRASE = os.environ.get("GYM_PASSPHRASE", "aislgym")
-PUBLIC_PATHS = {"/login", "/health", "/favicon.ico", "/manifest.webmanifest", "/sw.js", "/icon.svg"}
+PUBLIC_PATHS = {"/login", "/logout", "/auth/callback", "/health", "/favicon.ico", "/manifest.webmanifest", "/sw.js", "/icon.svg"}
 USER = "me"
 PRACTICE_SIZE = 200  # effectively "all in this sub-category" per session
 GRADES = {"again": 0, "hard": 1, "good": 2, "easy": 3}
@@ -93,7 +95,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
         if request.session.get("auth"):
             return await call_next(request)
         if request.method == "GET":
-            return RedirectResponse("/login", status_code=303)
+            return RedirectResponse(f"/login?return_to={quote(path, safe='/%?=&')}", status_code=303)
         return HTMLResponse("unauthorized", status_code=401)
 
 
@@ -860,9 +862,15 @@ def build_router(store: Store, reviews) -> APIRouter:
             return (rel, 1, p.due.timestamp())
         return sorted(items, key=key)
 
+    @r.get("/auth/callback")
+    def auth_callback(request: Request):
+        return oidc.finish(request)
+
     # -- auth --
     @r.get("/login", response_class=HTMLResponse)
     def login_get(request: Request, bad: int = 0):
+        if oidc.configured():
+            return oidc.begin(request)
         err = '<div class="err">Wrong passphrase</div>' if bad else ""
         body = (
             "<header><h1>AISL Gym</h1></header>"
@@ -875,6 +883,8 @@ def build_router(store: Store, reviews) -> APIRouter:
 
     @r.post("/login")
     def login_post(request: Request, passphrase: str = Form("")):
+        if oidc.configured():
+            return RedirectResponse("/login", status_code=303)
         if passphrase.strip() == PASSPHRASE:
             request.session["auth"] = True
             return RedirectResponse("/", status_code=303)
@@ -883,7 +893,7 @@ def build_router(store: Store, reviews) -> APIRouter:
     @r.get("/logout")
     def logout(request: Request):
         request.session.clear()
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(oidc.logout_url(), status_code=303)
 
     # -- home --
     @r.get("/", response_class=HTMLResponse)

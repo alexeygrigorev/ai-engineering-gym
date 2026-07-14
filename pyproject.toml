@@ -13,6 +13,7 @@ dependencies = [
     "itsdangerous>=2.2",
     "python-multipart>=0.0.9",
     "markdown>=3.6",
+    "pyjwt[crypto]>=2.10",
 ]
 
 [project.optional-dependencies]

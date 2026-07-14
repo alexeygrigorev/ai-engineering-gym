@@ -24,6 +24,18 @@ Parameters:
   HostedZoneId:
     Type: String
     Description: Route53 hosted zone id for dtcdev.click (authoritative zone)
+  AuthBaseUrl:
+    Type: String
+    Default: https://auth.dtcdev.click
+  AuthClientId:
+    Type: String
+    Description: Cognito app client ID for AI Engineering Gym
+  AuthIssuer:
+    Type: String
+    Description: Cognito user-pool issuer URL
+  AuthJwksUrl:
+    Type: String
+    Description: Cognito user-pool JWKS URL
 
 Resources:
   LambdaRole:
@@ -78,6 +90,13 @@ Resources:
           GYM_PASSPHRASE: !Ref Passphrase
           SESSION_SECRET: !Ref SessionSecret
           REVIEWS_TABLE: !Ref ReviewsTable
+          SESSION_HTTPS_ONLY: "true"
+          AUTH_BASE_URL: !Ref AuthBaseUrl
+          AUTH_CLIENT_ID: !Ref AuthClientId
+          AUTH_CALLBACK_URL: !Sub "https://${DomainName}/auth/callback"
+          AUTH_LOGOUT_URL: !Sub "https://${DomainName}/"
+          AUTH_ISSUER: !Ref AuthIssuer
+          AUTH_JWKS_URL: !Ref AuthJwksUrl
 
   HttpApi:
     Type: AWS::ApiGatewayV2::Api
