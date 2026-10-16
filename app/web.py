@@ -843,6 +843,130 @@ self.addEventListener('message', async e => {
 """
 
 
+# --- sketchpad (offline scratch canvas) ------------------------------------
+# A self-contained finger-drawing canvas for thinking through algorithms.
+# Multiple pages, each persisted to localStorage so previous pages stay saved
+# and the whole thing works offline (no server round-trip; the page HTML/JS is
+# cached by the service worker, the drawings live on-device).
+
+SKETCH_BODY = """
+<a class="back" href="/">&larr; Home</a>
+<header><h1>✏️ Sketchpad</h1><div class="pill" id="pageind">Page 1</div></header>
+<p class="sub">Offline scratch canvas for sketching algorithms. Saved on this device — new pages keep the old ones.</p>
+
+<div class="sk-tools">
+  <span class="sw sel" data-color="#e7e9ee" style="background:#e7e9ee"></span>
+  <span class="sw" data-color="#5b8dff" style="background:#5b8dff"></span>
+  <span class="sw" data-color="#34c759" style="background:#34c759"></span>
+  <span class="sw" data-color="#ff5a5f" style="background:#ff5a5f"></span>
+  <span class="sw" data-color="#ffd60a" style="background:#ffd60a"></span>
+  <button class="sk-btn size sel" data-w="3">•</button>
+  <button class="sk-btn size" data-w="6">●</button>
+  <button class="sk-btn size" data-w="12">⬤</button>
+  <button class="sk-btn" id="erase">Eraser</button>
+  <button class="sk-btn" id="undo">Undo</button>
+  <button class="sk-btn" id="clear">Clear</button>
+</div>
+
+<canvas id="sk" class="sk-canvas"></canvas>
+
+<div class="sk-pages">
+  <button class="sk-btn" id="prev">‹ Prev</button>
+  <span id="pgtxt">1 / 1</span>
+  <button class="sk-btn" id="next">Next ›</button>
+  <button class="sk-btn" id="newpg">+ New page</button>
+</div>
+
+<style>
+.sk-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.sk-canvas{display:block;width:100%;height:66vh;background:#171a21;border:1px solid #232733;border-radius:12px;touch-action:none;cursor:crosshair}
+.sw{width:26px;height:26px;border-radius:50%;border:2px solid #232733;display:inline-block}
+.sw.sel{border-color:#fff}
+.sk-btn{background:#171a21;border:1px solid #232733;color:#e7e9ee;border-radius:10px;padding:8px 12px;font:inherit;line-height:1}
+.sk-btn.sel{border-color:#3b6fe0;color:#fff}
+.sk-pages{display:flex;gap:8px;align-items:center;margin-top:12px}
+#pgtxt{color:#9aa1ad;font-size:13px;margin:0 auto;text-align:center}
+</style>
+
+<script>
+(function(){
+  var KEY='gym.sketch.v1', BG='#171a21';
+  var canvas=document.getElementById('sk'), ctx=canvas.getContext('2d');
+  var pen={c:'#e7e9ee', w:3, erase:false};
+  var drawing=false, cur=null, last=null, pid=null;
+
+  function load(){ try{ var d=JSON.parse(localStorage.getItem(KEY));
+    if(d && d.pages && d.pages.length) return d; }catch(e){}
+    return {pages:[{strokes:[]}], cur:0}; }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(doc)); }catch(e){} }
+  var doc=load(); if(doc.cur==null || doc.cur<0 || doc.cur>=doc.pages.length) doc.cur=0;
+  function page(){ return doc.pages[doc.cur]; }
+
+  function fit(){
+    var dpr=window.devicePixelRatio||1, r=canvas.getBoundingClientRect();
+    canvas.width=Math.round(r.width*dpr); canvas.height=Math.round(r.height*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0); redraw();
+  }
+  function clearBg(){ ctx.save(); ctx.setTransform(1,0,0,1,0,0);
+    ctx.fillStyle=BG; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.restore(); }
+  function seg(a,b,s){ ctx.strokeStyle=s.e?BG:s.c; ctx.lineWidth=s.w;
+    ctx.lineJoin='round'; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke(); }
+  function stroke(s){ if(!s.p.length) return;
+    if(s.p.length===1){ seg(s.p[0],[s.p[0][0]+0.01,s.p[0][1]],s); return; }
+    for(var i=1;i<s.p.length;i++) seg(s.p[i-1],s.p[i],s); }
+  function redraw(){ clearBg(); page().strokes.forEach(stroke); }
+  function pos(e){ var r=canvas.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top]; }
+
+  function down(e){ if(e.isPrimary===false) return; e.preventDefault();
+    drawing=true; pid=e.pointerId;
+    cur={c:pen.c, w:pen.w, e:pen.erase, p:[pos(e)]}; page().strokes.push(cur);
+    last=cur.p[0]; stroke(cur);
+    try{ canvas.setPointerCapture(e.pointerId); }catch(_){} }
+  function move(e){ if(!drawing || e.pointerId!==pid) return; e.preventDefault();
+    var p=pos(e); cur.p.push(p); seg(last,p,cur); last=p; }
+  function up(e){ if(!drawing) return; drawing=false; cur=null; pid=null; save(); }
+  canvas.addEventListener('pointerdown',down);
+  canvas.addEventListener('pointermove',move);
+  window.addEventListener('pointerup',up);
+  canvas.addEventListener('pointercancel',up);
+
+  function pages(){ document.getElementById('pgtxt').textContent=(doc.cur+1)+' / '+doc.pages.length;
+    document.getElementById('pageind').textContent='Page '+(doc.cur+1); }
+
+  // colours
+  var sws=document.querySelectorAll('.sw');
+  sws.forEach(function(el){ el.addEventListener('click',function(){
+    sws.forEach(function(s){s.classList.remove('sel');}); el.classList.add('sel');
+    pen.c=el.getAttribute('data-color'); pen.erase=false;
+    document.getElementById('erase').classList.remove('sel'); }); });
+  // sizes
+  var sizes=document.querySelectorAll('.sk-btn.size');
+  sizes.forEach(function(el){ el.addEventListener('click',function(){
+    sizes.forEach(function(s){s.classList.remove('sel');}); el.classList.add('sel');
+    pen.w=parseInt(el.getAttribute('data-w'),10); }); });
+  // eraser / undo / clear
+  document.getElementById('erase').addEventListener('click',function(){
+    pen.erase=!pen.erase; this.classList.toggle('sel',pen.erase); });
+  document.getElementById('undo').addEventListener('click',function(){
+    page().strokes.pop(); redraw(); save(); });
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!page().strokes.length || confirm('Clear this page?')){ page().strokes=[]; redraw(); save(); } });
+  // page nav
+  document.getElementById('prev').addEventListener('click',function(){
+    if(doc.cur>0){ doc.cur--; redraw(); pages(); save(); } });
+  document.getElementById('next').addEventListener('click',function(){
+    if(doc.cur<doc.pages.length-1){ doc.cur++; redraw(); pages(); save(); } });
+  document.getElementById('newpg').addEventListener('click',function(){
+    doc.pages.push({strokes:[]}); doc.cur=doc.pages.length-1; redraw(); pages(); save(); });
+
+  window.addEventListener('resize',fit);
+  fit(); pages();
+})();
+</script>
+"""
+
+
 # --- routes ----------------------------------------------------------------
 
 
@@ -851,6 +975,27 @@ def build_router(store: Store, reviews) -> APIRouter:
 
     def items_for(category):
         return [i for i in store.list_items() if i.category == category]
+
+    def folder_siblings(it):
+        """Items in the same folder as ``it`` — same category AND same sub-category
+        (skill), in a stable order (AI-relevant first, then by id). This is the
+        'category or sub-category' the Next button walks through."""
+        sibs = [
+            i
+            for i in items_for(it.category)
+            if i.skill == it.skill and i.type != "template"
+        ]
+        sibs.sort(key=lambda i: (0 if i.content.get("ai_relevant") is True else 1, i.id))
+        return sibs
+
+    def next_in_folder(it):
+        """Next sibling after ``it`` within its folder, wrapping around. ``None`` if
+        it's the only card in the folder."""
+        sibs = folder_siblings(it)
+        ids = [i.id for i in sibs]
+        if it.id not in ids or len(sibs) <= 1:
+            return None
+        return sibs[(ids.index(it.id) + 1) % len(sibs)]
 
     def practice_order(items):
         """AI-relevant coding first, then unseen, then earliest due (simple SRS ordering)."""
@@ -915,6 +1060,11 @@ def build_router(store: Store, reviews) -> APIRouter:
             f'<header><h1>AISL Gym</h1><div class="pill">⭐ {xp} XP</div></header>'
             '<p class="sub">Pick an interview stage to train.</p>'
             + "".join(tiles)
+            + '<a class="tile" href="/sketch"><div class="row">'
+            '<div class="emoji">✏️</div>'
+            '<div><div class="t">Sketchpad</div>'
+            '<div class="b">Offline canvas for algorithm scratch work</div></div>'
+            '<div class="count">›</div></div></a>'
             + '<button id="dlbtn" class="cta secondary" style="width:100%;margin-top:16px" '
             'onclick="downloadOffline()">⬇ Download for offline</button>'
             '<p class="sub" style="margin-top:16px">'
@@ -1019,9 +1169,19 @@ def build_router(store: Store, reviews) -> APIRouter:
             render = template_block
         else:
             render = recall_block
+        # Lateral nav: keep practicing within this folder instead of bouncing back
+        # to the list. Templates are reference pages, so no Next there.
+        nxt = None if it.type == "template" else next_in_folder(it)
+        next_html = (
+            f'<a class="cta" style="width:100%;margin-top:14px" href="{item_url(nxt)}">'
+            "Next question &rarr;</a>"
+            if nxt
+            else ""
+        )
         body = (
             '<a class="back" href="javascript:history.back()">&larr; Back</a>'
             f'<div class="card">{render(it, footer=footer)}</div>'
+            f"{next_html}"
         )
         return page(q, body)
 
@@ -1157,6 +1317,11 @@ def build_router(store: Store, reviews) -> APIRouter:
         )
         return page("Reviews", body)
 
+    # -- sketchpad (offline scratch canvas) --
+    @r.get("/sketch", response_class=HTMLResponse)
+    def sketch(request: Request):
+        return page("Sketchpad", SKETCH_BODY)
+
     # -- PWA: manifest, service worker, icon, offline url list --
     @r.get("/manifest.webmanifest")
     def manifest():
@@ -1185,7 +1350,7 @@ def build_router(store: Store, reviews) -> APIRouter:
 
     @r.get("/offline-urls")
     def offline_urls():
-        urls = ["/", "/reviews"] + [f"/stage/{s['key']}" for s in STAGES]
+        urls = ["/", "/reviews", "/sketch"] + [f"/stage/{s['key']}" for s in STAGES]
         seen = set()
         for it in store.list_items():
             k = CATEGORY_TO_KEY.get(it.category)
